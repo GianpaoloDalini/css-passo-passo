@@ -1,6 +1,6 @@
-# CSS passo passo
+# Guide CSS
 
-Guida interattiva al CSS interno (tra `<style>` e `</style>`), in 10 passi.
+- [`/`](https://gianpaolodalini.github.io/css-passo-passo/): CSS passo passo, guida base con CSS interno
+- [`/completa/`](https://gianpaolodalini.github.io/css-passo-passo/completa/): Guida al CSS per terze e quinte (ripasso HTML, CSS completo, laboratorio finale)
 
-- `index.html`: la guida
-- `pagina.html`: la pagina di partenza da scaricare
+`pagina.html`: pagina di partenza per la guida base.

@@ -1,0 +1,1784 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Guida al CSS</title>
+<meta name="description" content="Guida al CSS per le classi terze e quinte: ripasso HTML, selettori, box model, link, tabelle, flexbox e layout, con esempi modificabili.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap">
+<style>
+/* Layout: indice fisso a sinistra (si chiude su telefono), capitoli in colonna; ogni laboratorio = editor a sinistra, anteprima a destra */
+:root{
+  --bg:#F4F6F8; --surface:#FFFFFF; --fg:#1C2630; --muted:#5A6878; --line:#D6DDE4;
+  --brand:#0F3B57; --brand-ink:#FFFFFF; --brand-soft:#E3ECF2;
+  --signal:#C85A12; --signal-soft:#FBEADB;
+  --codebg:#F7F9FB; --ok:#1B7A44; --ok-soft:#E0F2E8; --bad:#B42335; --bad-soft:#FBE3E6;
+  --tk-sel:#7A2DAE; --tk-prop:#1B5FB5; --tk-val:#17783E; --tk-com:#7D8894; --tk-punct:#6B7785; --tk-tag:#A33A16; --tk-attr:#1B5FB5; --tk-str:#17783E;
+  --f-head:"Source Serif 4", Georgia, "Times New Roman", serif;
+  --f-body:"Source Sans 3", "Segoe UI", Arial, sans-serif;
+  --f-code:"Source Code Pro", Consolas, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0F151B; --surface:#161E26; --fg:#E4EAF0; --muted:#97A5B4; --line:#2A3540;
+  --brand:#8CC1E6; --brand-ink:#0B1820; --brand-soft:#1A2B39;
+  --signal:#F29A55; --signal-soft:#3A2617;
+  --codebg:#111920; --ok:#6FCF97; --ok-soft:#17311F; --bad:#FF8B98; --bad-soft:#3A1A20;
+  --tk-sel:#D19BFF; --tk-prop:#82B6FF; --tk-val:#7CD8A0; --tk-com:#7F8B97; --tk-punct:#8E9AA6; --tk-tag:#FF9F7A; --tk-attr:#82B6FF; --tk-str:#7CD8A0;
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#0F151B; --surface:#161E26; --fg:#E4EAF0; --muted:#97A5B4; --line:#2A3540;
+  --brand:#8CC1E6; --brand-ink:#0B1820; --brand-soft:#1A2B39;
+  --signal:#F29A55; --signal-soft:#3A2617;
+  --codebg:#111920; --ok:#6FCF97; --ok-soft:#17311F; --bad:#FF8B98; --bad-soft:#3A1A20;
+  --tk-sel:#D19BFF; --tk-prop:#82B6FF; --tk-val:#7CD8A0; --tk-com:#7F8B97; --tk-punct:#8E9AA6; --tk-tag:#FF9F7A; --tk-attr:#82B6FF; --tk-str:#7CD8A0;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:16px}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:18px;line-height:1.6}
+a{color:var(--brand)}
+.shell{display:grid;grid-template-columns:270px minmax(0,1fr);max-width:1400px;margin:0 auto}
+@media (max-width:1000px){.shell{grid-template-columns:minmax(0,1fr)}}
+
+/* indice */
+aside.toc{position:sticky;top:0;height:100vh;overflow-y:auto;padding:28px 18px 28px 24px;border-right:1px solid var(--line)}
+@media (max-width:1000px){aside.toc{position:static;height:auto;border-right:0;border-bottom:1px solid var(--line);padding:16px max(16px, env(safe-area-inset-left, 0px))}}
+.toc .brandline{font-family:var(--f-head);font-weight:700;font-size:22px;margin:0 0 4px;line-height:1.2}
+.toc .who{margin:0 0 18px;color:var(--muted);font-size:15px}
+.toc details summary{display:none;cursor:pointer;font-weight:700}
+@media (max-width:1000px){.toc details summary{display:block;padding:8px 0}}
+.toc .part{margin:16px 0 6px;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.toc ol{list-style:none;margin:0;padding:0}
+.toc li a{display:flex;gap:10px;padding:5px 8px;border-radius:6px;text-decoration:none;color:var(--fg);font-size:16px;line-height:1.35}
+.toc li a .n{font-family:var(--f-code);font-size:14px;color:var(--muted);min-width:2.6em;padding-top:1px}
+.toc li a:hover{background:var(--brand-soft)}
+.toc li a.on{background:var(--brand);color:var(--brand-ink)}
+.toc li a.on .n{color:var(--brand-ink)}
+
+main.doc{padding:32px max(16px, env(safe-area-inset-right, 0px)) 80px max(16px, env(safe-area-inset-left, 0px));min-width:0}
+.inner{max-width:980px;margin:0 auto}
+.hero-doc{padding:8px 0 28px;border-bottom:2px solid var(--fg);margin-bottom:12px}
+.hero-doc .eyebrow{margin:0;font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:var(--signal);font-weight:700}
+.hero-doc h1{font-family:var(--f-head);font-size:clamp(36px,5.5vw,58px);line-height:1.05;margin:8px 0 14px;text-wrap:balance}
+.hero-doc p{max-width:64ch;margin:0 0 10px;font-size:20px}
+.parthead{margin:56px 0 0;padding:14px 0;border-top:6px solid var(--brand);display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.parthead .pl{font-family:var(--f-code);font-weight:600;font-size:15px;background:var(--brand);color:var(--brand-ink);padding:2px 10px;border-radius:4px}
+.parthead h2{margin:0;font-family:var(--f-head);font-size:30px}
+section.ch{padding:36px 0 8px;border-bottom:1px solid var(--line)}
+section.ch > h2{font-family:var(--f-head);font-size:clamp(26px,3.4vw,34px);line-height:1.15;margin:0 0 6px;text-wrap:balance;display:flex;gap:14px;align-items:baseline;flex-wrap:wrap}
+section.ch > h2 .lab-n{font-family:var(--f-code);font-size:16px;font-weight:600;color:var(--signal);border:2px solid var(--signal);padding:0 8px;border-radius:4px;line-height:1.6}
+section.ch h3{font-family:var(--f-head);font-size:22px;margin:28px 0 8px}
+section.ch p, section.ch li{max-width:72ch}
+.goal{color:var(--muted);font-size:19px;margin:0 0 14px}
+code:not(pre code){font-family:var(--f-code);font-size:.88em;background:var(--codebg);border:1px solid var(--line);padding:0 5px;border-radius:4px;overflow-wrap:anywhere}
+.note{border-left:5px solid var(--brand);background:var(--brand-soft);padding:12px 16px;border-radius:0 8px 8px 0;margin:16px 0;max-width:76ch}
+.note.warn{border-color:var(--signal);background:var(--signal-soft)}
+.note b:first-child{display:block}
+
+/* tabelle della guida */
+.tw{overflow-x:auto;margin:14px 0}
+table.t{border-collapse:collapse;width:100%;font-size:16px;background:var(--surface)}
+table.t th,table.t td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+table.t th{background:var(--brand-soft);font-weight:700}
+table.t td code{white-space:nowrap}
+
+/* codice */
+pre.code{margin:12px 0;background:var(--codebg);border:1px solid var(--line);border-radius:8px;padding:14px 16px;overflow-x:auto;font-family:var(--f-code);font-size:15.5px;line-height:1.6;position:relative}
+pre.code .fname{display:block;font-family:var(--f-body);font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.ts{color:var(--tk-sel);font-weight:600}.tk{color:var(--tk-prop)}.tv{color:var(--tk-val)}.tc{color:var(--tk-com);font-style:italic}.tp{color:var(--tk-punct)}.ta{color:var(--signal);font-weight:600}
+.tg{color:var(--tk-tag)}.tat{color:var(--tk-attr)}.tst{color:var(--tk-str)}
+.cpy{position:absolute;top:8px;right:8px;font:600 13px var(--f-body);padding:4px 10px;border-radius:6px;border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer}
+.cpy:hover{border-color:var(--brand)}
+
+/* anatomia della regola */
+.anat{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:14px 0}
+@media (max-width:640px){.anat{grid-template-columns:minmax(0,1fr)}}
+.anat div{border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:var(--surface)}
+.anat b{display:block;font-family:var(--f-code)}
+.anat .s b{color:var(--tk-sel)}.anat .p b{color:var(--tk-prop)}.anat .v b{color:var(--tk-val)}
+.anat span{font-size:15px;color:var(--muted)}
+
+/* laboratori */
+.lab{border:2px solid var(--brand);border-radius:10px;margin:20px 0;background:var(--surface);overflow:hidden}
+.lab-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 12px;background:var(--brand);color:var(--brand-ink)}
+.lab-head .lt{font-weight:700;font-size:16px}
+.lab-head .lt::before{content:"Prova · ";opacity:.75;font-weight:400}
+.lab-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+@media (max-width:820px){.lab-body{grid-template-columns:minmax(0,1fr)}}
+.ed{display:flex;flex-direction:column;border-right:1px solid var(--line);min-width:0}
+@media (max-width:820px){.ed{border-right:0;border-bottom:1px solid var(--line)}}
+.tabs{display:flex;gap:2px;padding:6px 6px 0;background:var(--codebg);border-bottom:1px solid var(--line)}
+.tabs button{font:600 14px var(--f-code);padding:6px 12px;border:1px solid transparent;border-bottom:0;border-radius:6px 6px 0 0;background:transparent;color:var(--muted);cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--surface);border-color:var(--line);color:var(--fg);margin-bottom:-1px}
+.ed textarea{flex:1;min-height:300px;width:100%;border:0;resize:vertical;padding:12px 14px;font-family:var(--f-code);font-size:15px;line-height:1.55;background:var(--surface);color:var(--fg);tab-size:4;white-space:pre;overflow:auto}
+.ed textarea:focus{outline:3px solid var(--signal);outline-offset:-3px}
+.lab-tools{display:flex;gap:8px;padding:8px;border-top:1px solid var(--line);background:var(--codebg);flex-wrap:wrap}
+.btn{font:600 14px var(--f-body);padding:6px 12px;border-radius:6px;border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer}
+.btn:hover{border-color:var(--brand)}
+.btn.primary{background:var(--brand);color:var(--brand-ink);border-color:var(--brand)}
+.pv{display:flex;flex-direction:column;min-width:0;background:#E9EDF1}
+.pv .bar{display:flex;align-items:center;gap:8px;padding:6px 10px;background:var(--codebg);border-bottom:1px solid var(--line);font:13px var(--f-code);color:var(--muted)}
+.pv .bar i{width:9px;height:9px;border-radius:50%;background:var(--line);display:block;flex:none}
+.pv .bar span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pv .frame-wrap{overflow:auto;flex:1;display:flex;justify-content:center}
+.pv iframe{border:0;width:100%;height:360px;background:#fff;display:block}
+.pv .status{min-height:34px;padding:6px 10px;font-size:14px;border-top:1px solid var(--line);background:var(--surface);color:var(--muted)}
+.pv .status.act{color:var(--fg);background:var(--signal-soft)}
+.ctrl{display:flex;flex-wrap:wrap;gap:10px 18px;padding:10px 12px;border-bottom:1px solid var(--line);background:var(--codebg);font-size:15px;align-items:center}
+.ctrl label{display:flex;gap:6px;align-items:center}
+.ctrl select,.ctrl input[type=text]{font:15px var(--f-code);padding:4px 6px;border-radius:6px;border:1px solid var(--line);background:var(--surface);color:var(--fg)}
+.ctrl input[type=range]{width:130px}
+.ctrl output{font-family:var(--f-code);min-width:3.5em}
+button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid var(--signal);outline-offset:2px}
+
+/* tester selettori */
+.presets{display:flex;flex-wrap:wrap;gap:6px}
+.presets button{font:14px var(--f-code);padding:4px 10px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer}
+.presets button.on{background:var(--signal);border-color:var(--signal);color:#fff}
+.hits{font-weight:700;color:var(--signal)}
+
+/* box model */
+.bm{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:0}
+@media (max-width:820px){.bm{grid-template-columns:minmax(0,1fr)}}
+.bm-stage{padding:20px;display:flex;justify-content:center;align-items:center;background:#fff;min-height:320px;overflow:auto}
+.bm-m{background:#F9CC9D;position:relative;display:inline-block}
+.bm-b{background:#FDDD9B;display:block}
+.bm-p{background:#C3D08B;display:block}
+.bm-c{background:#8CB6C0;display:flex;align-items:center;justify-content:center;font:600 14px var(--f-code);color:#13232b;text-align:center}
+.bm-legend{display:flex;flex-wrap:wrap;gap:8px 14px;font-size:14px;padding:10px 12px;border-top:1px solid var(--line)}
+.bm-legend span{display:flex;align-items:center;gap:6px}
+.bm-legend i{width:14px;height:14px;border-radius:3px;display:block}
+.bm-calc{font-family:var(--f-code);font-size:15px;padding:10px 12px;background:var(--codebg);border-top:1px solid var(--line)}
+
+/* contrasto */
+.cx{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0}
+@media (max-width:820px){.cx{grid-template-columns:minmax(0,1fr)}}
+.cx-sample{padding:28px;display:flex;flex-direction:column;gap:8px;justify-content:center;min-height:200px}
+.cx-sample .big{font:700 28px Verdana,sans-serif}
+.cx-sample .small{font:16px Verdana,sans-serif}
+.cx-res{padding:16px;display:flex;flex-direction:column;gap:10px}
+.ratio{font-family:var(--f-code);font-size:34px;font-weight:600}
+.pill{display:inline-block;font-size:14px;font-weight:700;padding:2px 10px;border-radius:999px;margin-right:6px}
+.pill.ok{background:var(--ok-soft);color:var(--ok)}.pill.no{background:var(--bad-soft);color:var(--bad)}
+
+/* toggle laboratorio finale */
+.toggles{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:6px;padding:10px 12px;background:var(--codebg);border-bottom:1px solid var(--line)}
+.toggles label{display:flex;gap:8px;align-items:center;font-size:15px;padding:4px 6px;border-radius:6px;cursor:pointer}
+.toggles label:hover{background:var(--surface)}
+.toggles input{width:18px;height:18px;accent-color:var(--brand)}
+
+/* schema box semantici */
+.sem{display:grid;gap:6px;max-width:520px;margin:14px 0;font:600 14px var(--f-code)}
+.sem div{border:2px solid var(--brand);border-radius:6px;padding:8px 10px;background:var(--surface)}
+.sem .row{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.sem .main{display:grid;gap:6px;background:var(--brand-soft)}
+.sem small{font-family:var(--f-body);font-weight:400;color:var(--muted)}
+
+.check{list-style:none;padding:0}
+.check li{padding-left:30px;position:relative;margin:6px 0}
+.check li::before{content:"";position:absolute;left:4px;top:7px;width:14px;height:14px;border:2px solid var(--brand);border-radius:3px}
+footer.doc-foot{margin-top:40px;color:var(--muted);font-size:15px}
+</style>
+</head>
+<body>
+<div class="shell">
+<aside class="toc" aria-label="Indice">
+  <p class="brandline">Guida al CSS</p>
+  <p class="who">Informatica · ISIS Romero, Albino</p>
+  <details id="tocd" open>
+    <summary>Indice dei capitoli</summary>
+    <nav id="tocnav"></nav>
+  </details>
+</aside>
+
+<main class="doc">
+<div class="inner">
+
+<header class="hero-doc">
+  <p class="eyebrow">Classi terze e quinte · HTML e CSS</p>
+  <h1>Guida al CSS</h1>
+  <p>Questa guida ti porta da una pagina HTML senza stile a un sito aziendale completo, con header, menu, card, tabelle, link e footer. Le pagine sono come quelle delle esercitazioni di laboratorio.</p>
+  <p>Ogni riquadro <b>Prova</b> è modificabile: cambi il codice a sinistra e la pagina a destra si aggiorna subito. Se sbagli, premi <b>Ripristina</b>.</p>
+</header>
+
+<section class="ch" id="come-usare" data-n="0" data-t="Come usare la guida">
+  <h2>Come usare la guida</h2>
+  <p>Gli esempi usano il sito di un'azienda inventata, <b>Seriana Logistica</b>: magazzino, preparazione ordini e consegne. Lo costruiamo un pezzo alla volta e nel <a href="#laboratorio">laboratorio finale</a> lo vedi completo.</p>
+  <p>La guida ha tre parti:</p>
+  <ol>
+    <li><b>Parte A, ripasso HTML</b>: la struttura della pagina, i tag che usiamo e soprattutto i link.</li>
+    <li><b>Parte B, il CSS</b>: regole, selettori, colori, testo, box model, link, tabelle, layout con flexbox, pagine che si adattano al telefono.</li>
+    <li><b>Parte C, il laboratorio</b>: il sito completo, con le regole che puoi accendere e spegnere una alla volta, e un prontuario delle proprietà.</li>
+  </ol>
+  <div class="note"><b>Come lavoriamo in laboratorio</b>Nella cartella del progetto tieni <code>index.html</code>, il file <code>stile.css</code> e la cartella <code>img</code> con le immagini. Apri <code>index.html</code> nel browser e il file nell'editor. Dopo ogni modifica salva con <code>Ctrl</code> + <code>S</code> e aggiorna il browser con <code>F5</code>.</div>
+</section>
+
+<!-- ======================= PARTE A ======================= -->
+<div class="parthead"><span class="pl">PARTE A</span><h2>Ripasso HTML</h2></div>
+
+<section class="ch" id="struttura" data-n="A.1" data-t="La struttura della pagina">
+  <h2><span class="lab-n">A.1</span>La struttura della pagina</h2>
+  <p class="goal">Ogni pagina HTML ha lo stesso scheletro. Il CSS si collega nella parte <code>head</code>.</p>
+  <script type="text/plain" class="show" data-lang="html" data-file="index.html"><!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Seriana Logistica</title>
+    <link rel="stylesheet" href="stile.css">
+</head>
+<body>
+    <!-- qui va tutto quello che si vede nella pagina -->
+</body>
+</html></script>
+  <div class="tw"><table class="t">
+    <tr><th>Riga</th><th>A cosa serve</th></tr>
+    <tr><td><code>&lt;!DOCTYPE html&gt;</code></td><td>Dice al browser che il file è HTML5. Va sempre nella prima riga.</td></tr>
+    <tr><td><code>&lt;html lang="it"&gt;</code></td><td>Contiene tutta la pagina. <code>lang="it"</code> dice che la lingua è l'italiano (serve ai lettori di schermo e ai motori di ricerca).</td></tr>
+    <tr><td><code>&lt;head&gt;</code></td><td>Informazioni sulla pagina che non si vedono: codifica, titolo, collegamento al CSS.</td></tr>
+    <tr><td><code>&lt;meta charset="UTF-8"&gt;</code></td><td>Fa vedere bene le lettere accentate e il simbolo €.</td></tr>
+    <tr><td><code>&lt;meta name="viewport" …&gt;</code></td><td>Sul telefono fa usare la larghezza vera dello schermo. Serve per le pagine responsive (capitolo <a href="#responsive">B.13</a>).</td></tr>
+    <tr><td><code>&lt;title&gt;</code></td><td>Il testo nella scheda del browser e nei risultati di Google.</td></tr>
+    <tr><td><code>&lt;link rel="stylesheet" href="stile.css"&gt;</code></td><td>Collega il foglio di stile esterno.</td></tr>
+    <tr><td><code>&lt;body&gt;</code></td><td>Tutto il contenuto visibile.</td></tr>
+  </table></div>
+  <div class="lab" data-title="Collegare stile.css" data-height="260">
+    <script type="text/plain" class="h"><!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Seriana Logistica</title>
+    <link rel="stylesheet" href="stile.css">
+</head>
+<body>
+    <h1>Seriana Logistica</h1>
+    <p>Magazzino e consegne in Val Seriana.</p>
+</body>
+</html></script>
+    <script type="text/plain" class="c">body {
+    font-family: Verdana, sans-serif;
+}
+
+h1 {
+    color: #0F3B57;
+}</script>
+  </div>
+  <p>Prova a cancellare la riga <code>&lt;link …&gt;</code> nella scheda <code>index.html</code>: la pagina perde lo stile, perché il file CSS non è più collegato.</p>
+</section>
+
+<section class="ch" id="testo-html" data-n="A.2" data-t="Testo e contenitori">
+  <h2><span class="lab-n">A.2</span>Testo e contenitori</h2>
+  <p class="goal">I tag dicono che cosa è ogni pezzo di contenuto. Gli attributi <code>class</code> e <code>id</code> servono per agganciare il CSS.</p>
+  <div class="tw"><table class="t">
+    <tr><th>Tag</th><th>Significato</th><th>Tipo</th></tr>
+    <tr><td><code>h1</code> … <code>h6</code></td><td>Titoli, dal più importante al meno importante. Un solo <code>h1</code> per pagina.</td><td>blocco</td></tr>
+    <tr><td><code>p</code></td><td>Paragrafo</td><td>blocco</td></tr>
+    <tr><td><code>ul</code> / <code>ol</code> + <code>li</code></td><td>Elenco puntato / numerato, con le sue voci</td><td>blocco</td></tr>
+    <tr><td><code>div</code></td><td>Contenitore generico: raggruppa altri elementi</td><td>blocco</td></tr>
+    <tr><td><code>strong</code>, <code>em</code></td><td>Testo importante (grassetto), testo enfatizzato (corsivo)</td><td>in linea</td></tr>
+    <tr><td><code>span</code></td><td>Contenitore generico dentro una riga di testo</td><td>in linea</td></tr>
+    <tr><td><code>br</code></td><td>A capo (tag senza chiusura)</td><td>in linea</td></tr>
+  </table></div>
+  <p>Gli elementi <b>blocco</b> occupano tutta la larghezza e vanno a capo. Gli elementi <b>in linea</b> stanno nella riga di testo. Lo riprendiamo nel capitolo <a href="#flex">B.11</a>.</p>
+  <h3>Gli attributi class e id</h3>
+  <ul>
+    <li><code>class="card"</code>: un nome che puoi dare a <b>tanti</b> elementi. Un elemento può avere più classi separate da spazio: <code>class="sezione chiara"</code>.</li>
+    <li><code>id="tariffe"</code>: un nome <b>unico</b> nella pagina. Serve anche per i link interni (capitolo <a href="#link-html">A.5</a>).</li>
+  </ul>
+  <div class="lab" data-title="Tag, classi e id" data-height="330">
+    <script type="text/plain" class="h"><h1>Seriana Logistica</h1>
+<p>Il tuo <strong>magazzino</strong> in Val Seriana, <em>dal 1998</em>.</p>
+
+<div class="card">
+    <h3>Stoccaggio</h3>
+    <p>Posti pallet coperti e sorvegliati.</p>
+</div>
+
+<div class="card">
+    <h3>Picking</h3>
+    <p>Prepariamo i tuoi ordini <span class="evidenza">in giornata</span>.</p>
+</div>
+
+<h2 id="vantaggi">Perché sceglierci</h2>
+<ol>
+    <li>Magazzino sorvegliato 24 ore su 24</li>
+    <li>Tracciamento online della merce</li>
+</ol></script>
+    <script type="text/plain" class="c">/* Le classi si selezionano con il punto */
+.card {
+    border: 2px solid #0F3B57;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.evidenza {
+    background-color: yellow;
+}
+
+/* Gli id si selezionano con il cancelletto */
+#vantaggi {
+    color: #C85A12;
+}</script>
+  </div>
+</section>
+
+<section class="ch" id="immagini-html" data-n="A.3" data-t="Immagini e percorsi">
+  <h2><span class="lab-n">A.3</span>Immagini e percorsi</h2>
+  <p class="goal">Il tag <code>img</code> non ha chiusura. Il percorso in <code>src</code> parte dalla cartella in cui si trova il file HTML.</p>
+  <script type="text/plain" class="show" data-lang="html"><img src="img/logo.png" alt="Logo Seriana Logistica" width="80"></script>
+  <div class="tw"><table class="t">
+    <tr><th>Attributo</th><th>A cosa serve</th></tr>
+    <tr><td><code>src</code></td><td>Il percorso del file immagine</td></tr>
+    <tr><td><code>alt</code></td><td>Il testo alternativo: lo leggono i lettori di schermo e compare se l'immagine non si carica. È obbligatorio.</td></tr>
+    <tr><td><code>width</code></td><td>Larghezza in pixel. Con il CSS si fa meglio (capitolo <a href="#immagini-css">B.9</a>).</td></tr>
+  </table></div>
+  <h3>Percorsi relativi e assoluti</h3>
+  <div class="tw"><table class="t">
+    <tr><th>Percorso</th><th>Dove cerca il file</th></tr>
+    <tr><td><code>logo.png</code></td><td>Nella stessa cartella del file HTML</td></tr>
+    <tr><td><code>img/logo.png</code></td><td>Nella cartella <code>img</code>, accanto al file HTML</td></tr>
+    <tr><td><code>../img/logo.png</code></td><td>Sale di una cartella (<code>..</code>) e poi entra in <code>img</code></td></tr>
+    <tr><td><code>https://www.sito.it/logo.png</code></td><td>Percorso assoluto: un file su Internet</td></tr>
+  </table></div>
+  <div class="note warn"><b>L'immagine non si vede?</b>Controlla il nome del file lettera per lettera: maiuscole, estensione (<code>.png</code> o <code>.jpg</code>) e cartella. Sul server <code>Logo.PNG</code> e <code>logo.png</code> sono file diversi. Nel riquadro qui sotto, prova a scrivere <code>img/logo2.png</code>: compare il testo di <code>alt</code>.</div>
+  <div class="lab" data-title="Immagini" data-height="330">
+    <script type="text/plain" class="h"><img src="img/logo.png" alt="Logo Seriana Logistica" width="80">
+<h1>Seriana Logistica</h1>
+<img src="img/magazzino.png" alt="Scaffalature del magazzino con i pallet" width="400"></script>
+    <script type="text/plain" class="c">body {
+    font-family: Verdana, sans-serif;
+}</script>
+  </div>
+</section>
+
+<section class="ch" id="tabelle-html" data-n="A.4" data-t="Tabelle">
+  <h2><span class="lab-n">A.4</span>Tabelle</h2>
+  <p class="goal">Una tabella è fatta di righe (<code>tr</code>). Ogni riga contiene celle di intestazione (<code>th</code>) o celle normali (<code>td</code>).</p>
+  <div class="lab" data-title="La tabella delle tariffe" data-height="280">
+    <script type="text/plain" class="h"><table>
+    <tr>
+        <th>Servizio</th>
+        <th>Unità</th>
+        <th>Prezzo</th>
+    </tr>
+    <tr>
+        <td>Posto pallet</td>
+        <td>al mese</td>
+        <td>12,00 €</td>
+    </tr>
+    <tr>
+        <td>Picking</td>
+        <td>per riga d'ordine</td>
+        <td>0,45 €</td>
+    </tr>
+    <tr>
+        <td>Consegna in Lombardia</td>
+        <td>per collo</td>
+        <td>7,50 €</td>
+    </tr>
+</table></script>
+    <script type="text/plain" class="c">/* Senza CSS la tabella non ha bordi.
+   La rendiamo bella nel capitolo B.10 */
+table, th, td {
+    border: 1px solid gray;
+}</script>
+  </div>
+</section>
+
+<section class="ch" id="link-html" data-n="A.5" data-t="I link">
+  <h2><span class="lab-n">A.5</span>I link</h2>
+  <p class="goal">Il tag <code>a</code> crea un collegamento. Il valore di <code>href</code> decide dove porta.</p>
+  <script type="text/plain" class="show" data-lang="html"><a href="tariffe.html">Le nostre tariffe</a></script>
+  <p>Il testo tra <code>&lt;a&gt;</code> e <code>&lt;/a&gt;</code> è quello che si clicca. Deve far capire dove si va: «Le nostre tariffe» è meglio di «clicca qui».</p>
+  <h3>I sei tipi di link</h3>
+  <div class="tw"><table class="t">
+    <tr><th>Tipo</th><th>Esempio di href</th><th>Cosa succede</th></tr>
+    <tr><td>Altra pagina del sito</td><td><code>href="tariffe.html"</code></td><td>Apre un'altra pagina della stessa cartella (percorso relativo)</td></tr>
+    <tr><td>Sito esterno</td><td><code>href="https://it.wikipedia.org"</code></td><td>Apre un altro sito. Serve l'indirizzo completo con <code>https://</code></td></tr>
+    <tr><td>Ancora (stessa pagina)</td><td><code>href="#contatti"</code></td><td>Salta all'elemento con <code>id="contatti"</code></td></tr>
+    <tr><td>Torna su</td><td><code>href="#"</code></td><td>Torna all'inizio della pagina</td></tr>
+    <tr><td>Email</td><td><code>href="mailto:info@azienda.it"</code></td><td>Apre il programma di posta. Con <code>?subject=…</code> si scrive già l'oggetto</td></tr>
+    <tr><td>Telefono</td><td><code>href="tel:+390350001111"</code></td><td>Sul telefono avvia la chiamata. Il numero si scrive senza spazi</td></tr>
+  </table></div>
+  <h3>Gli attributi utili</h3>
+  <ul>
+    <li><code>target="_blank"</code>: apre il link in una nuova scheda. Usalo per i siti esterni, così l'utente non perde la tua pagina.</li>
+    <li><code>title="…"</code>: un suggerimento che compare passando sopra con il mouse.</li>
+    <li>Un link può contenere un'immagine: <code>&lt;a href="index.html"&gt;&lt;img src="img/logo.png" alt="Torna alla home"&gt;&lt;/a&gt;</code>. Si usa spesso per il logo, che riporta alla home.</li>
+  </ul>
+  <div class="note"><b>Come funziona l'ancora</b>Il link <code>href="#tariffe"</code> cerca nella pagina l'elemento con <code>id="tariffe"</code>. Il nome deve essere uguale, senza il <code>#</code> nell'id. È così che funziona il menu in alto nei siti delle esercitazioni.</div>
+  <div class="lab" data-title="Clicca i link: sotto la pagina vedi dove porterebbero" data-height="380">
+    <script type="text/plain" class="h"><a href="index.html"><img src="img/logo.png" alt="Torna alla home" width="60"></a>
+<p>
+    <a href="#servizi">Servizi</a> |
+    <a href="#contatti">Contatti</a> |
+    <a href="area-clienti.html">Area clienti</a>
+</p>
+
+<h2 id="servizi">Servizi</h2>
+<p>Stoccaggio, picking e consegne. Cos'è la
+   <a href="https://it.wikipedia.org/wiki/Logistica" target="_blank" title="Apre Wikipedia">logistica</a>?</p>
+<p style="height: 300px;">(spazio per far scorrere la pagina)</p>
+
+<h2 id="contatti">Contatti</h2>
+<p><a href="mailto:info@serianalogistica.example?subject=Richiesta preventivo">info@serianalogistica.example</a></p>
+<p><a href="tel:+390350001111">035 000 1111</a></p>
+<p><a href="#">Torna su</a></p></script>
+    <script type="text/plain" class="c">body {
+    font-family: Verdana, sans-serif;
+}</script>
+  </div>
+</section>
+
+<!-- ======================= PARTE B ======================= -->
+<div class="parthead"><span class="pl">PARTE B</span><h2>Il CSS</h2></div>
+
+<section class="ch" id="regola" data-n="B.1" data-t="La regola CSS">
+  <h2><span class="lab-n">B.1</span>La regola CSS</h2>
+  <p class="goal">HTML dice <b>che cosa</b> c'è nella pagina. Il CSS (Cascading Style Sheets) dice <b>come si presenta</b>.</p>
+  <script type="text/plain" class="show" data-lang="css">td {
+    padding: 10px;
+    border-bottom: 1px solid #CCCCCC;
+}</script>
+  <div class="anat">
+    <div class="s"><b>Selettore</b><span>a quali elementi si applica la regola: qui tutte le celle <code>td</code></span></div>
+    <div class="p"><b>Proprietà</b><span>che cosa cambiamo: lo spazio interno, il bordo in basso</span></div>
+    <div class="v"><b>Valore</b><span>come lo cambiamo: 10 pixel, una linea grigia di 1 pixel</span></div>
+  </div>
+  <p>Una coppia <code>proprietà: valore;</code> si chiama <b>dichiarazione</b>. Il selettore più le graffe con le dichiarazioni formano una <b>regola</b>.</p>
+  <h3>La punteggiatura conta</h3>
+  <ul>
+    <li>Le dichiarazioni stanno tra parentesi graffe <code>{ }</code>.</li>
+    <li>Tra proprietà e valore ci sono i due punti <code>:</code>. Ogni dichiarazione finisce con il punto e virgola <code>;</code>.</li>
+    <li>Le proprietà sono in minuscolo, con il trattino: <code>background-color</code>.</li>
+    <li>Tra numero e unità non c'è spazio: <code>20px</code>, non <code>20 px</code>.</li>
+    <li>I commenti si scrivono <code>/* così */</code>. In HTML invece sono <code>&lt;!-- così --&gt;</code>.</li>
+  </ul>
+  <div class="note warn"><b>Il browser non segnala gli errori</b>Se manca un punto e virgola o una graffa, il browser ignora la dichiarazione sbagliata, e a volte anche quelle dopo. Se uno stile «non funziona», controlla prima la punteggiatura.</div>
+  <div class="lab" data-title="Trova l'errore: perché il paragrafo non diventa grande?" data-height="200">
+    <script type="text/plain" class="h"><h1>Seriana Logistica</h1>
+<p>Magazzino e consegne in Val Seriana.</p></script>
+    <script type="text/plain" class="c">h1 {
+    color: #0F3B57
+    text-align: center;
+}
+
+p {
+    font-size: 22 px;
+    color: #C85A12;
+}</script>
+  </div>
+  <p>Ci sono due errori: manca un <code>;</code> dopo <code>#0F3B57</code>, quindi anche il centrato non funziona, e c'è uno spazio in <code>22 px</code>. Correggili nel riquadro.</p>
+</section>
+
+<section class="ch" id="dove" data-n="B.2" data-t="Dove si scrive il CSS">
+  <h2><span class="lab-n">B.2</span>Dove si scrive il CSS</h2>
+  <p class="goal">Ci sono tre modi. Fanno la stessa cosa, ma per un sito vero si usa il file esterno.</p>
+  <div class="tw"><table class="t">
+    <tr><th>Modo</th><th>Come si scrive</th><th>Quando usarlo</th></tr>
+    <tr><td><b>In linea</b></td><td><code>&lt;h1 style="color: red;"&gt;</code></td><td>Quasi mai: lo stile vale per un solo elemento e va ripetuto ovunque.</td></tr>
+    <tr><td><b>Interno</b></td><td><code>&lt;style&gt; h1 { color: red; } &lt;/style&gt;</code> dentro <code>head</code></td><td>Per una pagina sola o per provare.</td></tr>
+    <tr><td><b>Esterno</b></td><td>File <code>stile.css</code> + <code>&lt;link rel="stylesheet" href="stile.css"&gt;</code></td><td>Sempre, per un sito. Tutte le pagine usano lo stesso file: cambi una regola e cambia tutto il sito.</td></tr>
+  </table></div>
+  <p>Nel file <code>stile.css</code> si scrivono solo le regole, senza <code>&lt;style&gt;</code>. Organizza il file in sezioni con i commenti, nello stesso ordine della pagina:</p>
+  <script type="text/plain" class="show" data-lang="css" data-file="stile.css">/* ---------- 1. STILI GENERALI ---------- */
+body {
+    font-family: Verdana, sans-serif;
+    margin: 0;
+}
+
+/* ---------- 2. HEADER E MENU ---------- */
+header {
+    background-color: #0F3B57;
+}
+
+/* ---------- 3. FOOTER ---------- */
+footer {
+    text-align: center;
+}</script>
+</section>
+
+<section class="ch" id="selettori" data-n="B.3" data-t="I selettori">
+  <h2><span class="lab-n">B.3</span>I selettori</h2>
+  <p class="goal">Il selettore sceglie gli elementi da colorare. Un buon selettore colpisce tutti gli elementi giusti e solo quelli.</p>
+  <div class="tw"><table class="t">
+    <tr><th>Selettore</th><th>Esempio</th><th>Colpisce</th></tr>
+    <tr><td>Di tag</td><td><code>h2</code></td><td>Tutti gli <code>h2</code> della pagina</td></tr>
+    <tr><td>Di classe</td><td><code>.card</code></td><td>Tutti gli elementi con <code>class="card"</code></td></tr>
+    <tr><td>Di id</td><td><code>#tariffe</code></td><td>L'unico elemento con <code>id="tariffe"</code></td></tr>
+    <tr><td>Discendente</td><td><code>.card h3</code></td><td>Gli <code>h3</code> che stanno <b>dentro</b> un elemento <code>.card</code></td></tr>
+    <tr><td>Di gruppo</td><td><code>h1, h2, h3</code></td><td>Tutti gli elementi dell'elenco: una regola sola per più selettori</td></tr>
+    <tr><td>Tag + classe</td><td><code>p.nota</code></td><td>Solo i <code>p</code> con <code>class="nota"</code></td></tr>
+    <tr><td>Universale</td><td><code>*</code></td><td>Tutti gli elementi</td></tr>
+    <tr><td>Pseudoclasse</td><td><code>a:hover</code></td><td>Un elemento in uno stato: qui il link quando il mouse ci passa sopra (capitolo <a href="#link-css">B.8</a>)</td></tr>
+  </table></div>
+  <div class="lab" id="sel-lab" data-kind="selector" data-height="380">
+    <script type="text/plain" class="h"><header>
+    <h1>Seriana Logistica</h1>
+    <nav>
+        <a href="#servizi">Servizi</a>
+        <a href="#tariffe">Tariffe</a>
+    </nav>
+</header>
+<section id="servizi" class="sezione chiara">
+    <h2>I nostri servizi</h2>
+    <div class="card">
+        <h3>Stoccaggio</h3>
+        <p>Posti pallet coperti e sorvegliati.</p>
+    </div>
+    <div class="card">
+        <h3>Picking</h3>
+        <p>Ordini preparati in giornata.</p>
+    </div>
+</section>
+<section id="tariffe" class="sezione">
+    <h2>Le tariffe</h2>
+    <h3>Prezzi IVA esclusa</h3>
+    <p class="nota">Preventivi su misura per grandi volumi.</p>
+</section></script>
+    <script type="text/plain" class="c">body { font-family: Verdana, sans-serif; }
+.card { border: 1px solid #ccc; padding: 4px 10px; margin: 8px 0; }</script>
+  </div>
+  <p>Confronta <code>h3</code> con <code>.card h3</code>: il primo colpisce anche «Prezzi IVA esclusa», il secondo solo i titoli delle card.</p>
+</section>
+
+<section class="ch" id="cascata" data-n="B.4" data-t="Ereditarietà e cascata">
+  <h2><span class="lab-n">B.4</span>Ereditarietà e cascata</h2>
+  <p class="goal">Due domande: quali stili passano dai genitori ai figli? E se due regole si contraddicono, chi vince?</p>
+  <h3>Ereditarietà</h3>
+  <p>Le proprietà del <b>testo</b> (<code>color</code>, <code>font-family</code>, <code>font-size</code>, <code>line-height</code>, <code>text-align</code>) passano dal genitore ai figli. Per questo basta scrivere il font una volta in <code>body</code>.</p>
+  <p>Le proprietà della <b>scatola</b> (<code>padding</code>, <code>margin</code>, <code>border</code>, <code>background-color</code>, <code>width</code>) non si ereditano.</p>
+  <div class="note warn"><b>I link non ereditano il colore</b>Il browser dà ai link un suo colore (blu, viola se già visitati). Se l'header è blu scuro con testo bianco, i link restano blu: il colore va dato a loro, con <code>header a { color: white; }</code>.</div>
+  <h3>La cascata: chi vince</h3>
+  <ol>
+    <li>Vince la regola con il selettore <b>più specifico</b>: <code>style="…"</code> in linea &gt; <code>#id</code> &gt; <code>.classe</code> &gt; <code>tag</code>.</li>
+    <li>Un selettore discendente somma i pezzi: <code>.hero h2</code> (classe + tag) batte <code>h2</code> (solo tag).</li>
+    <li>A parità di specificità vince la regola scritta <b>più in basso</b> nel file.</li>
+  </ol>
+  <div class="lab" data-title="Perché il titolo della fascia arancione è bianco?" data-height="300">
+    <script type="text/plain" class="h"><div class="hero">
+    <h2>Il tuo magazzino in Val Seriana</h2>
+    <p>Stoccaggio, picking e consegne</p>
+</div>
+<h2>I nostri servizi</h2>
+<p>Due titoli h2, due colori diversi.</p></script>
+    <script type="text/plain" class="c">/* Tutti gli h2 sono blu */
+h2 {
+    color: #0F3B57;
+}
+
+/* Ma dentro .hero sono bianchi:
+   .hero h2 è più specifico di h2 */
+.hero h2 {
+    color: white;
+}
+
+.hero {
+    background-color: #C85A12;
+    color: white;
+    padding: 20px;
+}
+
+body {
+    font-family: Verdana, sans-serif;
+}</script>
+  </div>
+  <p>Prova a cambiare <code>.hero h2</code> in <code>h2</code>: ora tutte e due le regole hanno lo stesso selettore e vince quella più in basso, quindi tutti i titoli diventano bianchi.</p>
+</section>
+
+<section class="ch" id="colori" data-n="B.5" data-t="I colori">
+  <h2><span class="lab-n">B.5</span>I colori</h2>
+  <p class="goal"><code>color</code> colora il testo, <code>background-color</code> lo sfondo. I valori si possono scrivere in più modi.</p>
+  <div class="tw"><table class="t">
+    <tr><th>Formato</th><th>Esempio</th><th>Nota</th></tr>
+    <tr><td>Nome</td><td><code>white</code>, <code>orange</code>, <code>darkblue</code></td><td>Comodo, ma sono solo 140 colori</td></tr>
+    <tr><td>Esadecimale</td><td><code>#0F3B57</code></td><td>Il più usato. Due cifre per rosso, verde e blu, da <code>00</code> a <code>FF</code></td></tr>
+    <tr><td>Esadecimale corto</td><td><code>#FFF</code> = <code>#FFFFFF</code></td><td>Quando le cifre sono a coppie uguali</td></tr>
+    <tr><td>RGB</td><td><code>rgb(15, 59, 87)</code></td><td>Rosso, verde, blu da 0 a 255</td></tr>
+    <tr><td>RGBA</td><td><code>rgba(0, 0, 0, 0.5)</code></td><td>L'ultimo numero è l'opacità, da 0 (trasparente) a 1</td></tr>
+  </table></div>
+  <h3>Il contrasto</h3>
+  <p>Il testo si deve leggere bene. Le linee guida per l'accessibilità (WCAG) chiedono un rapporto di contrasto di almeno <b>4,5 : 1</b> per il testo normale e <b>3 : 1</b> per i titoli grandi. Scegli i colori e controlla:</p>
+  <div class="lab" id="contrast-lab" data-kind="contrast"></div>
+</section>
+
+<section class="ch" id="testo-css" data-n="B.6" data-t="Il testo">
+  <h2><span class="lab-n">B.6</span>Il testo</h2>
+  <p class="goal">Le proprietà per carattere, grandezza, peso, allineamento e spaziatura del testo.</p>
+  <div class="tw"><table class="t">
+    <tr><th>Proprietà</th><th>Esempio</th><th>Effetto</th></tr>
+    <tr><td><code>font-family</code></td><td><code>Verdana, Arial, sans-serif</code></td><td>Il carattere. Si scrive un elenco: se manca il primo, il browser usa il successivo. L'ultimo è una famiglia generica (<code>serif</code>, <code>sans-serif</code>, <code>monospace</code>)</td></tr>
+    <tr><td><code>font-size</code></td><td><code>18px</code>, <code>1.5em</code></td><td>La grandezza. <code>em</code> è relativo al genitore: <code>1.5em</code> = una volta e mezza</td></tr>
+    <tr><td><code>font-weight</code></td><td><code>bold</code>, <code>normal</code>, <code>700</code></td><td>Il peso (grassetto)</td></tr>
+    <tr><td><code>font-style</code></td><td><code>italic</code></td><td>Corsivo</td></tr>
+    <tr><td><code>text-align</code></td><td><code>left</code>, <code>center</code>, <code>right</code>, <code>justify</code></td><td>L'allineamento del testo dentro il suo blocco</td></tr>
+    <tr><td><code>text-decoration</code></td><td><code>none</code>, <code>underline</code></td><td>La sottolineatura. <code>none</code> la toglie ai link</td></tr>
+    <tr><td><code>text-transform</code></td><td><code>uppercase</code></td><td>Tutto maiuscolo, senza riscrivere il testo</td></tr>
+    <tr><td><code>line-height</code></td><td><code>1.5</code></td><td>L'altezza della riga: 1.5 = una volta e mezza la grandezza del carattere</td></tr>
+    <tr><td><code>letter-spacing</code></td><td><code>2px</code></td><td>Spazio tra le lettere</td></tr>
+  </table></div>
+  <div class="lab" data-title="Il testo della sezione Servizi" data-height="330">
+    <script type="text/plain" class="h"><p class="etichetta">I nostri servizi</p>
+<h2>Stoccaggio e picking</h2>
+<p>Riceviamo la tua merce, la controlliamo e la sistemiamo
+   negli scaffali. Quando arriva un ordine, prepariamo i colli
+   e li consegniamo al corriere entro la giornata.</p></script>
+    <script type="text/plain" class="c">body {
+    font-family: Verdana, Arial, sans-serif;
+    color: #2B2B2B;
+    line-height: 1.6;
+}
+
+.etichetta {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 13px;
+    font-weight: bold;
+    color: #C85A12;
+    margin-bottom: 0;
+}
+
+h2 {
+    font-size: 28px;
+    color: #0F3B57;
+    margin-top: 4px;
+}</script>
+  </div>
+</section>
+
+<section class="ch" id="box-model" data-n="B.7" data-t="Il box model">
+  <h2><span class="lab-n">B.7</span>Il box model</h2>
+  <p class="goal">Per il CSS ogni elemento è una scatola. Dall'interno verso l'esterno: contenuto, <code>padding</code>, <code>border</code>, <code>margin</code>.</p>
+  <div class="lab" id="bm-lab" data-kind="boxmodel"></div>
+  <div class="tw"><table class="t">
+    <tr><th>Proprietà</th><th>Cos'è</th></tr>
+    <tr><td><code>padding</code></td><td>Lo spazio <b>dentro</b> la scatola, tra il contenuto e il bordo. Prende il colore di sfondo dell'elemento.</td></tr>
+    <tr><td><code>border</code></td><td>Il bordo. Si scrivono tre cose: spessore, stile (<code>solid</code>, <code>dashed</code>, <code>dotted</code>), colore. Solo un lato: <code>border-top</code>, <code>border-bottom</code>…</td></tr>
+    <tr><td><code>margin</code></td><td>Lo spazio <b>fuori</b> dalla scatola, che la separa dagli altri elementi. È sempre trasparente.</td></tr>
+    <tr><td><code>width</code> / <code>max-width</code></td><td>Larghezza fissa / larghezza massima. <code>max-width</code> si adatta agli schermi piccoli.</td></tr>
+    <tr><td><code>border-radius</code></td><td>Angoli arrotondati</td></tr>
+    <tr><td><code>box-shadow</code></td><td>Ombra: spostamento orizzontale, verticale, sfocatura, colore. Es. <code>0 2px 6px rgba(0,0,0,0.15)</code></td></tr>
+  </table></div>
+  <h3>Una, due o quattro misure</h3>
+  <script type="text/plain" class="show" data-lang="css">padding: 20px;               /* tutti e 4 i lati */
+padding: 10px 30px;          /* sopra e sotto 10, destra e sinistra 30 */
+padding: 5px 10px 15px 20px; /* sopra, destra, sotto, sinistra: in senso orario */
+margin: 0 auto;              /* centra un blocco che ha una larghezza */</script>
+  <div class="note"><b>box-sizing: border-box</b>Normalmente <code>width</code> è solo la larghezza del contenuto: padding e bordo si aggiungono. Con <code>* { box-sizing: border-box; }</code> all'inizio del CSS, <code>width</code> diventa la larghezza totale e i conti tornano. Prova l'interruttore nel riquadro qui sopra.</div>
+  <div class="lab" data-title="Una card dei servizi" data-height="300">
+    <script type="text/plain" class="h"><div class="card">
+    <h3>Consegne</h3>
+    <p>Furgoni e camion per consegne in tutta la Lombardia.</p>
+</div></script>
+    <script type="text/plain" class="c">body {
+    font-family: Verdana, sans-serif;
+    background-color: #EEF3F6;
+}
+
+.card {
+    background-color: white;
+    max-width: 300px;
+    padding: 20px;
+    margin: 20px auto;
+    border-top: 5px solid #C85A12;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.card h3 {
+    color: #0F3B57;
+    margin-top: 0;
+}</script>
+  </div>
+</section>
+
+<section class="ch" id="link-css" data-n="B.8" data-t="I link con il CSS">
+  <h2><span class="lab-n">B.8</span>I link con il CSS</h2>
+  <p class="goal">Un link cambia aspetto a seconda dello stato. Le <b>pseudoclassi</b> selezionano proprio questi stati.</p>
+  <div class="tw"><table class="t">
+    <tr><th>Pseudoclasse</th><th>Quando vale</th></tr>
+    <tr><td><code>a:link</code></td><td>Il link non ancora visitato</td></tr>
+    <tr><td><code>a:visited</code></td><td>Il link già visitato (il browser ricorda la cronologia)</td></tr>
+    <tr><td><code>a:hover</code></td><td>Il mouse è sopra il link</td></tr>
+    <tr><td><code>a:focus</code></td><td>Il link è selezionato con la tastiera (tasto <code>Tab</code>)</td></tr>
+    <tr><td><code>a:active</code></td><td>Il momento del clic, mentre il tasto è premuto</td></tr>
+  </table></div>
+  <div class="note"><b>L'ordine conta: LoVe HAte</b>Scrivi le regole nell'ordine <b>L</b>ink, <b>V</b>isited, <b>H</b>over, <b>A</b>ctive. Hanno la stessa specificità, quindi vince l'ultima (capitolo <a href="#cascata">B.4</a>). Se metti <code>:hover</code> prima di <code>:visited</code>, sui link visitati l'hover non si vede.</div>
+  <h3>Tre usi tipici</h3>
+  <ol>
+    <li><b>Link nel testo</b>: colore dell'azienda, sottolineatura che sparisce al passaggio del mouse.</li>
+    <li><b>Menu di navigazione</b>: link senza sottolineatura, con <code>padding</code> e sfondo che cambia al passaggio. Così l'area cliccabile è più grande.</li>
+    <li><b>Pulsante</b> (per esempio «Chiedi un preventivo»): un link con sfondo pieno, angoli arrotondati, <code>display: inline-block</code>.</li>
+  </ol>
+  <div class="lab" data-title="Passa con il mouse e usa il tasto Tab sui link" data-height="360">
+    <script type="text/plain" class="h"><nav>
+    <a href="#servizi">Servizi</a>
+    <a href="#tariffe">Tariffe</a>
+    <a href="#contatti">Contatti</a>
+</nav>
+
+<p>Seriana Logistica lavora con la
+   <a href="https://it.wikipedia.org/wiki/Logistica" target="_blank">logistica conto terzi</a>
+   dal 1998.</p>
+
+<p><a class="pulsante" href="mailto:info@serianalogistica.example">Chiedi un preventivo</a></p></script>
+    <script type="text/plain" class="c">body {
+    font-family: Verdana, sans-serif;
+}
+
+/* 1. Link nel testo */
+a:link    { color: #C85A12; }
+a:visited { color: #8A3E0C; }
+a:hover   { text-decoration: none; }
+
+/* 2. Menu: i link dentro nav */
+nav {
+    background-color: #0F3B57;
+    padding: 10px;
+}
+nav a {
+    color: white;
+    text-decoration: none;
+    padding: 8px 14px;
+    border-radius: 4px;
+}
+nav a:hover,
+nav a:focus {
+    background-color: #C85A12;
+}
+
+/* 3. Pulsante */
+.pulsante {
+    display: inline-block;
+    background-color: #C85A12;
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-weight: bold;
+}
+a.pulsante {
+    color: white;
+    text-decoration: none;
+}
+a.pulsante:hover {
+    background-color: #0F3B57;
+}</script>
+  </div>
+  <div class="note warn"><b>Non togliere il contorno del focus</b>Chi naviga con la tastiera vede dove si trova grazie al contorno del link selezionato. Se scrivi <code>outline: none</code>, dai sempre un altro segno visibile con <code>:focus</code>, come lo sfondo del menu qui sopra.</div>
+</section>
+
+<section class="ch" id="immagini-css" data-n="B.9" data-t="Le immagini con il CSS">
+  <h2><span class="lab-n">B.9</span>Le immagini con il CSS</h2>
+  <p class="goal">Con il CSS le immagini si adattano allo schermo, si centrano e si arrotondano.</p>
+  <ul>
+    <li><code>max-width: 100%</code>: l'immagine non esce mai dal suo contenitore, anche sul telefono.</li>
+    <li><code>height: auto</code>: mantiene le proporzioni.</li>
+    <li>Un'immagine è in linea. Per centrarla: <code>display: block</code> + <code>margin: 0 auto</code>. Oppure <code>text-align: center</code> sul genitore.</li>
+    <li><code>border-radius</code> arrotonda gli angoli. <code>border-radius: 50%</code> su un'immagine quadrata la rende un cerchio.</li>
+  </ul>
+  <div class="lab" data-title="Il banner del magazzino" data-height="330">
+    <script type="text/plain" class="h"><div class="banner">
+    <img src="img/magazzino.png" alt="Scaffalature del magazzino con i pallet">
+</div>
+<img class="tondo" src="img/logo.png" alt="Logo Seriana Logistica"></script>
+    <script type="text/plain" class="c">.banner {
+    padding: 20px;
+    background-color: #EEF3F6;
+}
+
+.banner img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+    border-radius: 8px;
+}
+
+.tondo {
+    width: 80px;
+    border-radius: 50%;
+    margin: 10px;
+}</script>
+  </div>
+  <p>Restringi la finestra del browser o guarda la pagina dal telefono: l'immagine del banner si rimpicciolisce con lo schermo.</p>
+</section>
+
+<section class="ch" id="tabelle-css" data-n="B.10" data-t="Le tabelle con il CSS">
+  <h2><span class="lab-n">B.10</span>Le tabelle con il CSS</h2>
+  <p class="goal">Con quattro regole una tabella diventa leggibile: bordi uniti, spazio nelle celle, intestazione colorata, righe alternate.</p>
+  <ul>
+    <li><code>border-collapse: collapse</code>: unisce i bordi doppi delle celle in una linea sola.</li>
+    <li><code>tr:nth-child(even)</code>: seleziona le righe pari (<code>odd</code> = dispari). Serve per le righe a strisce.</li>
+    <li><code>tr:hover</code>: evidenzia la riga sotto il mouse.</li>
+  </ul>
+  <div class="lab" data-title="La tabella delle tariffe" data-height="320">
+    <script type="text/plain" class="h"><table>
+    <tr><th>Servizio</th><th>Unità</th><th>Prezzo</th></tr>
+    <tr><td>Posto pallet</td><td>al mese</td><td>12,00 €</td></tr>
+    <tr><td>Picking</td><td>per riga d'ordine</td><td>0,45 €</td></tr>
+    <tr><td>Consegna in Lombardia</td><td>per collo</td><td>7,50 €</td></tr>
+    <tr><td>Consegna pallet</td><td>per pallet</td><td>45,00 €</td></tr>
+</table></script>
+    <script type="text/plain" class="c">body {
+    font-family: Verdana, sans-serif;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    background-color: #0F3B57;
+    color: white;
+    text-align: left;
+    padding: 10px;
+}
+
+td {
+    padding: 10px;
+    border-bottom: 1px solid #CCCCCC;
+}
+
+tr:nth-child(even) {
+    background-color: #F4F7F9;
+}
+
+tr:hover {
+    background-color: #FBEADB;
+}</script>
+  </div>
+</section>
+
+<section class="ch" id="flex" data-n="B.11" data-t="Display e flexbox">
+  <h2><span class="lab-n">B.11</span>Display e flexbox</h2>
+  <p class="goal">Con <code>display</code> decidi come si dispone un elemento. Con <code>display: flex</code> metti i blocchi uno accanto all'altro: è così che si fanno le card affiancate e il menu in riga.</p>
+  <div class="tw"><table class="t">
+    <tr><th>Valore</th><th>Comportamento</th><th>Esempi</th></tr>
+    <tr><td><code>block</code></td><td>Va a capo e occupa tutta la larghezza. Accetta <code>width</code>, <code>height</code> e tutti i margini.</td><td><code>div</code>, <code>p</code>, <code>h1</code>, <code>section</code></td></tr>
+    <tr><td><code>inline</code></td><td>Sta nella riga. Ignora <code>width</code>, <code>height</code> e i margini sopra e sotto.</td><td><code>a</code>, <code>span</code>, <code>strong</code>, <code>img</code></td></tr>
+    <tr><td><code>inline-block</code></td><td>Sta nella riga ma accetta le misure, come un blocco.</td><td>i pulsanti</td></tr>
+    <tr><td><code>none</code></td><td>L'elemento sparisce dalla pagina.</td><td></td></tr>
+    <tr><td><code>flex</code></td><td>L'elemento diventa un contenitore flessibile: i suoi <b>figli</b> si dispongono in riga.</td><td>menu, card, header</td></tr>
+  </table></div>
+  <h3>Le proprietà del contenitore flex</h3>
+  <div class="tw"><table class="t">
+    <tr><th>Proprietà</th><th>A cosa serve</th></tr>
+    <tr><td><code>flex-direction</code></td><td><code>row</code> = in riga (predefinito), <code>column</code> = in colonna</td></tr>
+    <tr><td><code>justify-content</code></td><td>Distribuisce i figli sulla linea principale: <code>flex-start</code>, <code>center</code>, <code>space-between</code>, <code>space-around</code></td></tr>
+    <tr><td><code>align-items</code></td><td>Li allinea nell'altra direzione: <code>stretch</code> (stessa altezza), <code>flex-start</code>, <code>center</code></td></tr>
+    <tr><td><code>flex-wrap</code></td><td><code>wrap</code> = se non c'è posto, i figli vanno a capo</td></tr>
+    <tr><td><code>gap</code></td><td>Lo spazio tra un figlio e l'altro</td></tr>
+  </table></div>
+  <p>Sui figli si usa spesso <code>flex: 1</code>: si dividono lo spazio in parti uguali.</p>
+  <div class="lab" id="flex-lab" data-kind="flex" data-height="300">
+    <script type="text/plain" class="h"><div class="servizi">
+    <div class="card"><h3>Stoccaggio</h3><p>Posti pallet coperti e sorvegliati.</p></div>
+    <div class="card"><h3>Picking</h3><p>Ordini preparati in giornata.</p></div>
+    <div class="card"><h3>Consegne</h3><p>Furgoni e camion in tutta la Lombardia, anche con sponda idraulica.</p></div>
+</div></script>
+  </div>
+</section>
+
+<section class="ch" id="semantici" data-n="B.12" data-t="I box semantici">
+  <h2><span class="lab-n">B.12</span>I box semantici</h2>
+  <p class="goal">HTML5 ha tag che dicono che cosa è ogni zona della pagina. Funzionano come <code>div</code>, ma hanno un significato.</p>
+  <div class="sem" aria-hidden="true">
+    <div class="row">header <small>logo, nome, menu</small></div>
+    <div class="row">nav <small>(dentro header) il menu</small></div>
+    <div class="main">main <small>il contenuto principale, uno per pagina</small>
+      <div class="row">section id="servizi" <small>una sezione con un titolo</small></div>
+      <div class="row">section id="tariffe" <small>un'altra sezione</small></div>
+    </div>
+    <div class="row">footer <small>dati dell'azienda, copyright</small></div>
+  </div>
+  <div class="tw"><table class="t">
+    <tr><th>Prima</th><th>Ora</th><th>Perché è meglio</th></tr>
+    <tr><td><code>&lt;div class="header"&gt;</code></td><td><code>&lt;header&gt;</code></td><td>Il lettore di schermo annuncia «intestazione»</td></tr>
+    <tr><td><code>&lt;p&gt;&lt;a&gt;…&lt;/a&gt; | &lt;a&gt;…&lt;/a&gt;&lt;/p&gt;</code></td><td><code>&lt;nav&gt;</code></td><td>Chi usa la tastiera può saltare al menu</td></tr>
+    <tr><td><code>&lt;div id="servizi"&gt;</code></td><td><code>&lt;section id="servizi"&gt;</code></td><td>La pagina è divisa in parti con un titolo</td></tr>
+    <tr><td><code>&lt;div class="footer"&gt;</code></td><td><code>&lt;footer&gt;</code></td><td>Google capisce dove sono i dati dell'azienda</td></tr>
+  </table></div>
+  <p>Nel CSS si selezionano con il nome del tag, senza punto: <code>header { … }</code>, <code>footer { … }</code>. Si usa anche <code>article</code>, per un contenuto che sta in piedi da solo, come una notizia.</p>
+  <div class="lab" data-title="Header con logo e menu in riga" data-height="300">
+    <script type="text/plain" class="h"><header>
+    <a href="index.html"><img src="img/logo.png" alt="Torna alla home" width="50"></a>
+    <h1>Seriana Logistica</h1>
+    <nav>
+        <a href="#servizi">Servizi</a>
+        <a href="#tariffe">Tariffe</a>
+        <a href="#contatti">Contatti</a>
+    </nav>
+</header>
+<main>
+    <section id="servizi">
+        <h2>I nostri servizi</h2>
+        <p>Stoccaggio, picking e consegne.</p>
+    </section>
+</main>
+<footer>
+    <p>&copy; 2026 Seriana Logistica S.r.l.</p>
+</footer></script>
+    <script type="text/plain" class="c">body {
+    font-family: Verdana, sans-serif;
+    margin: 0;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background-color: #0F3B57;
+    color: white;
+    padding: 10px 20px;
+}
+
+header h1 {
+    flex: 1;        /* prende lo spazio libero */
+    font-size: 22px;
+    margin: 0;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 12px;
+}
+
+main {
+    padding: 20px;
+}
+
+footer {
+    background-color: #0F3B57;
+    color: white;
+    text-align: center;
+    padding: 4px;
+}</script>
+  </div>
+</section>
+
+<section class="ch" id="responsive" data-n="B.13" data-t="Pagine per il telefono">
+  <h2><span class="lab-n">B.13</span>Pagine per il telefono</h2>
+  <p class="goal">Una pagina <b>responsive</b> si adatta alla larghezza dello schermo. Servono tre cose.</p>
+  <ol>
+    <li>Il meta <code>viewport</code> nel <code>head</code> (capitolo <a href="#struttura">A.1</a>).</li>
+    <li>Misure flessibili: <code>max-width</code> al posto di <code>width</code>, immagini con <code>max-width: 100%</code>, <code>flex-wrap: wrap</code>.</li>
+    <li>Le <b>media query</b>: regole che valgono solo sotto una certa larghezza.</li>
+  </ol>
+  <script type="text/plain" class="show" data-lang="css">/* Queste regole valgono solo se lo schermo è largo 600px o meno */
+@media (max-width: 600px) {
+    .servizi {
+        flex-direction: column;
+    }
+}</script>
+  <p>Sposta il cursore per cambiare la larghezza dello schermo simulato. Sotto i 600 pixel le card vanno in colonna e il menu va sotto il titolo.</p>
+  <div class="lab" id="resp-lab" data-kind="responsive" data-height="380">
+    <script type="text/plain" class="h"><header>
+    <h1>Seriana Logistica</h1>
+    <nav><a href="#">Servizi</a> <a href="#">Tariffe</a> <a href="#">Contatti</a></nav>
+</header>
+<div class="servizi">
+    <div class="card"><h3>Stoccaggio</h3><p>Posti pallet coperti.</p></div>
+    <div class="card"><h3>Picking</h3><p>Ordini in giornata.</p></div>
+    <div class="card"><h3>Consegne</h3><p>In tutta la Lombardia.</p></div>
+</div></script>
+    <script type="text/plain" class="c">body { font-family: Verdana, sans-serif; margin: 0; }
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #0F3B57;
+    color: white;
+    padding: 10px 20px;
+}
+header h1 { font-size: 20px; }
+nav a { color: white; margin-left: 10px; }
+
+.servizi {
+    display: flex;
+    gap: 15px;
+    padding: 15px;
+}
+.card {
+    flex: 1;
+    border-top: 5px solid #C85A12;
+    background-color: #EEF3F6;
+    padding: 0 15px;
+}
+
+@media (max-width: 600px) {
+    header {
+        flex-direction: column;
+    }
+    .servizi {
+        flex-direction: column;
+    }
+}</script>
+  </div>
+</section>
+
+<section class="ch" id="strumenti" data-n="B.14" data-t="Strumenti ed errori comuni">
+  <h2><span class="lab-n">B.14</span>Strumenti ed errori comuni</h2>
+  <p class="goal">Quando qualcosa non funziona, non tirare a indovinare: guarda che cosa vede il browser.</p>
+  <h3>Gli strumenti per sviluppatori (F12)</h3>
+  <ol>
+    <li>Nel browser premi <code>F12</code>, oppure tasto destro sull'elemento e <b>Ispeziona</b>.</li>
+    <li>A sinistra vedi l'HTML: clicca un elemento per selezionarlo.</li>
+    <li>A destra, nella scheda <b>Stili</b>, vedi tutte le regole che lo colpiscono. Le dichiarazioni <s>barrate</s> hanno perso la cascata. Quelle con un triangolo giallo hanno un errore di scrittura.</li>
+    <li>Puoi cambiare i valori lì per provare. Le modifiche non si salvano: quando trovi il valore giusto, scrivilo nel tuo <code>stile.css</code>.</li>
+    <li>Il riquadro colorato in fondo alla scheda mostra il box model dell'elemento.</li>
+  </ol>
+  <h3>Se uno stile non funziona, controlla in quest'ordine</h3>
+  <ul class="check">
+    <li>Il file <code>stile.css</code> è collegato? Il nome in <code>href</code> è identico al nome del file? Il file è nella stessa cartella?</li>
+    <li>Hai salvato il file e aggiornato il browser? Se non cambia nulla, prova <code>Ctrl</code> + <code>F5</code>.</li>
+    <li>La punteggiatura: <code>;</code> a fine riga, <code>:</code> tra proprietà e valore, graffe aperte e chiuse.</li>
+    <li>Il selettore: classe con il punto (<code>.card</code>), id con il cancelletto (<code>#tariffe</code>), nome uguale a quello nell'HTML.</li>
+    <li>La scrittura: <code>background-color</code> e non <code>backgroud-color</code>, <code>20px</code> senza spazio, colori in inglese.</li>
+    <li>Un'altra regola più specifica vince la tua? Guardalo con <code>F12</code>.</li>
+    <li>Nell'HTML è rimasto un attributo <code>style="…"</code>? Batte qualsiasi regola del file CSS.</li>
+  </ul>
+</section>
+
+<!-- ======================= PARTE C ======================= -->
+<div class="parthead"><span class="pl">PARTE C</span><h2>Il laboratorio</h2></div>
+
+<section class="ch" id="laboratorio" data-n="C.1" data-t="Il sito completo">
+  <h2><span class="lab-n">C.1</span>Il sito completo</h2>
+  <p class="goal">Ecco il sito di Seriana Logistica con tutto quello che abbiamo visto. Spegni e riaccendi i blocchi di regole per vedere che cosa fa ognuno.</p>
+  <div class="lab" id="final-lab" data-kind="final" data-height="560"></div>
+  <h3>Esercizio</h3>
+  <p>Crea il sito di un'altra azienda di logistica inventata, con lo stesso schema: header con logo e menu, fascia con lo slogan, immagine, almeno tre card dei servizi, tabella delle tariffe, contatti con link email e telefono, footer. Usa un file <code>stile.css</code> esterno, nessun attributo <code>style</code> e due colori aziendali a tua scelta, controllando il contrasto con lo strumento del capitolo <a href="#colori">B.5</a>.</p>
+</section>
+
+<section class="ch" id="prontuario" data-n="C.2" data-t="Prontuario delle proprietà">
+  <h2><span class="lab-n">C.2</span>Prontuario delle proprietà</h2>
+  <p class="goal">Tutte le proprietà della guida in un'unica tabella.</p>
+  <div class="tw"><table class="t">
+    <tr><th>Proprietà</th><th>Esempio</th><th>A cosa serve</th></tr>
+    <tr><td colspan="3"><b>Colore e sfondo</b></td></tr>
+    <tr><td><code>color</code></td><td><code>#0F3B57</code></td><td>Colore del testo</td></tr>
+    <tr><td><code>background-color</code></td><td><code>#EEF3F6</code></td><td>Colore di sfondo</td></tr>
+    <tr><td colspan="3"><b>Testo</b></td></tr>
+    <tr><td><code>font-family</code></td><td><code>Verdana, sans-serif</code></td><td>Carattere</td></tr>
+    <tr><td><code>font-size</code></td><td><code>18px</code></td><td>Grandezza</td></tr>
+    <tr><td><code>font-weight</code></td><td><code>bold</code></td><td>Grassetto</td></tr>
+    <tr><td><code>font-style</code></td><td><code>italic</code></td><td>Corsivo</td></tr>
+    <tr><td><code>text-align</code></td><td><code>center</code></td><td>Allineamento</td></tr>
+    <tr><td><code>text-decoration</code></td><td><code>none</code></td><td>Sottolineatura</td></tr>
+    <tr><td><code>text-transform</code></td><td><code>uppercase</code></td><td>Maiuscolo</td></tr>
+    <tr><td><code>line-height</code></td><td><code>1.5</code></td><td>Altezza della riga</td></tr>
+    <tr><td><code>letter-spacing</code></td><td><code>2px</code></td><td>Spazio tra le lettere</td></tr>
+    <tr><td colspan="3"><b>Scatola</b></td></tr>
+    <tr><td><code>padding</code></td><td><code>10px 20px</code></td><td>Spazio interno</td></tr>
+    <tr><td><code>margin</code></td><td><code>0 auto</code></td><td>Spazio esterno (con <code>auto</code> centra)</td></tr>
+    <tr><td><code>border</code></td><td><code>1px solid #CCC</code></td><td>Bordo su tutti i lati</td></tr>
+    <tr><td><code>border-top</code></td><td><code>5px solid #C85A12</code></td><td>Bordo su un solo lato</td></tr>
+    <tr><td><code>border-radius</code></td><td><code>6px</code></td><td>Angoli arrotondati</td></tr>
+    <tr><td><code>box-shadow</code></td><td><code>0 2px 6px rgba(0,0,0,.15)</code></td><td>Ombra</td></tr>
+    <tr><td><code>width</code> / <code>max-width</code></td><td><code>100%</code> / <code>1000px</code></td><td>Larghezza / larghezza massima</td></tr>
+    <tr><td><code>height</code></td><td><code>auto</code></td><td>Altezza</td></tr>
+    <tr><td><code>box-sizing</code></td><td><code>border-box</code></td><td>La larghezza include padding e bordo</td></tr>
+    <tr><td colspan="3"><b>Disposizione</b></td></tr>
+    <tr><td><code>display</code></td><td><code>block</code>, <code>inline-block</code>, <code>flex</code>, <code>none</code></td><td>Come si dispone l'elemento</td></tr>
+    <tr><td><code>flex-direction</code></td><td><code>column</code></td><td>Figli in riga o in colonna</td></tr>
+    <tr><td><code>justify-content</code></td><td><code>space-between</code></td><td>Distribuzione sulla linea principale</td></tr>
+    <tr><td><code>align-items</code></td><td><code>center</code></td><td>Allineamento nell'altra direzione</td></tr>
+    <tr><td><code>flex-wrap</code></td><td><code>wrap</code></td><td>Andare a capo</td></tr>
+    <tr><td><code>gap</code></td><td><code>20px</code></td><td>Spazio tra i figli</td></tr>
+    <tr><td><code>flex</code></td><td><code>1</code></td><td>(sul figlio) prende una parte dello spazio</td></tr>
+    <tr><td colspan="3"><b>Tabelle</b></td></tr>
+    <tr><td><code>border-collapse</code></td><td><code>collapse</code></td><td>Unisce i bordi delle celle</td></tr>
+    <tr><td colspan="3"><b>Selettori speciali</b></td></tr>
+    <tr><td><code>a:hover</code>, <code>a:focus</code></td><td></td><td>Mouse sopra / selezione da tastiera</td></tr>
+    <tr><td><code>a:link</code>, <code>a:visited</code>, <code>a:active</code></td><td></td><td>Non visitato / visitato / mentre si clicca</td></tr>
+    <tr><td><code>tr:nth-child(even)</code></td><td></td><td>Righe pari</td></tr>
+    <tr><td><code>@media (max-width: 600px)</code></td><td></td><td>Regole solo per schermi stretti</td></tr>
+  </table></div>
+  <footer class="doc-foot">Guida al CSS · prof. Gianpaolo Dalini · ISIS Oscar Romero, Albino (BG) · a.s. 2026/27. Seriana Logistica è un'azienda inventata per gli esempi.</footer>
+</section>
+
+</div>
+</main>
+</div>
+
+<script>
+/* ---------- utilità ---------- */
+const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+const svgURI = s => "data:image/svg+xml;charset=utf-8," + encodeURIComponent(s);
+const IMGS = {
+  "img/logo.png": svgURI(`<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="200" height="200" rx="36" fill="#C85A12"/><rect x="40" y="70" width="120" height="80" fill="none" stroke="#fff" stroke-width="10"/><path d="M40 70 L100 40 L160 70" fill="none" stroke="#fff" stroke-width="10" stroke-linejoin="round"/><text x="100" y="128" font-family="Verdana,sans-serif" font-size="40" font-weight="bold" fill="#fff" text-anchor="middle">SL</text></svg>`),
+  "img/magazzino.png": svgURI(`<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="500" viewBox="0 0 1200 500"><rect width="1200" height="500" fill="#D9E3EA"/><rect y="400" width="1200" height="100" fill="#9AA7B1"/>${[0,1,2,3].map(r=>{const x=70+r*280;let s=`<rect x="${x}" y="80" width="12" height="320" fill="#C85A12"/><rect x="${x+218}" y="80" width="12" height="320" fill="#C85A12"/>`;[150,250,350].forEach((y,i)=>{s+=`<rect x="${x}" y="${y}" width="230" height="10" fill="#0F3B57"/>`;for(let b=0;b<3;b++){const h=40+((r+i+b)%3)*12;s+=`<rect x="${x+20+b*68}" y="${y-h}" width="58" height="${h}" fill="${["#C9A36B","#B98E54","#D8B67F"][(r+b+i)%3]}" stroke="#8C6A3B" stroke-width="2"/>`;}});return s;}).join("")}<text x="600" y="470" font-family="Verdana,sans-serif" font-size="22" fill="#3C4A55" text-anchor="middle">magazzino.png</text></svg>`)
+};
+function imgFor(path){
+  if (IMGS[path]) return IMGS[path];
+  return null;
+}
+function prepHTML(html){
+  return html.replace(/(<img\b[^>]*?\bsrc=")([^"]*)(")/gi, (m,a,src,c) => {
+    const d = imgFor(src);
+    return d ? a + d + c : a + "missing:" + src + c;
+  });
+}
+function buildDoc(html, css){
+  let h = prepHTML(html);
+  if (/<html[\s>]/i.test(h)){
+    const linkRe = /<link\b[^>]*href="stile\.css"[^>]*>/i;
+    if (linkRe.test(h)) h = h.replace(linkRe, () => `<style>${css}</style>`);
+    return h;
+  }
+  return `<!DOCTYPE html><html lang="it"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><style>${css}</style></head><body>${h}</body></html>`;
+}
+
+/* ---------- evidenziatori ---------- */
+function hlCSS(src){
+  let i = 0, out = "", depth = 0; const n = src.length;
+  const isRule = p => { for (let k = p; k < n; k++){ const ch = src[k];
+      if (ch === "/" && src[k+1] === "*"){ const e = src.indexOf("*/", k+2); k = e < 0 ? n : e+1; continue; }
+      if (ch === "{") return true; if (ch === ";" || ch === "}") return false; } return false; };
+  while (i < n){
+    const ch = src[i];
+    if (ch === "/" && src[i+1] === "*"){ const e = src.indexOf("*/", i+2); const end = e < 0 ? n : e+2; out += `<span class="tc">${esc(src.slice(i,end))}</span>`; i = end; continue; }
+    if (/\s/.test(ch)){ out += ch; i++; continue; }
+    if (ch === "}"){ out += `<span class="tp">}</span>`; depth = Math.max(0, depth-1); i++; continue; }
+    if (depth === 0 || isRule(i)){
+      let j = src.indexOf("{", i); if (j < 0) j = n;
+      const sel = src.slice(i, j), t = sel.trimEnd();
+      out += `<span class="${t.trim().startsWith("@") ? "ta" : "ts"}">${esc(t)}</span>` + esc(sel.slice(t.length));
+      if (j < n){ out += `<span class="tp">{</span>`; depth++; }
+      i = j + 1; continue;
+    }
+    let j = i;
+    while (j < n && src[j] !== ";" && src[j] !== "}" && !(src[j] === "/" && src[j+1] === "*")) j++;
+    const decl = src.slice(i, j), c = decl.indexOf(":");
+    if (c < 0) out += esc(decl);
+    else {
+      const prop = decl.slice(0, c), pt = prop.trimEnd(), val = decl.slice(c+1);
+      const lead = val.match(/^\s*/)[0], v = val.slice(lead.length), vt = v.trimEnd();
+      out += `<span class="tk">${esc(pt)}</span>${esc(prop.slice(pt.length))}<span class="tp">:</span>${lead}<span class="tv">${esc(vt)}</span>${esc(v.slice(vt.length))}`;
+    }
+    if (src[j] === ";"){ out += `<span class="tp">;</span>`; j++; }
+    i = j;
+  }
+  return out;
+}
+function hlHTML(src){
+  let out = "", last = 0;
+  const re = /<!--[\s\S]*?-->|<[^>]+>/g; let m;
+  while ((m = re.exec(src))){
+    out += esc(src.slice(last, m.index));
+    const t = m[0];
+    if (t.startsWith("<!--")) out += `<span class="tc">${esc(t)}</span>`;
+    else {
+      const mm = t.match(/^<(\/?)([^\s>\/]+)([\s\S]*?)(\/?)>$/);
+      if (!mm) out += esc(t);
+      else {
+        const attrs = mm[3].replace(/([^\s=]+)(?:(=)("[^"]*"|'[^']*'|[^\s"']+))?|(\s+)/g, (a, name, eq, val, ws) => {
+          if (ws) return ws;
+          return `<span class="tat">${esc(name)}</span>` + (eq ? `<span class="tp">=</span><span class="tst">${esc(val)}</span>` : "");
+        });
+        out += `<span class="tg">&lt;${mm[1]}${esc(mm[2])}</span>${attrs}<span class="tg">${mm[4]}&gt;</span>`;
+      }
+    }
+    last = re.lastIndex;
+  }
+  return out + esc(src.slice(last));
+}
+const hl = (src, lang) => lang === "css" ? hlCSS(src) : hlHTML(src);
+
+/* ---------- copia ---------- */
+function copyText(btn, getText){
+  btn.addEventListener("click", () => {
+    const t = getText(); const old = btn.textContent;
+    const done = () => { btn.textContent = "Copiato"; setTimeout(() => btn.textContent = old, 1400); };
+    const fb = () => { const ta = document.createElement("textarea"); ta.value = t; document.body.append(ta); ta.select(); try { document.execCommand("copy"); done(); } catch (e) {} ta.remove(); };
+    try { navigator.clipboard.writeText(t).then(done, fb); } catch (e) { fb(); }
+  });
+}
+
+/* ---------- blocchi di codice ---------- */
+document.querySelectorAll("script.show").forEach(s => {
+  const src = s.textContent.replace(/^\n/, "");
+  const pre = document.createElement("pre"); pre.className = "code";
+  pre.innerHTML = (s.dataset.file ? `<span class="fname">${esc(s.dataset.file)}</span>` : "") + hl(src, s.dataset.lang);
+  const b = document.createElement("button"); b.className = "cpy"; b.type = "button"; b.textContent = "Copia";
+  copyText(b, () => src); pre.append(b);
+  s.replaceWith(pre);
+});
+
+/* ---------- anteprima ---------- */
+function makePreview(opts){
+  const pv = document.createElement("div"); pv.className = "pv";
+  pv.innerHTML = `<div class="bar"><i></i><i></i><i></i><span>${esc(opts.url || "index.html")}</span></div><div class="frame-wrap"><iframe title="Anteprima della pagina"></iframe></div><div class="status" aria-live="polite">Anteprima della pagina. Clicca un link per vedere dove porta.</div>`;
+  const fr = pv.querySelector("iframe"), st = pv.querySelector(".status");
+  fr.style.height = (opts.height || 360) + "px";
+  let onLoadExtra = null, pendingScroll = 0;
+  fr.addEventListener("load", () => {
+    const d = fr.contentDocument; if (!d) return;
+    try { fr.contentWindow.scrollTo(0, pendingScroll); } catch (e) {}
+    d.querySelectorAll('img[src^="missing:"]').forEach(img => img.removeAttribute("src"));
+    d.addEventListener("click", e => {
+      const a = e.target.closest && e.target.closest("a"); if (!a) return;
+      e.preventDefault();
+      const href = a.getAttribute("href") || "";
+      const blank = a.getAttribute("target") === "_blank";
+      let msg;
+      if (href === "#" || href === "") { fr.contentWindow.scrollTo({top:0, behavior:"smooth"}); msg = `<b>href="${esc(href)}"</b>: torna all'inizio della pagina.`; }
+      else if (href.startsWith("#")) {
+        const el = d.getElementById(href.slice(1));
+        if (el){ fr.contentWindow.scrollTo({top: el.getBoundingClientRect().top + fr.contentWindow.scrollY, behavior:"smooth"}); msg = `<b>Ancora ${esc(href)}</b>: salta all'elemento con id="${esc(href.slice(1))}".`; }
+        else msg = `<b>Ancora ${esc(href)}</b>: nella pagina non c'è nessun elemento con id="${esc(href.slice(1))}", quindi non succede nulla.`;
+      }
+      else if (href.startsWith("mailto:")) { const [addr, q] = href.slice(7).split("?"); const subj = q && new URLSearchParams(q).get("subject"); msg = `<b>Email</b>: apre il programma di posta per scrivere a ${esc(addr)}${subj ? `, con oggetto «${esc(subj)}»` : ""}.`; }
+      else if (href.startsWith("tel:")) msg = `<b>Telefono</b>: sul telefono chiama il numero ${esc(href.slice(4))}.`;
+      else if (/^https?:\/\//.test(href)) msg = `<b>Sito esterno</b>: apre ${esc(href)} ${blank ? "in una <b>nuova scheda</b> (target=\"_blank\")" : "nella stessa scheda, al posto di questa pagina"}.`;
+      else msg = `<b>Altra pagina del sito</b>: apre il file ${esc(href)}, cercandolo nella stessa cartella di questa pagina${blank ? ", in una nuova scheda" : ""}.`;
+      st.innerHTML = msg; st.classList.add("act");
+    });
+    if (onLoadExtra) onLoadExtra(d);
+  });
+  return {
+    el: pv, frame: fr, status: st,
+    render(html, css){ try { pendingScroll = fr.contentWindow ? fr.contentWindow.scrollY : 0; } catch (e) { pendingScroll = 0; } fr.srcdoc = buildDoc(html, css); },
+    onLoad(fn){ onLoadExtra = fn; }
+  };
+}
+
+/* ---------- laboratorio generico ---------- */
+function debounce(fn, ms){ let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; }
+function tabKey(ta){
+  ta.addEventListener("keydown", e => {
+    if (e.key === "Tab" && !e.shiftKey && !e.ctrlKey){
+      if (ta.dataset.tabfree === "1") return;
+      e.preventDefault();
+      const s = ta.selectionStart, en = ta.selectionEnd;
+      ta.value = ta.value.slice(0, s) + "    " + ta.value.slice(en);
+      ta.selectionStart = ta.selectionEnd = s + 4;
+      ta.dispatchEvent(new Event("input"));
+    }
+    if (e.key === "Escape") { ta.dataset.tabfree = "1"; }
+  });
+  ta.addEventListener("blur", () => ta.dataset.tabfree = "0");
+}
+let labCount = 0;
+function buildLab(lab){
+  const kind = lab.dataset.kind || "std";
+  const hs = lab.querySelector("script.h"), cs = lab.querySelector("script.c");
+  const H0 = hs ? hs.textContent.replace(/^\n/, "") : "";
+  const C0 = cs ? cs.textContent.replace(/^\n/, "") : "";
+  if (hs) hs.remove(); if (cs) cs.remove();
+  const id = "lab" + (++labCount);
+  const full = /<html[\s>]/i.test(H0);
+  const files = { css: C0, html: H0 };
+  const cssName = full ? "stile.css" : "CSS";
+  const htmlName = full ? "index.html" : "HTML";
+  const title = lab.dataset.title || "";
+  lab.innerHTML = `<div class="lab-head"><span class="lt">${esc(title)}</span></div>
+    <div class="ctrl-slot"></div>
+    <div class="lab-body">
+      <div class="ed">
+        <div class="tabs" role="tablist">
+          <button type="button" role="tab" aria-selected="true" data-f="css" id="${id}-tc">${cssName}</button>
+          <button type="button" role="tab" aria-selected="false" data-f="html" id="${id}-th">${htmlName}</button>
+        </div>
+        <textarea id="${id}-ta" spellcheck="false" autocapitalize="off" autocomplete="off" aria-label="Codice modificabile"></textarea>
+        <div class="lab-tools">
+          <button type="button" class="btn" data-a="reset">Ripristina</button>
+          <button type="button" class="btn" data-a="copy">Copia questo file</button>
+        </div>
+      </div>
+    </div>`;
+  const ta = lab.querySelector("textarea"); tabKey(ta);
+  const pv = makePreview({height: +lab.dataset.height || 360, url: full ? "index.html" : "anteprima"});
+  lab.querySelector(".lab-body").append(pv.el);
+  let cur = "css";
+  ta.value = files.css;
+  const update = debounce(() => pv.render(files.html, files.css), 220);
+  ta.addEventListener("input", () => { files[cur] = ta.value; update(); });
+  lab.querySelectorAll(".tabs button").forEach(b => b.addEventListener("click", () => {
+    files[cur] = ta.value; cur = b.dataset.f; ta.value = files[cur];
+    lab.querySelectorAll(".tabs button").forEach(x => x.setAttribute("aria-selected", String(x === b)));
+  }));
+  lab.querySelector('[data-a="reset"]').addEventListener("click", () => {
+    files.css = C0; files.html = H0; ta.value = files[cur]; pv.status.textContent = "Codice ripristinato."; pv.status.classList.remove("act"); pv.render(files.html, files.css);
+  });
+  copyText(lab.querySelector('[data-a="copy"]'), () => files[cur]);
+  pv.render(files.html, files.css);
+  return {lab, pv, files, ta, setCSS(c){ files.css = c; if (cur === "css") ta.value = c; pv.render(files.html, files.css); }};
+}
+
+/* ---------- laboratori ---------- */
+function initLabs(){ document.querySelectorAll(".lab").forEach(lab => {
+  const kind = lab.dataset.kind || "std";
+  if (kind === "std") buildLab(lab);
+  if (kind === "selector") selectorLab(lab);
+  if (kind === "contrast") contrastLab(lab);
+  if (kind === "boxmodel") boxLab(lab);
+  if (kind === "flex") flexLab(lab);
+  if (kind === "responsive") respLab(lab);
+  if (kind === "final") finalLab(lab);
+}); }
+
+function selectorLab(lab){
+  lab.dataset.title = "Scrivi un selettore: gli elementi colpiti si colorano di arancione";
+  const L = buildLab(lab);
+  const slot = lab.querySelector(".ctrl-slot");
+  slot.className = "ctrl";
+  const presets = ["h2", "h3", ".card", "#tariffe", ".card h3", "nav a", "h2, h3", ".chiara", "p.nota", "section p", "*"];
+  slot.innerHTML = `<label for="sel-in">Selettore</label><input type="text" id="sel-in" value=".card" size="14" spellcheck="false"><span class="hits" aria-live="polite"></span><div class="presets">${presets.map(p => `<button type="button" data-p="${esc(p)}">${esc(p)}</button>`).join("")}</div>`;
+  const inp = slot.querySelector("input"), out = slot.querySelector(".hits");
+  function apply(){
+    const d = L.pv.frame.contentDocument; if (!d || !d.body) return;
+    let st = d.getElementById("__hit"); if (!st){ st = d.createElement("style"); st.id = "__hit"; st.textContent = ".__hit{outline:3px solid #E0701B !important;outline-offset:2px;background-color:rgba(224,112,27,.15) !important}"; d.head.append(st); }
+    d.querySelectorAll(".__hit").forEach(e => e.classList.remove("__hit"));
+    const sel = inp.value.trim();
+    slot.querySelectorAll(".presets button").forEach(b => b.classList.toggle("on", b.dataset.p === sel));
+    if (!sel){ out.textContent = ""; return; }
+    try {
+      const els = [...d.body.querySelectorAll(sel)];
+      els.forEach(e => e.classList.add("__hit"));
+      out.textContent = els.length === 1 ? "1 elemento" : els.length + " elementi";
+    } catch (e) { out.textContent = "selettore non valido"; }
+  }
+  inp.addEventListener("input", apply);
+  slot.querySelectorAll(".presets button").forEach(b => b.addEventListener("click", () => { inp.value = b.dataset.p; apply(); }));
+  L.pv.onLoad(apply);
+}
+
+function contrastLab(lab){
+  lab.innerHTML = `<div class="lab-head"><span class="lt">Il contrasto tra testo e sfondo</span></div>
+  <div class="ctrl"><label for="cx-fg">Testo <input type="color" id="cx-fg" value="#ffffff"></label><code id="cx-fgv"></code>
+    <label for="cx-bg">Sfondo <input type="color" id="cx-bg" value="#c85a12"></label><code id="cx-bgv"></code>
+    <span class="presets"><button type="button" data-f="#ffffff" data-b="#0f3b57">bianco su blu</button><button type="button" data-f="#ffffff" data-b="#c85a12">bianco su arancio</button><button type="button" data-f="#ffffff" data-b="#f5a623">bianco su giallo</button><button type="button" data-f="#2b2b2b" data-b="#eef3f6">scuro su grigio</button><button type="button" data-f="#999999" data-b="#ffffff">grigio su bianco</button></span></div>
+  <div class="cx"><div class="cx-sample" id="cx-s"><span class="big">Spedisci oggi</span><span class="small">Testo normale: consegniamo domani in tutta la Lombardia.</span></div>
+  <div class="cx-res"><div>Rapporto di contrasto</div><div class="ratio" id="cx-r"></div><div id="cx-p"></div><pre class="code" id="cx-code"></pre></div></div>`;
+  const fg = lab.querySelector("#cx-fg"), bg = lab.querySelector("#cx-bg");
+  const lum = h => { const c = [1,3,5].map(i => parseInt(h.substr(i,2),16)/255).map(v => v <= 0.03928 ? v/12.92 : Math.pow((v+0.055)/1.055, 2.4)); return 0.2126*c[0] + 0.7152*c[1] + 0.0722*c[2]; };
+  function upd(){
+    const a = lum(fg.value), b = lum(bg.value);
+    const r = (Math.max(a,b) + 0.05) / (Math.min(a,b) + 0.05);
+    lab.querySelector("#cx-s").style.cssText = `color:${fg.value};background:${bg.value}`;
+    lab.querySelector("#cx-fgv").textContent = fg.value.toUpperCase();
+    lab.querySelector("#cx-bgv").textContent = bg.value.toUpperCase();
+    lab.querySelector("#cx-r").textContent = r.toFixed(2).replace(".", ",") + " : 1";
+    const p = (ok, t) => `<span class="pill ${ok ? "ok" : "no"}">${ok ? "OK" : "NO"}</span>${t}`;
+    lab.querySelector("#cx-p").innerHTML = p(r >= 4.5, "testo normale (almeno 4,5)") + "<br>" + p(r >= 3, "titoli grandi (almeno 3)");
+    lab.querySelector("#cx-code").innerHTML = hlCSS(`.hero {\n    color: ${fg.value.toUpperCase()};\n    background-color: ${bg.value.toUpperCase()};\n}`);
+  }
+  fg.addEventListener("input", upd); bg.addEventListener("input", upd);
+  lab.querySelectorAll(".presets button").forEach(b => b.addEventListener("click", () => { fg.value = b.dataset.f; bg.value = b.dataset.b; upd(); }));
+  upd();
+}
+
+function boxLab(lab){
+  lab.innerHTML = `<div class="lab-head"><span class="lt">Muovi i cursori e guarda gli strati della scatola</span></div>
+  <div class="ctrl">
+    <label for="bm-w">width <input type="range" id="bm-w" min="80" max="260" value="160"><output id="bm-wo"></output></label>
+    <label for="bm-pd">padding <input type="range" id="bm-pd" min="0" max="50" value="20"><output id="bm-pdo"></output></label>
+    <label for="bm-bd">border <input type="range" id="bm-bd" min="0" max="20" value="5"><output id="bm-bdo"></output></label>
+    <label for="bm-mg">margin <input type="range" id="bm-mg" min="0" max="50" value="20"><output id="bm-mgo"></output></label>
+    <label for="bm-bs"><input type="checkbox" id="bm-bs"> box-sizing: border-box</label>
+  </div>
+  <div class="bm"><div class="bm-stage"><div class="bm-m" id="bm-m"><div class="bm-b" id="bm-b"><div class="bm-p" id="bm-p"><div class="bm-c" id="bm-c">contenuto</div></div></div></div></div>
+  <div><pre class="code" id="bm-code" style="margin:12px"></pre></div></div>
+  <div class="bm-legend"><span><i style="background:#F9CC9D"></i>margin (fuori)</span><span><i style="background:#FDDD9B"></i>border</span><span><i style="background:#C3D08B"></i>padding (dentro)</span><span><i style="background:#8CB6C0"></i>contenuto</span></div>
+  <div class="bm-calc" id="bm-calc" aria-live="polite"></div>`;
+  const g = id => lab.querySelector(id);
+  function upd(){
+    const w = +g("#bm-w").value, p = +g("#bm-pd").value, b = +g("#bm-bd").value, m = +g("#bm-mg").value, bs = g("#bm-bs").checked;
+    g("#bm-wo").textContent = w + "px"; g("#bm-pdo").textContent = p + "px"; g("#bm-bdo").textContent = b + "px"; g("#bm-mgo").textContent = m + "px";
+    const cw = bs ? Math.max(0, w - 2*p - 2*b) : w;
+    g("#bm-m").style.padding = m + "px"; g("#bm-b").style.padding = b + "px"; g("#bm-p").style.padding = p + "px";
+    g("#bm-c").style.width = cw + "px"; g("#bm-c").style.height = "60px";
+    g("#bm-code").innerHTML = hlCSS(`.card {\n${bs ? "    box-sizing: border-box;\n" : ""}    width: ${w}px;\n    padding: ${p}px;\n    border: ${b}px solid #0F3B57;\n    margin: ${m}px;\n}`);
+    const tot = cw + 2*p + 2*b;
+    g("#bm-calc").innerHTML = bs
+      ? `Larghezza visibile = width = <b>${tot}px</b> (il contenuto si stringe a ${cw}px). Con i margini occupa ${tot + 2*m}px.`
+      : `Larghezza visibile = ${w} + ${p}×2 + ${b}×2 = <b>${tot}px</b>. Con i margini occupa ${tot + 2*m}px.`;
+  }
+  lab.querySelectorAll("input").forEach(i => i.addEventListener("input", upd));
+  upd();
+}
+
+function flexLab(lab){
+  lab.dataset.title = "Cambia le proprietà del contenitore .servizi";
+  const fixed = `body { font-family: Verdana, sans-serif; margin: 0; padding: 10px; }\n.card { background-color: #EEF3F6; border-top: 5px solid #C85A12; padding: 0 12px; }\n.card h3 { color: #0F3B57; }\n`;
+  const L = buildLab(lab);
+  const slot = lab.querySelector(".ctrl-slot"); slot.className = "ctrl";
+  const sel = (id, name, opts) => `<label for="${id}">${name} <select id="${id}">${opts.map(o => `<option>${o}</option>`).join("")}</select></label>`;
+  slot.innerHTML = `<label for="fx-on"><input type="checkbox" id="fx-on" checked> display: flex</label>`
+    + sel("fx-dir","flex-direction",["row","column"])
+    + sel("fx-jc","justify-content",["flex-start","center","space-between","space-around","flex-end"])
+    + sel("fx-ai","align-items",["stretch","flex-start","center","flex-end"])
+    + sel("fx-wr","flex-wrap",["nowrap","wrap"])
+    + `<label for="fx-gap">gap <input type="range" id="fx-gap" min="0" max="40" value="15"><output id="fx-go"></output></label>`
+    + `<label for="fx-f1"><input type="checkbox" id="fx-f1"> .card { flex: 1 }</label>`
+    + `<label for="fx-w"><input type="checkbox" id="fx-w"> .card { width: 180px }</label>`;
+  const g = id => slot.querySelector(id);
+  function gen(){
+    g("#fx-go").textContent = g("#fx-gap").value + "px";
+    let c = `.servizi {\n`;
+    if (g("#fx-on").checked){
+      c += `    display: flex;\n    flex-direction: ${g("#fx-dir").value};\n    justify-content: ${g("#fx-jc").value};\n    align-items: ${g("#fx-ai").value};\n    flex-wrap: ${g("#fx-wr").value};\n    gap: ${g("#fx-gap").value}px;\n`;
+    } else c += `    /* display: flex spento: le card sono blocchi uno sotto l'altro */\n`;
+    c += `}\n`;
+    const extra = [];
+    if (g("#fx-f1").checked) extra.push("    flex: 1;");
+    if (g("#fx-w").checked) extra.push("    width: 180px;");
+    if (extra.length) c += `\n.card {\n${extra.join("\n")}\n}\n`;
+    c += `\n/* aspetto delle card */\n` + fixed;
+    L.setCSS(c);
+  }
+  slot.querySelectorAll("select,input").forEach(i => i.addEventListener("input", gen));
+  gen();
+}
+
+function respLab(lab){
+  lab.dataset.title = "Lo schermo simulato";
+  const L = buildLab(lab);
+  const slot = lab.querySelector(".ctrl-slot"); slot.className = "ctrl";
+  slot.innerHTML = `<label for="rs-w">Larghezza dello schermo <input type="range" id="rs-w" min="320" max="900" value="800"><output id="rs-o"></output></label><span id="rs-tag"></span>`;
+  const r = slot.querySelector("#rs-w");
+  function upd(){
+    const w = +r.value;
+    slot.querySelector("#rs-o").textContent = w + "px";
+    slot.querySelector("#rs-tag").innerHTML = w <= 600 ? '<span class="pill ok">@media attiva</span>' : '<span class="pill no">@media non attiva</span>';
+    L.pv.frame.style.width = w + "px"; L.pv.frame.style.flex = "none";
+    L.pv.el.querySelector(".bar span").textContent = `index.html · ${w}px`;
+  }
+  r.addEventListener("input", upd); upd();
+}
+
+/* ---------- laboratorio finale ---------- */
+const FINAL_HTML = `<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Seriana Logistica - Magazzino e consegne</title>
+    <link rel="stylesheet" href="stile.css">
+</head>
+<body>
+
+    <header>
+        <a href="index.html">
+            <img src="img/logo.png" width="60" alt="Logo Seriana Logistica, torna alla home">
+        </a>
+        <h1>Seriana Logistica</h1>
+        <nav>
+            <a href="#servizi">Servizi</a>
+            <a href="#tariffe">Tariffe</a>
+            <a href="#contatti">Contatti</a>
+            <a href="area-clienti.html">Area clienti</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h2>Il tuo magazzino in Val Seriana</h2>
+            <p>Stoccaggio, preparazione ordini e consegne in tutta la Lombardia</p>
+            <a class="pulsante" href="mailto:info@serianalogistica.example?subject=Richiesta preventivo">Chiedi un preventivo</a>
+        </section>
+
+        <section class="banner">
+            <img src="img/magazzino.png" width="900" alt="Scaffalature del magazzino con i pallet">
+        </section>
+
+        <section id="servizi" class="sezione chiara">
+            <h2>I nostri servizi</h2>
+            <div class="servizi">
+                <div class="card">
+                    <h3>Stoccaggio</h3>
+                    <p>Posti pallet coperti e sorvegliati 24 ore su 24.</p>
+                </div>
+                <div class="card">
+                    <h3>Picking</h3>
+                    <p>Prepariamo i tuoi ordini, collo per collo, in giornata.</p>
+                </div>
+                <div class="card">
+                    <h3>Consegne</h3>
+                    <p>Furgoni e camion per consegne in tutta la Lombardia.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="tariffe" class="sezione">
+            <h2>Le nostre tariffe</h2>
+            <table>
+                <tr><th>Servizio</th><th>Unità</th><th>Prezzo</th></tr>
+                <tr><td>Posto pallet</td><td>al mese</td><td>12,00 €</td></tr>
+                <tr><td>Picking</td><td>per riga d'ordine</td><td>0,45 €</td></tr>
+                <tr><td>Consegna in Lombardia</td><td>per collo</td><td>7,50 €</td></tr>
+                <tr><td>Consegna pallet</td><td>per pallet</td><td>45,00 €</td></tr>
+            </table>
+            <p class="nota">Prezzi IVA esclusa. Cos'è la
+                <a href="https://it.wikipedia.org/wiki/Logistica" target="_blank">logistica conto terzi</a>?</p>
+        </section>
+
+        <section id="contatti" class="sezione chiara">
+            <h2>Contattaci</h2>
+            <p>Scrivici per un preventivo o chiamaci dal lunedì al venerdì:</p>
+            <p><a href="mailto:info@serianalogistica.example?subject=Richiesta preventivo">info@serianalogistica.example</a></p>
+            <p><a href="tel:+390350001111">035 000 1111</a></p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Seriana Logistica S.r.l. - Via dell'Interporto 4, Albino (BG)</p>
+        <p><a href="#">Torna su</a></p>
+    </footer>
+
+</body>
+</html>`;
+const FINAL_BLOCKS = [
+  ["Stili generali", `/* ---------- 1. STILI GENERALI ---------- */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Verdana, Arial, sans-serif;
+    color: #2B2B2B;
+    line-height: 1.5;
+    margin: 0;
+}
+
+h2 {
+    color: #0F3B57;
+    text-align: center;
+}`],
+  ["Header e menu", `/* ---------- 2. HEADER E MENU ---------- */
+header {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    background-color: #0F3B57;
+    color: white;
+    padding: 10px 30px;
+}
+
+header h1 {
+    flex: 1;
+    font-size: 24px;
+    margin: 0;
+}
+
+nav {
+    display: flex;
+    gap: 6px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    padding: 8px 14px;
+    border-radius: 4px;
+}
+
+nav a:hover,
+nav a:focus {
+    background-color: #C85A12;
+}`],
+  ["Fascia e pulsante", `/* ---------- 3. FASCIA CON LO SLOGAN ---------- */
+.hero {
+    background-color: #C85A12;
+    color: white;
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.hero h2 {
+    color: white;
+    font-size: 30px;
+    margin: 0 0 10px;
+}
+
+.pulsante {
+    display: inline-block;
+    background-color: white;
+    color: #0F3B57;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    margin-top: 10px;
+}
+
+.pulsante:hover {
+    background-color: #0F3B57;
+    color: white;
+}`],
+  ["Immagine", `/* ---------- 4. IMMAGINE ---------- */
+.banner {
+    padding: 20px;
+}
+
+.banner img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+    border-radius: 8px;
+}`],
+  ["Sezioni", `/* ---------- 5. SEZIONI ---------- */
+.sezione {
+    padding: 30px 20px;
+}
+
+.chiara {
+    background-color: #EEF3F6;
+}`],
+  ["Card dei servizi", `/* ---------- 6. CARD DEI SERVIZI ---------- */
+.servizi {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.card {
+    flex: 1;
+    min-width: 220px;
+    background-color: white;
+    border-top: 5px solid #C85A12;
+    border-radius: 6px;
+    padding: 20px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+
+.card h3 {
+    color: #0F3B57;
+    margin-top: 0;
+}`],
+  ["Tabella", `/* ---------- 7. TABELLA DELLE TARIFFE ---------- */
+table {
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+    border-collapse: collapse;
+}
+
+th {
+    background-color: #0F3B57;
+    color: white;
+    text-align: left;
+    padding: 10px;
+}
+
+td {
+    padding: 10px;
+    border-bottom: 1px solid #CCCCCC;
+}
+
+tr:nth-child(even) {
+    background-color: #F4F7F9;
+}
+
+tr:hover {
+    background-color: #FBEADB;
+}
+
+.nota {
+    text-align: center;
+    font-size: 14px;
+}`],
+  ["Link nel contenuto", `/* ---------- 8. LINK NEL CONTENUTO ---------- */
+main a:link {
+    color: #B4500F;
+}
+
+main a:visited {
+    color: #7A3A0E;
+}
+
+main a:hover {
+    text-decoration: none;
+}
+
+#contatti {
+    text-align: center;
+}
+
+#contatti a {
+    font-size: 20px;
+    font-weight: bold;
+}`],
+  ["Footer", `/* ---------- 9. FOOTER ---------- */
+footer {
+    background-color: #0F3B57;
+    color: white;
+    text-align: center;
+    font-size: 14px;
+    padding: 10px;
+}
+
+footer a {
+    color: white;
+}`],
+  ["Telefono (@media)", `/* ---------- 10. SCHERMI PICCOLI ---------- */
+@media (max-width: 600px) {
+    header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .hero h2 {
+        font-size: 24px;
+    }
+}`]
+];
+function finalLab(lab){
+  lab.innerHTML = `<div class="lab-head"><span class="lt">Seriana Logistica: index.html + stile.css</span></div>
+  <div class="toggles">${FINAL_BLOCKS.map((b,i) => `<label for="fb-${i}"><input type="checkbox" id="fb-${i}" checked> ${i+1}. ${esc(b[0])}</label>`).join("")}</div>
+  <div class="lab-tools" style="border-top:0;border-bottom:1px solid var(--line)"><button type="button" class="btn" id="fb-none">Spegni tutto</button><button type="button" class="btn" id="fb-all">Accendi tutto</button><button type="button" class="btn primary" id="fb-cc">Copia stile.css</button><button type="button" class="btn primary" id="fb-ch">Copia index.html</button></div>
+  <div class="lab-body" style="grid-template-columns:minmax(0,1fr)"></div>
+  <details style="padding:10px 12px;border-top:1px solid var(--line)"><summary style="cursor:pointer;font-weight:700">Mostra il codice: stile.css (solo i blocchi accesi)</summary><pre class="code" id="fb-css"></pre></details>
+  <details style="padding:10px 12px;border-top:1px solid var(--line)"><summary style="cursor:pointer;font-weight:700">Mostra il codice: index.html</summary><pre class="code" id="fb-html"></pre></details>`;
+  const pv = makePreview({height: +lab.dataset.height || 560, url: "index.html"});
+  lab.querySelector(".lab-body").append(pv.el);
+  lab.querySelector("#fb-html").innerHTML = hlHTML(FINAL_HTML);
+  const boxes = [...lab.querySelectorAll(".toggles input")];
+  const css = () => FINAL_BLOCKS.filter((b,i) => boxes[i].checked).map(b => b[1]).join("\n\n\n");
+  function upd(){ const c = css(); lab.querySelector("#fb-css").innerHTML = hlCSS(c || "/* nessun blocco acceso: la pagina usa gli stili predefiniti del browser */"); pv.render(FINAL_HTML, c); }
+  boxes.forEach(b => b.addEventListener("change", upd));
+  lab.querySelector("#fb-none").addEventListener("click", () => { boxes.forEach(b => b.checked = false); upd(); });
+  lab.querySelector("#fb-all").addEventListener("click", () => { boxes.forEach(b => b.checked = true); upd(); });
+  copyText(lab.querySelector("#fb-cc"), () => FINAL_BLOCKS.map(b => b[1]).join("\n\n\n"));
+  copyText(lab.querySelector("#fb-ch"), () => FINAL_HTML);
+  upd();
+}
+
+initLabs();
+
+/* ---------- indice e capitolo attivo ---------- */
+(function toc(){
+  const nav = document.getElementById("tocnav");
+  const parts = { "0": null, "A": "Parte A · Ripasso HTML", "B": "Parte B · Il CSS", "C": "Parte C · Il laboratorio" };
+  let html = "", lastPart = null;
+  document.querySelectorAll("section.ch").forEach(s => {
+    const n = s.dataset.n, p = n === "0" ? "0" : n[0];
+    if (p !== lastPart){ if (lastPart !== null) html += "</ol>"; if (parts[p]) html += `<p class="part">${parts[p]}</p>`; html += "<ol>"; lastPart = p; }
+    html += `<li><a href="#${s.id}" data-id="${s.id}"><span class="n">${n === "0" ? "·" : n}</span><span>${esc(s.dataset.t)}</span></a></li>`;
+  });
+  nav.innerHTML = html + "</ol>";
+  const links = [...nav.querySelectorAll("a")];
+  const mq = matchMedia("(max-width: 1000px)");
+  const det = document.getElementById("tocd");
+  const setOpen = () => { det.open = !mq.matches; };
+  setOpen(); mq.addEventListener("change", setOpen);
+  links.forEach(a => a.addEventListener("click", () => { if (mq.matches) det.open = false; }));
+  const obs = new IntersectionObserver(es => {
+    es.forEach(e => { if (e.isIntersecting){ links.forEach(a => a.classList.toggle("on", a.dataset.id === e.target.id)); } });
+  }, { rootMargin: "-20% 0px -70% 0px" });
+  document.querySelectorAll("section.ch").forEach(s => obs.observe(s));
+})();
+</script>
+</body>
+</html>
