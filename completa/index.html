@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Guida al CSS</title>
-<meta name="description" content="Guida al CSS per le classi terze e quinte: ripasso HTML, selettori, box model, link, tabelle, flexbox e layout, con esempi modificabili.">
+<meta name="description" content="Guida al CSS per le classi terze e quinte: ripasso HTML con i link, selettori, cascata, colori, box model, immagini e tabelle, con esercizi.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap">
@@ -182,6 +182,23 @@ button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible{ou
 .check li{padding-left:30px;position:relative;margin:6px 0}
 .check li::before{content:"";position:absolute;left:4px;top:7px;width:14px;height:14px;border:2px solid var(--brand);border-radius:3px}
 footer.doc-foot{margin-top:40px;color:var(--muted);font-size:15px}
+
+.task{padding:10px 14px;background:var(--signal-soft);border-bottom:1px solid var(--line);font-size:16.5px;line-height:1.5}
+.task b{display:block;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--signal)}
+.lab.ex{border-color:var(--signal)}
+.lab.ex .lab-head{background:var(--signal);color:#fff}
+.lab.ex .lab-head .lt::before{content:"Esercizio · "}
+.btn.sol{margin-left:auto}
+.fill{border:2px dashed var(--signal);border-radius:10px;margin:20px 0;background:var(--surface);overflow:hidden}
+.fill-head{background:var(--signal-soft);padding:8px 12px;font-weight:700;font-size:16px}
+.fill-head::before{content:"Completa · ";font-weight:400;opacity:.8}
+.fill pre{margin:0;padding:14px 16px;font-family:var(--f-code);font-size:15.5px;line-height:2.2;overflow-x:auto;white-space:pre;color:var(--fg)}
+.fill input{font:600 15px var(--f-code);padding:1px 4px;border:0;border-bottom:2px solid var(--signal);background:var(--codebg);color:var(--fg);text-align:center;border-radius:3px 3px 0 0}
+.fill input.ok{border-color:var(--ok);background:var(--ok-soft);color:var(--ok)}
+.fill input.no{border-color:var(--bad);background:var(--bad-soft);color:var(--bad)}
+.fill .pv{border-top:1px solid var(--line)}
+.res{font-weight:700;align-self:center;font-size:15px}
+.res.good{color:var(--ok)}.res.bad{color:var(--bad)}
 </style>
 </head>
 <body>
@@ -201,20 +218,19 @@ footer.doc-foot{margin-top:40px;color:var(--muted);font-size:15px}
 <header class="hero-doc">
   <p class="eyebrow">Classi terze e quinte · HTML e CSS</p>
   <h1>Guida al CSS</h1>
-  <p>Questa guida ti porta da una pagina HTML senza stile a un sito aziendale completo, con header, menu, card, tabelle, link e footer. Le pagine sono come quelle delle esercitazioni di laboratorio.</p>
-  <p>Ogni riquadro <b>Prova</b> è modificabile: cambi il codice a sinistra e la pagina a destra si aggiorna subito. Se sbagli, premi <b>Ripristina</b>.</p>
+  <p>Questa guida ripassa l'HTML che serve e spiega le basi del CSS per costruire pagine come quelle delle esercitazioni di laboratorio: fasce colorate, card, immagini, tabelle e link.</p>
+  <p>Ci sono due tipi di attività. Nei riquadri <b>Esercizio</b> modifichi il codice e la pagina a destra si aggiorna subito. Nei riquadri <b>Completa</b> scrivi le parti mancanti e premi <b>Controlla</b>.</p>
 </header>
 
 <section class="ch" id="come-usare" data-n="0" data-t="Come usare la guida">
   <h2>Come usare la guida</h2>
-  <p>Gli esempi usano il sito di un'azienda inventata, <b>Seriana Logistica</b>: magazzino, preparazione ordini e consegne. Lo costruiamo un pezzo alla volta e nel <a href="#laboratorio">laboratorio finale</a> lo vedi completo.</p>
-  <p>La guida ha tre parti:</p>
+  <p>Gli esempi usano il sito di un'azienda inventata, <b>Seriana Logistica</b>: magazzino, preparazione ordini e consegne.</p>
   <ol>
-    <li><b>Parte A, ripasso HTML</b>: la struttura della pagina, i tag che usiamo e soprattutto i link.</li>
-    <li><b>Parte B, il CSS</b>: regole, selettori, colori, testo, box model, link, tabelle, layout con flexbox, pagine che si adattano al telefono.</li>
-    <li><b>Parte C, il laboratorio</b>: il sito completo, con le regole che puoi accendere e spegnere una alla volta, e un prontuario delle proprietà.</li>
+    <li><b>Parte A, ripasso HTML</b>: la struttura della pagina, i tag che usiamo, le immagini, le tabelle e i link.</li>
+    <li><b>Parte B, il CSS</b>: regole, selettori, cascata, colori, testo, box model, immagini e tabelle. In fondo c'è la lista dei controlli da fare quando qualcosa non funziona.</li>
   </ol>
   <div class="note"><b>Come lavoriamo in laboratorio</b>Nella cartella del progetto tieni <code>index.html</code>, il file <code>stile.css</code> e la cartella <code>img</code> con le immagini. Apri <code>index.html</code> nel browser e il file nell'editor. Dopo ogni modifica salva con <code>Ctrl</code> + <code>S</code> e aggiorna il browser con <code>F5</code>.</div>
+  <div class="note"><b>Nei riquadri di esercizio</b>Se sbagli, premi <b>Ripristina</b> per tornare al codice iniziale. Prova sempre da solo prima di premere <b>Mostra soluzione</b>.</div>
 </section>
 
 <!-- ======================= PARTE A ======================= -->
@@ -227,7 +243,6 @@ footer.doc-foot{margin-top:40px;color:var(--muted);font-size:15px}
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Seriana Logistica</title>
     <link rel="stylesheet" href="stile.css">
 </head>
@@ -238,15 +253,14 @@ footer.doc-foot{margin-top:40px;color:var(--muted);font-size:15px}
   <div class="tw"><table class="t">
     <tr><th>Riga</th><th>A cosa serve</th></tr>
     <tr><td><code>&lt;!DOCTYPE html&gt;</code></td><td>Dice al browser che il file è HTML5. Va sempre nella prima riga.</td></tr>
-    <tr><td><code>&lt;html lang="it"&gt;</code></td><td>Contiene tutta la pagina. <code>lang="it"</code> dice che la lingua è l'italiano (serve ai lettori di schermo e ai motori di ricerca).</td></tr>
+    <tr><td><code>&lt;html lang="it"&gt;</code></td><td>Contiene tutta la pagina. <code>lang="it"</code> dice che la lingua è l'italiano.</td></tr>
     <tr><td><code>&lt;head&gt;</code></td><td>Informazioni sulla pagina che non si vedono: codifica, titolo, collegamento al CSS.</td></tr>
     <tr><td><code>&lt;meta charset="UTF-8"&gt;</code></td><td>Fa vedere bene le lettere accentate e il simbolo €.</td></tr>
-    <tr><td><code>&lt;meta name="viewport" …&gt;</code></td><td>Sul telefono fa usare la larghezza vera dello schermo. Serve per le pagine responsive (capitolo <a href="#responsive">B.13</a>).</td></tr>
-    <tr><td><code>&lt;title&gt;</code></td><td>Il testo nella scheda del browser e nei risultati di Google.</td></tr>
+    <tr><td><code>&lt;title&gt;</code></td><td>Il testo nella scheda del browser.</td></tr>
     <tr><td><code>&lt;link rel="stylesheet" href="stile.css"&gt;</code></td><td>Collega il foglio di stile esterno.</td></tr>
     <tr><td><code>&lt;body&gt;</code></td><td>Tutto il contenuto visibile.</td></tr>
   </table></div>
-  <div class="lab" data-title="Collegare stile.css" data-height="260">
+  <div class="lab" data-title="Collegare stile.css" data-height="240">
     <script type="text/plain" class="h"><!DOCTYPE html>
 <html lang="it">
 <head>
@@ -267,31 +281,42 @@ h1 {
     color: #0F3B57;
 }</script>
   </div>
-  <p>Prova a cancellare la riga <code>&lt;link …&gt;</code> nella scheda <code>index.html</code>: la pagina perde lo stile, perché il file CSS non è più collegato.</p>
+  <p>Apri la scheda <code>index.html</code> e cancella la riga <code>&lt;link …&gt;</code>: la pagina perde lo stile, perché il file CSS non è più collegato.</p>
+  <div class="fill" data-title="Lo scheletro della pagina">
+    <script type="text/plain" class="f"><!DOCTYPE [[html]]>
+<html lang="[[it]]">
+<[[head]]>
+    <meta [[charset]]="UTF-8">
+    <title>Seriana Logistica</[[title]]>
+    <link rel="[[stylesheet]]" href="[[stile.css]]">
+</head>
+<[[body]]>
+    <h1>Seriana Logistica</h1>
+</body>
+</html></script>
+  </div>
 </section>
 
 <section class="ch" id="testo-html" data-n="A.2" data-t="Testo e contenitori">
   <h2><span class="lab-n">A.2</span>Testo e contenitori</h2>
   <p class="goal">I tag dicono che cosa è ogni pezzo di contenuto. Gli attributi <code>class</code> e <code>id</code> servono per agganciare il CSS.</p>
   <div class="tw"><table class="t">
-    <tr><th>Tag</th><th>Significato</th><th>Tipo</th></tr>
-    <tr><td><code>h1</code> … <code>h6</code></td><td>Titoli, dal più importante al meno importante. Un solo <code>h1</code> per pagina.</td><td>blocco</td></tr>
-    <tr><td><code>p</code></td><td>Paragrafo</td><td>blocco</td></tr>
-    <tr><td><code>ul</code> / <code>ol</code> + <code>li</code></td><td>Elenco puntato / numerato, con le sue voci</td><td>blocco</td></tr>
-    <tr><td><code>div</code></td><td>Contenitore generico: raggruppa altri elementi</td><td>blocco</td></tr>
-    <tr><td><code>strong</code>, <code>em</code></td><td>Testo importante (grassetto), testo enfatizzato (corsivo)</td><td>in linea</td></tr>
-    <tr><td><code>span</code></td><td>Contenitore generico dentro una riga di testo</td><td>in linea</td></tr>
-    <tr><td><code>br</code></td><td>A capo (tag senza chiusura)</td><td>in linea</td></tr>
+    <tr><th>Tag</th><th>Significato</th></tr>
+    <tr><td><code>h1</code> … <code>h6</code></td><td>Titoli, dal più importante al meno importante. Un solo <code>h1</code> per pagina.</td></tr>
+    <tr><td><code>p</code></td><td>Paragrafo</td></tr>
+    <tr><td><code>ul</code> / <code>ol</code> + <code>li</code></td><td>Elenco puntato / numerato, con le sue voci</td></tr>
+    <tr><td><code>div</code></td><td>Contenitore: raggruppa altri elementi, per esempio una fascia della pagina o una card</td></tr>
+    <tr><td><code>strong</code>, <code>em</code></td><td>Testo importante (grassetto), testo enfatizzato (corsivo)</td></tr>
+    <tr><td><code>span</code></td><td>Contenitore dentro una riga di testo</td></tr>
+    <tr><td><code>br</code></td><td>A capo (tag senza chiusura)</td></tr>
   </table></div>
-  <p>Gli elementi <b>blocco</b> occupano tutta la larghezza e vanno a capo. Gli elementi <b>in linea</b> stanno nella riga di testo. Lo riprendiamo nel capitolo <a href="#flex">B.11</a>.</p>
   <h3>Gli attributi class e id</h3>
   <ul>
     <li><code>class="card"</code>: un nome che puoi dare a <b>tanti</b> elementi. Un elemento può avere più classi separate da spazio: <code>class="sezione chiara"</code>.</li>
     <li><code>id="tariffe"</code>: un nome <b>unico</b> nella pagina. Serve anche per i link interni (capitolo <a href="#link-html">A.5</a>).</li>
   </ul>
-  <div class="lab" data-title="Tag, classi e id" data-height="330">
+  <div class="lab ex" data-title="Classi e id" data-height="330" data-task="Nel CSS ci sono già le regole .card e #contatti. Modifica solo l'HTML: dai la classe card anche al terzo div e l'id contatti all'ultimo titolo h2.">
     <script type="text/plain" class="h"><h1>Seriana Logistica</h1>
-<p>Il tuo <strong>magazzino</strong> in Val Seriana, <em>dal 1998</em>.</p>
 
 <div class="card">
     <h3>Stoccaggio</h3>
@@ -300,14 +325,15 @@ h1 {
 
 <div class="card">
     <h3>Picking</h3>
-    <p>Prepariamo i tuoi ordini <span class="evidenza">in giornata</span>.</p>
+    <p>Prepariamo i tuoi ordini <strong>in giornata</strong>.</p>
 </div>
 
-<h2 id="vantaggi">Perché sceglierci</h2>
-<ol>
-    <li>Magazzino sorvegliato 24 ore su 24</li>
-    <li>Tracciamento online della merce</li>
-</ol></script>
+<div>
+    <h3>Consegne</h3>
+    <p>In tutta la Lombardia.</p>
+</div>
+
+<h2>Contattaci</h2></script>
     <script type="text/plain" class="c">/* Le classi si selezionano con il punto */
 .card {
     border: 2px solid #0F3B57;
@@ -315,14 +341,28 @@ h1 {
     margin-bottom: 10px;
 }
 
-.evidenza {
-    background-color: yellow;
-}
-
 /* Gli id si selezionano con il cancelletto */
-#vantaggi {
+#contatti {
     color: #C85A12;
 }</script>
+    <script type="text/plain" class="sh"><h1>Seriana Logistica</h1>
+
+<div class="card">
+    <h3>Stoccaggio</h3>
+    <p>Posti pallet coperti e sorvegliati.</p>
+</div>
+
+<div class="card">
+    <h3>Picking</h3>
+    <p>Prepariamo i tuoi ordini <strong>in giornata</strong>.</p>
+</div>
+
+<div class="card">
+    <h3>Consegne</h3>
+    <p>In tutta la Lombardia.</p>
+</div>
+
+<h2 id="contatti">Contattaci</h2></script>
   </div>
 </section>
 
@@ -334,7 +374,7 @@ h1 {
     <tr><th>Attributo</th><th>A cosa serve</th></tr>
     <tr><td><code>src</code></td><td>Il percorso del file immagine</td></tr>
     <tr><td><code>alt</code></td><td>Il testo alternativo: lo leggono i lettori di schermo e compare se l'immagine non si carica. È obbligatorio.</td></tr>
-    <tr><td><code>width</code></td><td>Larghezza in pixel. Con il CSS si fa meglio (capitolo <a href="#immagini-css">B.9</a>).</td></tr>
+    <tr><td><code>width</code></td><td>Larghezza in pixel</td></tr>
   </table></div>
   <h3>Percorsi relativi e assoluti</h3>
   <div class="tw"><table class="t">
@@ -344,21 +384,33 @@ h1 {
     <tr><td><code>../img/logo.png</code></td><td>Sale di una cartella (<code>..</code>) e poi entra in <code>img</code></td></tr>
     <tr><td><code>https://www.sito.it/logo.png</code></td><td>Percorso assoluto: un file su Internet</td></tr>
   </table></div>
-  <div class="note warn"><b>L'immagine non si vede?</b>Controlla il nome del file lettera per lettera: maiuscole, estensione (<code>.png</code> o <code>.jpg</code>) e cartella. Sul server <code>Logo.PNG</code> e <code>logo.png</code> sono file diversi. Nel riquadro qui sotto, prova a scrivere <code>img/logo2.png</code>: compare il testo di <code>alt</code>.</div>
-  <div class="lab" data-title="Immagini" data-height="330">
+  <div class="note warn"><b>L'immagine non si vede?</b>Controlla il nome del file lettera per lettera: maiuscole, estensione (<code>.png</code> o <code>.jpg</code>) e cartella. Per un server <code>Logo.PNG</code> e <code>logo.png</code> sono file diversi.</div>
+  <div class="lab ex" data-title="Immagini" data-height="330" data-task="1) Scrivi img/logo2.png al posto di img/logo.png e guarda che cosa compare. Rimetti il nome giusto. 2) Aggiungi sotto il titolo l'immagine img/magazzino.png, larga 400 pixel, con un testo alternativo adatto.">
     <script type="text/plain" class="h"><img src="img/logo.png" alt="Logo Seriana Logistica" width="80">
-<h1>Seriana Logistica</h1>
-<img src="img/magazzino.png" alt="Scaffalature del magazzino con i pallet" width="400"></script>
+<h1>Seriana Logistica</h1></script>
     <script type="text/plain" class="c">body {
     font-family: Verdana, sans-serif;
 }</script>
+    <script type="text/plain" class="sh"><img src="img/logo.png" alt="Logo Seriana Logistica" width="80">
+<h1>Seriana Logistica</h1>
+<img src="img/magazzino.png" alt="Scaffalature del magazzino con i pallet" width="400"></script>
+  </div>
+  <div class="fill" data-title="I percorsi">
+    <script type="text/plain" class="f"><!-- il file foto.jpg è nella stessa cartella di index.html -->
+<img src="[[foto.jpg]]" alt="Foto">
+
+<!-- il file furgone.png è nella cartella img, accanto a index.html -->
+<img src="[[img/furgone.png]]" alt="Furgone">
+
+<!-- il testo che compare se l'immagine non si carica -->
+<img src="img/logo.png" [[alt]]="Logo Seriana Logistica"></script>
   </div>
 </section>
 
 <section class="ch" id="tabelle-html" data-n="A.4" data-t="Tabelle">
   <h2><span class="lab-n">A.4</span>Tabelle</h2>
   <p class="goal">Una tabella è fatta di righe (<code>tr</code>). Ogni riga contiene celle di intestazione (<code>th</code>) o celle normali (<code>td</code>).</p>
-  <div class="lab" data-title="La tabella delle tariffe" data-height="280">
+  <div class="lab ex" data-title="La tabella delle tariffe" data-height="280" data-task="Aggiungi in fondo una riga: Consegna pallet, per pallet, 45,00 €.">
     <script type="text/plain" class="h"><table>
     <tr>
         <th>Servizio</th>
@@ -375,17 +427,46 @@ h1 {
         <td>per riga d'ordine</td>
         <td>0,45 €</td>
     </tr>
-    <tr>
-        <td>Consegna in Lombardia</td>
-        <td>per collo</td>
-        <td>7,50 €</td>
-    </tr>
 </table></script>
     <script type="text/plain" class="c">/* Senza CSS la tabella non ha bordi.
-   La rendiamo bella nel capitolo B.10 */
+   La sistemiamo nel capitolo B.9 */
 table, th, td {
     border: 1px solid gray;
 }</script>
+    <script type="text/plain" class="sh"><table>
+    <tr>
+        <th>Servizio</th>
+        <th>Unità</th>
+        <th>Prezzo</th>
+    </tr>
+    <tr>
+        <td>Posto pallet</td>
+        <td>al mese</td>
+        <td>12,00 €</td>
+    </tr>
+    <tr>
+        <td>Picking</td>
+        <td>per riga d'ordine</td>
+        <td>0,45 €</td>
+    </tr>
+    <tr>
+        <td>Consegna pallet</td>
+        <td>per pallet</td>
+        <td>45,00 €</td>
+    </tr>
+</table></script>
+  </div>
+  <div class="fill" data-title="Una tabella">
+    <script type="text/plain" class="f"><[[table]]>
+    <[[tr]]>
+        <[[th]]>Servizio</th>
+        <th>Prezzo</th>
+    </tr>
+    <tr>
+        <[[td]]>Picking</td>
+        <td>0,45 €</td>
+    </[[tr]]>
+</table></script>
   </div>
 </section>
 
@@ -411,7 +492,7 @@ table, th, td {
     <li>Un link può contenere un'immagine: <code>&lt;a href="index.html"&gt;&lt;img src="img/logo.png" alt="Torna alla home"&gt;&lt;/a&gt;</code>. Si usa spesso per il logo, che riporta alla home.</li>
   </ul>
   <div class="note"><b>Come funziona l'ancora</b>Il link <code>href="#tariffe"</code> cerca nella pagina l'elemento con <code>id="tariffe"</code>. Il nome deve essere uguale, senza il <code>#</code> nell'id. È così che funziona il menu in alto nei siti delle esercitazioni.</div>
-  <div class="lab" data-title="Clicca i link: sotto la pagina vedi dove porterebbero" data-height="380">
+  <div class="lab" data-title="Clicca i link: sotto la pagina vedi dove porterebbero" data-height="360">
     <script type="text/plain" class="h"><a href="index.html"><img src="img/logo.png" alt="Torna alla home" width="60"></a>
 <p>
     <a href="#servizi">Servizi</a> |
@@ -431,6 +512,50 @@ table, th, td {
     <script type="text/plain" class="c">body {
     font-family: Verdana, sans-serif;
 }</script>
+  </div>
+  <div class="lab ex" data-title="Completa il menu" data-height="340" data-task="Nel menu mancano due link: «Tariffe», che deve saltare alla sezione con id tariffe, e «Scrivici», che deve aprire una email a info@serianalogistica.example. Poi clicca i link per controllare.">
+    <script type="text/plain" class="h"><p>
+    <a href="#servizi">Servizi</a> |
+    <!-- scrivi qui i due link -->
+</p>
+
+<h2 id="servizi">Servizi</h2>
+<p>Stoccaggio, picking e consegne.</p>
+<p style="height: 250px;">(spazio per far scorrere la pagina)</p>
+
+<h2 id="tariffe">Tariffe</h2>
+<p>Posto pallet: 12,00 € al mese.</p></script>
+    <script type="text/plain" class="c">body {
+    font-family: Verdana, sans-serif;
+}</script>
+    <script type="text/plain" class="sh"><p>
+    <a href="#servizi">Servizi</a> |
+    <a href="#tariffe">Tariffe</a> |
+    <a href="mailto:info@serianalogistica.example">Scrivici</a>
+</p>
+
+<h2 id="servizi">Servizi</h2>
+<p>Stoccaggio, picking e consegne.</p>
+<p style="height: 250px;">(spazio per far scorrere la pagina)</p>
+
+<h2 id="tariffe">Tariffe</h2>
+<p>Posto pallet: 12,00 € al mese.</p></script>
+  </div>
+  <div class="fill" data-title="I tipi di link">
+    <script type="text/plain" class="f"><!-- salta alla sezione con id="tariffe" -->
+<a href="[[#tariffe]]">Tariffe</a>
+
+<!-- apre un'email -->
+<a href="[[mailto]]:info@serianalogistica.example">Scrivici</a>
+
+<!-- chiama il numero -->
+<a href="[[tel]]:+390350001111">035 000 1111</a>
+
+<!-- apre Wikipedia in una nuova scheda -->
+<a href="https://it.wikipedia.org" target="[[_blank]]">Wikipedia</a>
+
+<!-- apre la pagina chi-siamo.html della stessa cartella -->
+<a [[href]]="[[chi-siamo.html]]">Chi siamo</a></script>
   </div>
 </section>
 
@@ -459,20 +584,40 @@ table, th, td {
     <li>I commenti si scrivono <code>/* così */</code>. In HTML invece sono <code>&lt;!-- così --&gt;</code>.</li>
   </ul>
   <div class="note warn"><b>Il browser non segnala gli errori</b>Se manca un punto e virgola o una graffa, il browser ignora la dichiarazione sbagliata, e a volte anche quelle dopo. Se uno stile «non funziona», controlla prima la punteggiatura.</div>
-  <div class="lab" data-title="Trova l'errore: perché il paragrafo non diventa grande?" data-height="200">
+  <div class="fill" data-title="La punteggiatura" data-height="150">
+    <script type="text/plain" class="h"><h1>Seriana Logistica</h1>
+<p>Magazzino e consegne in Val Seriana.</p></script>
+    <script type="text/plain" class="f">h1 [[{]]
+    color[[:]] #0F3B57[[;]]
+[[}]]
+
+p {
+    padding: 20[[px]];
+    background-color: #EEF3F6;
+}</script>
+  </div>
+  <div class="lab ex" data-title="Trova gli errori" data-height="200" data-task="Il titolo dovrebbe essere blu con il bordo arancione e il paragrafo dovrebbe avere lo sfondo grigio chiaro con 20 pixel di spazio interno. Nel CSS ci sono tre errori: trovali e correggili.">
     <script type="text/plain" class="h"><h1>Seriana Logistica</h1>
 <p>Magazzino e consegne in Val Seriana.</p></script>
     <script type="text/plain" class="c">h1 {
     color: #0F3B57
-    text-align: center;
+    border: 3px solid #C85A12;
 }
 
 p {
-    font-size: 22 px;
-    color: #C85A12;
+    padding: 20 px;
+    backgroundcolor: #EEF3F6;
+}</script>
+    <script type="text/plain" class="sc">h1 {
+    color: #0F3B57;
+    border: 3px solid #C85A12;
+}
+
+p {
+    padding: 20px;
+    background-color: #EEF3F6;
 }</script>
   </div>
-  <p>Ci sono due errori: manca un <code>;</code> dopo <code>#0F3B57</code>, quindi anche il centrato non funziona, e c'è uno spazio in <code>22 px</code>. Correggili nel riquadro.</p>
 </section>
 
 <section class="ch" id="dove" data-n="B.2" data-t="Dove si scrive il CSS">
@@ -491,40 +636,80 @@ body {
     margin: 0;
 }
 
-/* ---------- 2. HEADER E MENU ---------- */
-header {
+/* ---------- 2. HEADER ---------- */
+.header {
     background-color: #0F3B57;
 }
 
 /* ---------- 3. FOOTER ---------- */
-footer {
-    text-align: center;
+.footer {
+    background-color: #0F3B57;
 }</script>
+  <div class="lab ex" data-title="Da style in linea a stile.css" data-height="250" data-task="Togli i due attributi style dall'HTML. Poi scrivi in stile.css una regola .header che dia lo stesso aspetto. La pagina deve restare uguale.">
+    <script type="text/plain" class="h"><!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Seriana Logistica</title>
+    <link rel="stylesheet" href="stile.css">
+</head>
+<body>
+    <div class="header" style="background-color: #0F3B57; color: white; padding: 20px;">
+        <h1>Seriana Logistica</h1>
+    </div>
+    <p>Magazzino e consegne in Val Seriana.</p>
+</body>
+</html></script>
+    <script type="text/plain" class="c">body {
+    font-family: Verdana, sans-serif;
+    margin: 0;
+}
+
+/* scrivi qui la regola .header */</script>
+    <script type="text/plain" class="sh"><!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Seriana Logistica</title>
+    <link rel="stylesheet" href="stile.css">
+</head>
+<body>
+    <div class="header">
+        <h1>Seriana Logistica</h1>
+    </div>
+    <p>Magazzino e consegne in Val Seriana.</p>
+</body>
+</html></script>
+    <script type="text/plain" class="sc">body {
+    font-family: Verdana, sans-serif;
+    margin: 0;
+}
+
+.header {
+    background-color: #0F3B57;
+    color: white;
+    padding: 20px;
+}</script>
+  </div>
 </section>
 
 <section class="ch" id="selettori" data-n="B.3" data-t="I selettori">
   <h2><span class="lab-n">B.3</span>I selettori</h2>
-  <p class="goal">Il selettore sceglie gli elementi da colorare. Un buon selettore colpisce tutti gli elementi giusti e solo quelli.</p>
+  <p class="goal">Il selettore sceglie gli elementi a cui dare lo stile. Un buon selettore colpisce tutti gli elementi giusti e solo quelli.</p>
   <div class="tw"><table class="t">
     <tr><th>Selettore</th><th>Esempio</th><th>Colpisce</th></tr>
     <tr><td>Di tag</td><td><code>h2</code></td><td>Tutti gli <code>h2</code> della pagina</td></tr>
     <tr><td>Di classe</td><td><code>.card</code></td><td>Tutti gli elementi con <code>class="card"</code></td></tr>
     <tr><td>Di id</td><td><code>#tariffe</code></td><td>L'unico elemento con <code>id="tariffe"</code></td></tr>
-    <tr><td>Discendente</td><td><code>.card h3</code></td><td>Gli <code>h3</code> che stanno <b>dentro</b> un elemento <code>.card</code></td></tr>
     <tr><td>Di gruppo</td><td><code>h1, h2, h3</code></td><td>Tutti gli elementi dell'elenco: una regola sola per più selettori</td></tr>
-    <tr><td>Tag + classe</td><td><code>p.nota</code></td><td>Solo i <code>p</code> con <code>class="nota"</code></td></tr>
-    <tr><td>Universale</td><td><code>*</code></td><td>Tutti gli elementi</td></tr>
-    <tr><td>Pseudoclasse</td><td><code>a:hover</code></td><td>Un elemento in uno stato: qui il link quando il mouse ci passa sopra (capitolo <a href="#link-css">B.8</a>)</td></tr>
   </table></div>
   <div class="lab" id="sel-lab" data-kind="selector" data-height="380">
-    <script type="text/plain" class="h"><header>
+    <script type="text/plain" class="h"><div class="header">
     <h1>Seriana Logistica</h1>
-    <nav>
-        <a href="#servizi">Servizi</a>
-        <a href="#tariffe">Tariffe</a>
-    </nav>
-</header>
-<section id="servizi" class="sezione chiara">
+    <a href="#servizi">Servizi</a> |
+    <a href="#tariffe">Tariffe</a>
+</div>
+<div id="servizi" class="sezione chiara">
     <h2>I nostri servizi</h2>
     <div class="card">
         <h3>Stoccaggio</h3>
@@ -534,47 +719,88 @@ footer {
         <h3>Picking</h3>
         <p>Ordini preparati in giornata.</p>
     </div>
-</section>
-<section id="tariffe" class="sezione">
+</div>
+<div id="tariffe" class="sezione">
     <h2>Le tariffe</h2>
     <h3>Prezzi IVA esclusa</h3>
-    <p class="nota">Preventivi su misura per grandi volumi.</p>
-</section></script>
+    <p>Preventivi su misura per grandi volumi.</p>
+</div></script>
     <script type="text/plain" class="c">body { font-family: Verdana, sans-serif; }
-.card { border: 1px solid #ccc; padding: 4px 10px; margin: 8px 0; }</script>
+.card { border: 1px solid #CCCCCC; padding: 4px 10px; margin: 8px 0; }</script>
   </div>
-  <p>Confronta <code>h3</code> con <code>.card h3</code>: il primo colpisce anche «Prezzi IVA esclusa», il secondo solo i titoli delle card.</p>
+  <p>Prova <code>.sezione</code> e poi <code>.chiara</code>: il primo blocco ha tutte e due le classi, quindi lo colpiscono tutti e due i selettori.</p>
+  <div class="fill" data-title="Scegli il selettore giusto" data-height="260">
+    <script type="text/plain" class="h"><h1>Seriana Logistica</h1>
+<h2>I nostri servizi</h2>
+<div class="card"><h3>Stoccaggio</h3></div>
+<div class="card"><h3>Picking</h3></div>
+<p id="nota">Prezzi IVA esclusa.</p></script>
+    <script type="text/plain" class="f">/* tutte le card */
+[[.card]] {
+    border: 2px solid #C85A12;
+}
+
+/* solo il paragrafo con id="nota" */
+[[#nota]] {
+    color: gray;
+}
+
+/* h1 e h2 insieme, con una regola sola */
+h1[[,]] h2 {
+    color: #0F3B57;
+}</script>
+  </div>
+  <div class="lab ex" data-title="Una regola sola" data-height="260" data-task="Nel CSS ci sono due regole uguali, una per h1 e una per h2. Sostituiscile con una sola regola di gruppo. Poi aggiungi una regola che dia lo sfondo #EEF3F6 a tutti gli elementi con classe card.">
+    <script type="text/plain" class="h"><h1>Seriana Logistica</h1>
+<h2>I nostri servizi</h2>
+<div class="card"><h3>Stoccaggio</h3></div>
+<div class="card"><h3>Picking</h3></div></script>
+    <script type="text/plain" class="c">body {
+    font-family: Verdana, sans-serif;
+}
+
+h1 {
+    color: #0F3B57;
+}
+
+h2 {
+    color: #0F3B57;
+}</script>
+    <script type="text/plain" class="sc">body {
+    font-family: Verdana, sans-serif;
+}
+
+h1, h2 {
+    color: #0F3B57;
+}
+
+.card {
+    background-color: #EEF3F6;
+}</script>
+  </div>
 </section>
 
 <section class="ch" id="cascata" data-n="B.4" data-t="Ereditarietà e cascata">
   <h2><span class="lab-n">B.4</span>Ereditarietà e cascata</h2>
   <p class="goal">Due domande: quali stili passano dai genitori ai figli? E se due regole si contraddicono, chi vince?</p>
   <h3>Ereditarietà</h3>
-  <p>Le proprietà del <b>testo</b> (<code>color</code>, <code>font-family</code>, <code>font-size</code>, <code>line-height</code>, <code>text-align</code>) passano dal genitore ai figli. Per questo basta scrivere il font una volta in <code>body</code>.</p>
+  <p>Le proprietà del <b>testo</b> (<code>color</code>, <code>font-family</code>, <code>font-size</code>) passano dal genitore ai figli. Per questo basta scrivere il font una volta in <code>body</code>: lo prendono tutti gli elementi della pagina.</p>
   <p>Le proprietà della <b>scatola</b> (<code>padding</code>, <code>margin</code>, <code>border</code>, <code>background-color</code>, <code>width</code>) non si ereditano.</p>
-  <div class="note warn"><b>I link non ereditano il colore</b>Il browser dà ai link un suo colore (blu, viola se già visitati). Se l'header è blu scuro con testo bianco, i link restano blu: il colore va dato a loro, con <code>header a { color: white; }</code>.</div>
+  <div class="note warn"><b>I link non ereditano il colore</b>Il browser dà ai link un suo colore (blu, viola se già visitati). Se una fascia ha <code>color: white</code>, i link dentro restano blu: il colore va dato ai link con una loro classe.</div>
   <h3>La cascata: chi vince</h3>
   <ol>
     <li>Vince la regola con il selettore <b>più specifico</b>: <code>style="…"</code> in linea &gt; <code>#id</code> &gt; <code>.classe</code> &gt; <code>tag</code>.</li>
-    <li>Un selettore discendente somma i pezzi: <code>.hero h2</code> (classe + tag) batte <code>h2</code> (solo tag).</li>
     <li>A parità di specificità vince la regola scritta <b>più in basso</b> nel file.</li>
   </ol>
-  <div class="lab" data-title="Perché il titolo della fascia arancione è bianco?" data-height="300">
+  <div class="lab ex" data-title="Chi vince?" data-height="290" data-task="1) Il primo titolo è bianco anche se la regola h2 è scritta dopo: perché? 2) Cambia .bianco in h2: che colore prendono i titoli, e perché? 3) Rimetti .bianco e aggiungi all'HTML del primo titolo style=&quot;color: yellow;&quot;: chi vince adesso?">
     <script type="text/plain" class="h"><div class="hero">
-    <h2>Il tuo magazzino in Val Seriana</h2>
+    <h2 class="bianco">Il tuo magazzino in Val Seriana</h2>
     <p>Stoccaggio, picking e consegne</p>
 </div>
 <h2>I nostri servizi</h2>
 <p>Due titoli h2, due colori diversi.</p></script>
-    <script type="text/plain" class="c">/* Tutti gli h2 sono blu */
-h2 {
-    color: #0F3B57;
-}
-
-/* Ma dentro .hero sono bianchi:
-   .hero h2 è più specifico di h2 */
-.hero h2 {
-    color: white;
+    <script type="text/plain" class="c">body {
+    font-family: Verdana, sans-serif;
 }
 
 .hero {
@@ -583,69 +809,124 @@ h2 {
     padding: 20px;
 }
 
-body {
-    font-family: Verdana, sans-serif;
+/* La classe è più specifica del tag:
+   vince anche se è scritta prima */
+.bianco {
+    color: white;
+}
+
+h2 {
+    color: #0F3B57;
 }</script>
   </div>
-  <p>Prova a cambiare <code>.hero h2</code> in <code>h2</code>: ora tutte e due le regole hanno lo stesso selettore e vince quella più in basso, quindi tutti i titoli diventano bianchi.</p>
+  <div class="fill" data-title="Chi vince?">
+    <script type="text/plain" class="f">/* h1 { color: blue; }  contro  .titolo { color: red; }
+   Vince: [[.titolo]] */
+
+/* .titolo { color: red; }  contro  #principale { color: green; }
+   Vince: [[#principale]] */
+
+/* due regole p { color: ... } uguali: vince quella scritta più in [[basso]] */
+
+/* il colore scritto nel body passa ai figli: si chiama [[ereditarietà|ereditarieta]] */</script>
+  </div>
 </section>
 
 <section class="ch" id="colori" data-n="B.5" data-t="I colori">
   <h2><span class="lab-n">B.5</span>I colori</h2>
-  <p class="goal"><code>color</code> colora il testo, <code>background-color</code> lo sfondo. I valori si possono scrivere in più modi.</p>
+  <p class="goal"><code>color</code> colora il testo, <code>background-color</code> lo sfondo. I colori si scrivono con il nome o con il codice esadecimale.</p>
   <div class="tw"><table class="t">
     <tr><th>Formato</th><th>Esempio</th><th>Nota</th></tr>
-    <tr><td>Nome</td><td><code>white</code>, <code>orange</code>, <code>darkblue</code></td><td>Comodo, ma sono solo 140 colori</td></tr>
-    <tr><td>Esadecimale</td><td><code>#0F3B57</code></td><td>Il più usato. Due cifre per rosso, verde e blu, da <code>00</code> a <code>FF</code></td></tr>
-    <tr><td>Esadecimale corto</td><td><code>#FFF</code> = <code>#FFFFFF</code></td><td>Quando le cifre sono a coppie uguali</td></tr>
-    <tr><td>RGB</td><td><code>rgb(15, 59, 87)</code></td><td>Rosso, verde, blu da 0 a 255</td></tr>
-    <tr><td>RGBA</td><td><code>rgba(0, 0, 0, 0.5)</code></td><td>L'ultimo numero è l'opacità, da 0 (trasparente) a 1</td></tr>
+    <tr><td>Nome (in inglese)</td><td><code>white</code>, <code>orange</code>, <code>darkblue</code>, <code>lightgray</code></td><td>Comodo, ma i nomi sono pochi: circa 140</td></tr>
+    <tr><td>Esadecimale</td><td><code>#0F3B57</code></td><td>Il cancelletto e sei cifre: due per il rosso, due per il verde, due per il blu, da <code>00</code> a <code>FF</code>. Si possono scegliere milioni di colori, anche quelli esatti del logo aziendale.</td></tr>
   </table></div>
-  <h3>Il contrasto</h3>
-  <p>Il testo si deve leggere bene. Le linee guida per l'accessibilità (WCAG) chiedono un rapporto di contrasto di almeno <b>4,5 : 1</b> per il testo normale e <b>3 : 1</b> per i titoli grandi. Scegli i colori e controlla:</p>
-  <div class="lab" id="contrast-lab" data-kind="contrast"></div>
+  <div class="tw"><table class="t">
+    <tr><th>Esadecimale</th><th>Colore</th></tr>
+    <tr><td><code>#FFFFFF</code></td><td>bianco: tutto al massimo</td></tr>
+    <tr><td><code>#000000</code></td><td>nero: tutto a zero</td></tr>
+    <tr><td><code>#FF0000</code></td><td>rosso: solo il rosso al massimo</td></tr>
+    <tr><td><code>#0F3B57</code></td><td>il blu di Seriana Logistica</td></tr>
+    <tr><td><code>#C85A12</code></td><td>l'arancione di Seriana Logistica</td></tr>
+  </table></div>
+  <div class="note"><b>Trovare il codice di un colore</b>Cerca «color picker» su Google: scegli il colore e copia il codice che inizia con <code>#</code>. Nelle esercitazioni i colori te li do io.</div>
+  <div class="lab ex" data-title="I colori della fascia" data-height="260" data-task="Dai alla fascia .hero lo sfondo #C85A12 e il testo bianco (white). Poi dai al body lo sfondo #EEF3F6 e al titolo h2 fuori dalla fascia il colore #0F3B57.">
+    <script type="text/plain" class="h"><div class="hero">
+    <h1>Seriana Logistica</h1>
+    <p>Il tuo magazzino in Val Seriana</p>
+</div>
+<h2>I nostri servizi</h2>
+<p>Stoccaggio, picking e consegne.</p></script>
+    <script type="text/plain" class="c">body {
+    font-family: Verdana, sans-serif;
+}
+
+.hero {
+    padding: 20px;
+}</script>
+    <script type="text/plain" class="sc">body {
+    font-family: Verdana, sans-serif;
+    background-color: #EEF3F6;
+}
+
+.hero {
+    padding: 20px;
+    background-color: #C85A12;
+    color: white;
+}
+
+h2 {
+    color: #0F3B57;
+}</script>
+  </div>
+  <div class="fill" data-title="Colori" data-height="170">
+    <script type="text/plain" class="h"><div class="header"><h1>Seriana Logistica</h1></div></script>
+    <script type="text/plain" class="f">.header {
+    /* sfondo blu #0F3B57 */
+    [[background-color]]: [[#]]0F3B57;
+    /* testo bianco, scritto con il nome */
+    [[color]]: [[white]];
+    padding: 10px;
+}</script>
+  </div>
 </section>
 
 <section class="ch" id="testo-css" data-n="B.6" data-t="Il testo">
   <h2><span class="lab-n">B.6</span>Il testo</h2>
-  <p class="goal">Le proprietà per carattere, grandezza, peso, allineamento e spaziatura del testo.</p>
+  <p class="goal">Due proprietà per il testo: il tipo di carattere e la grandezza.</p>
   <div class="tw"><table class="t">
     <tr><th>Proprietà</th><th>Esempio</th><th>Effetto</th></tr>
-    <tr><td><code>font-family</code></td><td><code>Verdana, Arial, sans-serif</code></td><td>Il carattere. Si scrive un elenco: se manca il primo, il browser usa il successivo. L'ultimo è una famiglia generica (<code>serif</code>, <code>sans-serif</code>, <code>monospace</code>)</td></tr>
-    <tr><td><code>font-size</code></td><td><code>18px</code>, <code>1.5em</code></td><td>La grandezza. <code>em</code> è relativo al genitore: <code>1.5em</code> = una volta e mezza</td></tr>
-    <tr><td><code>font-weight</code></td><td><code>bold</code>, <code>normal</code>, <code>700</code></td><td>Il peso (grassetto)</td></tr>
-    <tr><td><code>font-style</code></td><td><code>italic</code></td><td>Corsivo</td></tr>
-    <tr><td><code>text-align</code></td><td><code>left</code>, <code>center</code>, <code>right</code>, <code>justify</code></td><td>L'allineamento del testo dentro il suo blocco</td></tr>
-    <tr><td><code>text-decoration</code></td><td><code>none</code>, <code>underline</code></td><td>La sottolineatura. <code>none</code> la toglie ai link</td></tr>
-    <tr><td><code>text-transform</code></td><td><code>uppercase</code></td><td>Tutto maiuscolo, senza riscrivere il testo</td></tr>
-    <tr><td><code>line-height</code></td><td><code>1.5</code></td><td>L'altezza della riga: 1.5 = una volta e mezza la grandezza del carattere</td></tr>
-    <tr><td><code>letter-spacing</code></td><td><code>2px</code></td><td>Spazio tra le lettere</td></tr>
+    <tr><td><code>font-family</code></td><td><code>Verdana, Arial, sans-serif</code></td><td>Il tipo di carattere. Si scrive un elenco separato da virgole: se sul computer manca il primo, il browser usa il successivo. L'ultimo è sempre una famiglia generica: <code>serif</code> (con le grazie), <code>sans-serif</code> (senza grazie) o <code>monospace</code> (lettere tutte larghe uguali).</td></tr>
+    <tr><td><code>font-size</code></td><td><code>18px</code></td><td>La grandezza del carattere in pixel. Il testo normale del browser è <code>16px</code>.</td></tr>
   </table></div>
-  <div class="lab" data-title="Il testo della sezione Servizi" data-height="330">
-    <script type="text/plain" class="h"><p class="etichetta">I nostri servizi</p>
-<h2>Stoccaggio e picking</h2>
-<p>Riceviamo la tua merce, la controlliamo e la sistemiamo
-   negli scaffali. Quando arriva un ordine, prepariamo i colli
-   e li consegniamo al corriere entro la giornata.</p></script>
+  <div class="note"><b>I nomi con lo spazio</b>Se il nome del carattere ha uno spazio, va tra virgolette: <code>font-family: "Times New Roman", serif;</code></div>
+  <div class="lab ex" data-title="Carattere e grandezza" data-height="260" data-task="Metti a tutta la pagina il carattere Verdana, con sans-serif come riserva. Poi fai il titolo h1 di 32px e i paragrafi di 18px. Prova anche Georgia, serif e Courier New, monospace.">
+    <script type="text/plain" class="h"><h1>Seriana Logistica</h1>
+<p>Riceviamo la tua merce, la controlliamo e la sistemiamo negli scaffali.</p>
+<p>Quando arriva un ordine, prepariamo i colli e li consegniamo al corriere entro la giornata.</p></script>
     <script type="text/plain" class="c">body {
-    font-family: Verdana, Arial, sans-serif;
-    color: #2B2B2B;
-    line-height: 1.6;
+
+}</script>
+    <script type="text/plain" class="sc">body {
+    font-family: Verdana, sans-serif;
 }
 
-.etichetta {
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    font-size: 13px;
-    font-weight: bold;
-    color: #C85A12;
-    margin-bottom: 0;
+h1 {
+    font-size: 32px;
 }
 
-h2 {
-    font-size: 28px;
-    color: #0F3B57;
-    margin-top: 4px;
+p {
+    font-size: 18px;
+}</script>
+  </div>
+  <div class="fill" data-title="Il testo" data-height="170">
+    <script type="text/plain" class="h"><h1>Seriana Logistica</h1>
+<p>Magazzino e consegne in Val Seriana.</p></script>
+    <script type="text/plain" class="f">body {
+    font-[[family]]: Arial, [[sans-serif]];
+}
+
+h1 {
+    font-[[size]]: 30[[px]];
 }</script>
   </div>
 </section>
@@ -657,11 +938,10 @@ h2 {
   <div class="tw"><table class="t">
     <tr><th>Proprietà</th><th>Cos'è</th></tr>
     <tr><td><code>padding</code></td><td>Lo spazio <b>dentro</b> la scatola, tra il contenuto e il bordo. Prende il colore di sfondo dell'elemento.</td></tr>
-    <tr><td><code>border</code></td><td>Il bordo. Si scrivono tre cose: spessore, stile (<code>solid</code>, <code>dashed</code>, <code>dotted</code>), colore. Solo un lato: <code>border-top</code>, <code>border-bottom</code>…</td></tr>
+    <tr><td><code>border</code></td><td>Il bordo. Si scrivono tre cose: spessore, stile (<code>solid</code> continuo, <code>dashed</code> a trattini, <code>dotted</code> a puntini), colore. Per un solo lato: <code>border-top</code>, <code>border-right</code>, <code>border-bottom</code>, <code>border-left</code>.</td></tr>
     <tr><td><code>margin</code></td><td>Lo spazio <b>fuori</b> dalla scatola, che la separa dagli altri elementi. È sempre trasparente.</td></tr>
-    <tr><td><code>width</code> / <code>max-width</code></td><td>Larghezza fissa / larghezza massima. <code>max-width</code> si adatta agli schermi piccoli.</td></tr>
+    <tr><td><code>width</code> / <code>max-width</code></td><td>Larghezza fissa / larghezza massima. Con <code>max-width</code> la scatola si stringe sugli schermi piccoli.</td></tr>
     <tr><td><code>border-radius</code></td><td>Angoli arrotondati</td></tr>
-    <tr><td><code>box-shadow</code></td><td>Ombra: spostamento orizzontale, verticale, sfocatura, colore. Es. <code>0 2px 6px rgba(0,0,0,0.15)</code></td></tr>
   </table></div>
   <h3>Una, due o quattro misure</h3>
   <script type="text/plain" class="show" data-lang="css">padding: 20px;               /* tutti e 4 i lati */
@@ -669,7 +949,7 @@ padding: 10px 30px;          /* sopra e sotto 10, destra e sinistra 30 */
 padding: 5px 10px 15px 20px; /* sopra, destra, sotto, sinistra: in senso orario */
 margin: 0 auto;              /* centra un blocco che ha una larghezza */</script>
   <div class="note"><b>box-sizing: border-box</b>Normalmente <code>width</code> è solo la larghezza del contenuto: padding e bordo si aggiungono. Con <code>* { box-sizing: border-box; }</code> all'inizio del CSS, <code>width</code> diventa la larghezza totale e i conti tornano. Prova l'interruttore nel riquadro qui sopra.</div>
-  <div class="lab" data-title="Una card dei servizi" data-height="300">
+  <div class="lab ex" data-title="Una card dei servizi" data-height="300" data-task="Trasforma il div in una card: sfondo white, larga al massimo 300px e centrata, 20px di spazio interno, un bordo arancione #C85A12 spesso 5px solo in alto, angoli arrotondati di 6px.">
     <script type="text/plain" class="h"><div class="card">
     <h3>Consegne</h3>
     <p>Furgoni e camion per consegne in tutta la Lombardia.</p>
@@ -680,141 +960,92 @@ margin: 0 auto;              /* centra un blocco che ha una larghezza */</script
 }
 
 .card {
-    background-color: white;
-    max-width: 300px;
-    padding: 20px;
-    margin: 20px auto;
-    border-top: 5px solid #C85A12;
-    border-radius: 6px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-}
 
-.card h3 {
-    color: #0F3B57;
-    margin-top: 0;
 }</script>
-  </div>
-</section>
-
-<section class="ch" id="link-css" data-n="B.8" data-t="I link con il CSS">
-  <h2><span class="lab-n">B.8</span>I link con il CSS</h2>
-  <p class="goal">Un link cambia aspetto a seconda dello stato. Le <b>pseudoclassi</b> selezionano proprio questi stati.</p>
-  <div class="tw"><table class="t">
-    <tr><th>Pseudoclasse</th><th>Quando vale</th></tr>
-    <tr><td><code>a:link</code></td><td>Il link non ancora visitato</td></tr>
-    <tr><td><code>a:visited</code></td><td>Il link già visitato (il browser ricorda la cronologia)</td></tr>
-    <tr><td><code>a:hover</code></td><td>Il mouse è sopra il link</td></tr>
-    <tr><td><code>a:focus</code></td><td>Il link è selezionato con la tastiera (tasto <code>Tab</code>)</td></tr>
-    <tr><td><code>a:active</code></td><td>Il momento del clic, mentre il tasto è premuto</td></tr>
-  </table></div>
-  <div class="note"><b>L'ordine conta: LoVe HAte</b>Scrivi le regole nell'ordine <b>L</b>ink, <b>V</b>isited, <b>H</b>over, <b>A</b>ctive. Hanno la stessa specificità, quindi vince l'ultima (capitolo <a href="#cascata">B.4</a>). Se metti <code>:hover</code> prima di <code>:visited</code>, sui link visitati l'hover non si vede.</div>
-  <h3>Tre usi tipici</h3>
-  <ol>
-    <li><b>Link nel testo</b>: colore dell'azienda, sottolineatura che sparisce al passaggio del mouse.</li>
-    <li><b>Menu di navigazione</b>: link senza sottolineatura, con <code>padding</code> e sfondo che cambia al passaggio. Così l'area cliccabile è più grande.</li>
-    <li><b>Pulsante</b> (per esempio «Chiedi un preventivo»): un link con sfondo pieno, angoli arrotondati, <code>display: inline-block</code>.</li>
-  </ol>
-  <div class="lab" data-title="Passa con il mouse e usa il tasto Tab sui link" data-height="360">
-    <script type="text/plain" class="h"><nav>
-    <a href="#servizi">Servizi</a>
-    <a href="#tariffe">Tariffe</a>
-    <a href="#contatti">Contatti</a>
-</nav>
-
-<p>Seriana Logistica lavora con la
-   <a href="https://it.wikipedia.org/wiki/Logistica" target="_blank">logistica conto terzi</a>
-   dal 1998.</p>
-
-<p><a class="pulsante" href="mailto:info@serianalogistica.example">Chiedi un preventivo</a></p></script>
-    <script type="text/plain" class="c">body {
+    <script type="text/plain" class="sc">body {
     font-family: Verdana, sans-serif;
-}
-
-/* 1. Link nel testo */
-a:link    { color: #C85A12; }
-a:visited { color: #8A3E0C; }
-a:hover   { text-decoration: none; }
-
-/* 2. Menu: i link dentro nav */
-nav {
-    background-color: #0F3B57;
-    padding: 10px;
-}
-nav a {
-    color: white;
-    text-decoration: none;
-    padding: 8px 14px;
-    border-radius: 4px;
-}
-nav a:hover,
-nav a:focus {
-    background-color: #C85A12;
-}
-
-/* 3. Pulsante */
-.pulsante {
-    display: inline-block;
-    background-color: #C85A12;
-    padding: 12px 24px;
-    border-radius: 6px;
-    font-weight: bold;
-}
-a.pulsante {
-    color: white;
-    text-decoration: none;
-}
-a.pulsante:hover {
-    background-color: #0F3B57;
-}</script>
-  </div>
-  <div class="note warn"><b>Non togliere il contorno del focus</b>Chi naviga con la tastiera vede dove si trova grazie al contorno del link selezionato. Se scrivi <code>outline: none</code>, dai sempre un altro segno visibile con <code>:focus</code>, come lo sfondo del menu qui sopra.</div>
-</section>
-
-<section class="ch" id="immagini-css" data-n="B.9" data-t="Le immagini con il CSS">
-  <h2><span class="lab-n">B.9</span>Le immagini con il CSS</h2>
-  <p class="goal">Con il CSS le immagini si adattano allo schermo, si centrano e si arrotondano.</p>
-  <ul>
-    <li><code>max-width: 100%</code>: l'immagine non esce mai dal suo contenitore, anche sul telefono.</li>
-    <li><code>height: auto</code>: mantiene le proporzioni.</li>
-    <li>Un'immagine è in linea. Per centrarla: <code>display: block</code> + <code>margin: 0 auto</code>. Oppure <code>text-align: center</code> sul genitore.</li>
-    <li><code>border-radius</code> arrotonda gli angoli. <code>border-radius: 50%</code> su un'immagine quadrata la rende un cerchio.</li>
-  </ul>
-  <div class="lab" data-title="Il banner del magazzino" data-height="330">
-    <script type="text/plain" class="h"><div class="banner">
-    <img src="img/magazzino.png" alt="Scaffalature del magazzino con i pallet">
-</div>
-<img class="tondo" src="img/logo.png" alt="Logo Seriana Logistica"></script>
-    <script type="text/plain" class="c">.banner {
-    padding: 20px;
     background-color: #EEF3F6;
 }
 
-.banner img {
-    display: block;
-    max-width: 100%;
-    height: auto;
-    margin: 0 auto;
-    border-radius: 8px;
-}
-
-.tondo {
-    width: 80px;
-    border-radius: 50%;
-    margin: 10px;
+.card {
+    background-color: white;
+    max-width: 300px;
+    margin: 20px auto;
+    padding: 20px;
+    border-top: 5px solid #C85A12;
+    border-radius: 6px;
 }</script>
   </div>
-  <p>Restringi la finestra del browser o guarda la pagina dal telefono: l'immagine del banner si rimpicciolisce con lo schermo.</p>
+  <div class="fill" data-title="Spazi e bordi" data-height="230">
+    <script type="text/plain" class="h"><div class="card"><h3>Stoccaggio</h3><p>Posti pallet coperti.</p></div></script>
+    <script type="text/plain" class="f">.card {
+    /* spazio DENTRO la scatola: 15px su tutti i lati */
+    [[padding]]: 15px;
+
+    /* bordo continuo, blu, spesso 2px */
+    border: 2px [[solid]] #0F3B57;
+
+    /* larghezza 250px e centrata */
+    width: 250px;
+    [[margin]]: 10px [[auto]];
+
+    /* angoli arrotondati */
+    [[border-radius]]: 8px;
+}</script>
+  </div>
 </section>
 
-<section class="ch" id="tabelle-css" data-n="B.10" data-t="Le tabelle con il CSS">
-  <h2><span class="lab-n">B.10</span>Le tabelle con il CSS</h2>
-  <p class="goal">Con quattro regole una tabella diventa leggibile: bordi uniti, spazio nelle celle, intestazione colorata, righe alternate.</p>
+<section class="ch" id="immagini-css" data-n="B.8" data-t="Le immagini con il CSS">
+  <h2><span class="lab-n">B.8</span>Le immagini con il CSS</h2>
+  <p class="goal">Con il CSS le immagini si adattano allo schermo, si centrano e si arrotondano.</p>
+  <ul>
+    <li><code>max-width: 100%</code>: l'immagine non esce mai dal suo contenitore, anche sul telefono.</li>
+    <li>Per centrare un'immagine: <code>display: block</code> (la trasforma in un blocco) + <code>margin: 0 auto</code>.</li>
+    <li><code>border-radius</code> arrotonda gli angoli. <code>border-radius: 50%</code> su un'immagine quadrata la rende un cerchio.</li>
+  </ul>
+  <div class="lab ex" data-title="Il banner del magazzino" data-height="330" data-task="1) Dai all'immagine con classe banner gli angoli arrotondati di 12px. 2) Fai diventare il logo un cerchio. 3) Togli display: block dalla regola .banner: l'immagine è ancora centrata?">
+    <script type="text/plain" class="h"><img class="logo" src="img/logo.png" alt="Logo Seriana Logistica">
+<img class="banner" src="img/magazzino.png" alt="Scaffalature del magazzino con i pallet"></script>
+    <script type="text/plain" class="c">body {
+    background-color: #EEF3F6;
+}
+
+.banner {
+    display: block;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+.logo {
+    width: 80px;
+}</script>
+    <script type="text/plain" class="sc">body {
+    background-color: #EEF3F6;
+}
+
+.banner {
+    display: block;
+    max-width: 100%;
+    margin: 0 auto;
+    border-radius: 12px;
+}
+
+.logo {
+    width: 80px;
+    border-radius: 50%;
+}</script>
+  </div>
+</section>
+
+<section class="ch" id="tabelle-css" data-n="B.9" data-t="Le tabelle con il CSS">
+  <h2><span class="lab-n">B.9</span>Le tabelle con il CSS</h2>
+  <p class="goal">Con poche regole una tabella diventa leggibile: bordi uniti, spazio nelle celle, intestazione colorata, righe alternate.</p>
   <ul>
     <li><code>border-collapse: collapse</code>: unisce i bordi doppi delle celle in una linea sola.</li>
+    <li>Una regola per <code>th</code> e una per <code>td</code> valgono per tutte le celle: non serve uno <code>style</code> per ogni cella.</li>
     <li><code>tr:nth-child(even)</code>: seleziona le righe pari (<code>odd</code> = dispari). Serve per le righe a strisce.</li>
-    <li><code>tr:hover</code>: evidenzia la riga sotto il mouse.</li>
   </ul>
-  <div class="lab" data-title="La tabella delle tariffe" data-height="320">
+  <div class="lab ex" data-title="La tabella delle tariffe" data-height="320" data-task="La tabella è ancora grezza. 1) Unisci i bordi con border-collapse. 2) Dai alle celle th lo sfondo #0F3B57 e il testo white. 3) Dai a th e td 10px di spazio interno. 4) Colora le righe pari di #EEF3F6.">
     <script type="text/plain" class="h"><table>
     <tr><th>Servizio</th><th>Unità</th><th>Prezzo</th></tr>
     <tr><td>Posto pallet</td><td>al mese</td><td>12,00 €</td></tr>
@@ -828,278 +1059,78 @@ a.pulsante:hover {
 
 table {
     width: 100%;
+}
+
+th, td {
+    border: 1px solid #CCCCCC;
+}</script>
+    <script type="text/plain" class="sc">body {
+    font-family: Verdana, sans-serif;
+}
+
+table {
+    width: 100%;
     border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #CCCCCC;
+    padding: 10px;
 }
 
 th {
     background-color: #0F3B57;
     color: white;
-    text-align: left;
-    padding: 10px;
-}
-
-td {
-    padding: 10px;
-    border-bottom: 1px solid #CCCCCC;
 }
 
 tr:nth-child(even) {
-    background-color: #F4F7F9;
-}
-
-tr:hover {
-    background-color: #FBEADB;
-}</script>
-  </div>
-</section>
-
-<section class="ch" id="flex" data-n="B.11" data-t="Display e flexbox">
-  <h2><span class="lab-n">B.11</span>Display e flexbox</h2>
-  <p class="goal">Con <code>display</code> decidi come si dispone un elemento. Con <code>display: flex</code> metti i blocchi uno accanto all'altro: è così che si fanno le card affiancate e il menu in riga.</p>
-  <div class="tw"><table class="t">
-    <tr><th>Valore</th><th>Comportamento</th><th>Esempi</th></tr>
-    <tr><td><code>block</code></td><td>Va a capo e occupa tutta la larghezza. Accetta <code>width</code>, <code>height</code> e tutti i margini.</td><td><code>div</code>, <code>p</code>, <code>h1</code>, <code>section</code></td></tr>
-    <tr><td><code>inline</code></td><td>Sta nella riga. Ignora <code>width</code>, <code>height</code> e i margini sopra e sotto.</td><td><code>a</code>, <code>span</code>, <code>strong</code>, <code>img</code></td></tr>
-    <tr><td><code>inline-block</code></td><td>Sta nella riga ma accetta le misure, come un blocco.</td><td>i pulsanti</td></tr>
-    <tr><td><code>none</code></td><td>L'elemento sparisce dalla pagina.</td><td></td></tr>
-    <tr><td><code>flex</code></td><td>L'elemento diventa un contenitore flessibile: i suoi <b>figli</b> si dispongono in riga.</td><td>menu, card, header</td></tr>
-  </table></div>
-  <h3>Le proprietà del contenitore flex</h3>
-  <div class="tw"><table class="t">
-    <tr><th>Proprietà</th><th>A cosa serve</th></tr>
-    <tr><td><code>flex-direction</code></td><td><code>row</code> = in riga (predefinito), <code>column</code> = in colonna</td></tr>
-    <tr><td><code>justify-content</code></td><td>Distribuisce i figli sulla linea principale: <code>flex-start</code>, <code>center</code>, <code>space-between</code>, <code>space-around</code></td></tr>
-    <tr><td><code>align-items</code></td><td>Li allinea nell'altra direzione: <code>stretch</code> (stessa altezza), <code>flex-start</code>, <code>center</code></td></tr>
-    <tr><td><code>flex-wrap</code></td><td><code>wrap</code> = se non c'è posto, i figli vanno a capo</td></tr>
-    <tr><td><code>gap</code></td><td>Lo spazio tra un figlio e l'altro</td></tr>
-  </table></div>
-  <p>Sui figli si usa spesso <code>flex: 1</code>: si dividono lo spazio in parti uguali.</p>
-  <div class="lab" id="flex-lab" data-kind="flex" data-height="300">
-    <script type="text/plain" class="h"><div class="servizi">
-    <div class="card"><h3>Stoccaggio</h3><p>Posti pallet coperti e sorvegliati.</p></div>
-    <div class="card"><h3>Picking</h3><p>Ordini preparati in giornata.</p></div>
-    <div class="card"><h3>Consegne</h3><p>Furgoni e camion in tutta la Lombardia, anche con sponda idraulica.</p></div>
-</div></script>
-  </div>
-</section>
-
-<section class="ch" id="semantici" data-n="B.12" data-t="I box semantici">
-  <h2><span class="lab-n">B.12</span>I box semantici</h2>
-  <p class="goal">HTML5 ha tag che dicono che cosa è ogni zona della pagina. Funzionano come <code>div</code>, ma hanno un significato.</p>
-  <div class="sem" aria-hidden="true">
-    <div class="row">header <small>logo, nome, menu</small></div>
-    <div class="row">nav <small>(dentro header) il menu</small></div>
-    <div class="main">main <small>il contenuto principale, uno per pagina</small>
-      <div class="row">section id="servizi" <small>una sezione con un titolo</small></div>
-      <div class="row">section id="tariffe" <small>un'altra sezione</small></div>
-    </div>
-    <div class="row">footer <small>dati dell'azienda, copyright</small></div>
-  </div>
-  <div class="tw"><table class="t">
-    <tr><th>Prima</th><th>Ora</th><th>Perché è meglio</th></tr>
-    <tr><td><code>&lt;div class="header"&gt;</code></td><td><code>&lt;header&gt;</code></td><td>Il lettore di schermo annuncia «intestazione»</td></tr>
-    <tr><td><code>&lt;p&gt;&lt;a&gt;…&lt;/a&gt; | &lt;a&gt;…&lt;/a&gt;&lt;/p&gt;</code></td><td><code>&lt;nav&gt;</code></td><td>Chi usa la tastiera può saltare al menu</td></tr>
-    <tr><td><code>&lt;div id="servizi"&gt;</code></td><td><code>&lt;section id="servizi"&gt;</code></td><td>La pagina è divisa in parti con un titolo</td></tr>
-    <tr><td><code>&lt;div class="footer"&gt;</code></td><td><code>&lt;footer&gt;</code></td><td>Google capisce dove sono i dati dell'azienda</td></tr>
-  </table></div>
-  <p>Nel CSS si selezionano con il nome del tag, senza punto: <code>header { … }</code>, <code>footer { … }</code>. Si usa anche <code>article</code>, per un contenuto che sta in piedi da solo, come una notizia.</p>
-  <div class="lab" data-title="Header con logo e menu in riga" data-height="300">
-    <script type="text/plain" class="h"><header>
-    <a href="index.html"><img src="img/logo.png" alt="Torna alla home" width="50"></a>
-    <h1>Seriana Logistica</h1>
-    <nav>
-        <a href="#servizi">Servizi</a>
-        <a href="#tariffe">Tariffe</a>
-        <a href="#contatti">Contatti</a>
-    </nav>
-</header>
-<main>
-    <section id="servizi">
-        <h2>I nostri servizi</h2>
-        <p>Stoccaggio, picking e consegne.</p>
-    </section>
-</main>
-<footer>
-    <p>&copy; 2026 Seriana Logistica S.r.l.</p>
-</footer></script>
-    <script type="text/plain" class="c">body {
-    font-family: Verdana, sans-serif;
-    margin: 0;
-}
-
-header {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    background-color: #0F3B57;
-    color: white;
-    padding: 10px 20px;
-}
-
-header h1 {
-    flex: 1;        /* prende lo spazio libero */
-    font-size: 22px;
-    margin: 0;
-}
-
-nav a {
-    color: white;
-    text-decoration: none;
-    margin-left: 12px;
-}
-
-main {
-    padding: 20px;
-}
-
-footer {
-    background-color: #0F3B57;
-    color: white;
-    text-align: center;
-    padding: 4px;
-}</script>
-  </div>
-</section>
-
-<section class="ch" id="responsive" data-n="B.13" data-t="Pagine per il telefono">
-  <h2><span class="lab-n">B.13</span>Pagine per il telefono</h2>
-  <p class="goal">Una pagina <b>responsive</b> si adatta alla larghezza dello schermo. Servono tre cose.</p>
-  <ol>
-    <li>Il meta <code>viewport</code> nel <code>head</code> (capitolo <a href="#struttura">A.1</a>).</li>
-    <li>Misure flessibili: <code>max-width</code> al posto di <code>width</code>, immagini con <code>max-width: 100%</code>, <code>flex-wrap: wrap</code>.</li>
-    <li>Le <b>media query</b>: regole che valgono solo sotto una certa larghezza.</li>
-  </ol>
-  <script type="text/plain" class="show" data-lang="css">/* Queste regole valgono solo se lo schermo è largo 600px o meno */
-@media (max-width: 600px) {
-    .servizi {
-        flex-direction: column;
-    }
-}</script>
-  <p>Sposta il cursore per cambiare la larghezza dello schermo simulato. Sotto i 600 pixel le card vanno in colonna e il menu va sotto il titolo.</p>
-  <div class="lab" id="resp-lab" data-kind="responsive" data-height="380">
-    <script type="text/plain" class="h"><header>
-    <h1>Seriana Logistica</h1>
-    <nav><a href="#">Servizi</a> <a href="#">Tariffe</a> <a href="#">Contatti</a></nav>
-</header>
-<div class="servizi">
-    <div class="card"><h3>Stoccaggio</h3><p>Posti pallet coperti.</p></div>
-    <div class="card"><h3>Picking</h3><p>Ordini in giornata.</p></div>
-    <div class="card"><h3>Consegne</h3><p>In tutta la Lombardia.</p></div>
-</div></script>
-    <script type="text/plain" class="c">body { font-family: Verdana, sans-serif; margin: 0; }
-
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #0F3B57;
-    color: white;
-    padding: 10px 20px;
-}
-header h1 { font-size: 20px; }
-nav a { color: white; margin-left: 10px; }
-
-.servizi {
-    display: flex;
-    gap: 15px;
-    padding: 15px;
-}
-.card {
-    flex: 1;
-    border-top: 5px solid #C85A12;
     background-color: #EEF3F6;
-    padding: 0 15px;
+}</script>
+  </div>
+  <div class="fill" data-title="Le tabelle" data-height="230">
+    <script type="text/plain" class="h"><table>
+    <tr><th>Servizio</th><th>Prezzo</th></tr>
+    <tr><td>Posto pallet</td><td>12,00 €</td></tr>
+    <tr><td>Picking</td><td>0,45 €</td></tr>
+    <tr><td>Consegna</td><td>7,50 €</td></tr>
+</table></script>
+    <script type="text/plain" class="f">table {
+    width: 100%;
+    /* un bordo solo tra le celle */
+    border-collapse: [[collapse]];
 }
 
-@media (max-width: 600px) {
-    header {
-        flex-direction: column;
-    }
-    .servizi {
-        flex-direction: column;
-    }
+/* tutte le celle di intestazione */
+[[th]] {
+    background-color: #C85A12;
+    color: white;
+}
+
+/* tutte le celle normali */
+[[td]] {
+    padding: 8px;
+    border-bottom: 1px solid #CCCCCC;
+}
+
+/* le righe dispari */
+tr:nth-child([[odd]]) {
+    background-color: #EEF3F6;
 }</script>
   </div>
 </section>
 
-<section class="ch" id="strumenti" data-n="B.14" data-t="Strumenti ed errori comuni">
-  <h2><span class="lab-n">B.14</span>Strumenti ed errori comuni</h2>
-  <p class="goal">Quando qualcosa non funziona, non tirare a indovinare: guarda che cosa vede il browser.</p>
-  <h3>Gli strumenti per sviluppatori (F12)</h3>
-  <ol>
-    <li>Nel browser premi <code>F12</code>, oppure tasto destro sull'elemento e <b>Ispeziona</b>.</li>
-    <li>A sinistra vedi l'HTML: clicca un elemento per selezionarlo.</li>
-    <li>A destra, nella scheda <b>Stili</b>, vedi tutte le regole che lo colpiscono. Le dichiarazioni <s>barrate</s> hanno perso la cascata. Quelle con un triangolo giallo hanno un errore di scrittura.</li>
-    <li>Puoi cambiare i valori lì per provare. Le modifiche non si salvano: quando trovi il valore giusto, scrivilo nel tuo <code>stile.css</code>.</li>
-    <li>Il riquadro colorato in fondo alla scheda mostra il box model dell'elemento.</li>
-  </ol>
-  <h3>Se uno stile non funziona, controlla in quest'ordine</h3>
+<section class="ch" id="errori" data-n="B.10" data-t="Se qualcosa non funziona">
+  <h2><span class="lab-n">B.10</span>Se qualcosa non funziona</h2>
+  <p class="goal">Non tirare a indovinare: controlla in quest'ordine.</p>
   <ul class="check">
     <li>Il file <code>stile.css</code> è collegato? Il nome in <code>href</code> è identico al nome del file? Il file è nella stessa cartella?</li>
     <li>Hai salvato il file e aggiornato il browser? Se non cambia nulla, prova <code>Ctrl</code> + <code>F5</code>.</li>
     <li>La punteggiatura: <code>;</code> a fine riga, <code>:</code> tra proprietà e valore, graffe aperte e chiuse.</li>
     <li>Il selettore: classe con il punto (<code>.card</code>), id con il cancelletto (<code>#tariffe</code>), nome uguale a quello nell'HTML.</li>
-    <li>La scrittura: <code>background-color</code> e non <code>backgroud-color</code>, <code>20px</code> senza spazio, colori in inglese.</li>
-    <li>Un'altra regola più specifica vince la tua? Guardalo con <code>F12</code>.</li>
+    <li>La scrittura: <code>background-color</code> e non <code>backgroud-color</code>, <code>20px</code> senza spazio, colori in inglese, esadecimale con il <code>#</code>.</li>
+    <li>Un'altra regola più specifica vince la tua (capitolo <a href="#cascata">B.4</a>)?</li>
     <li>Nell'HTML è rimasto un attributo <code>style="…"</code>? Batte qualsiasi regola del file CSS.</li>
   </ul>
-</section>
-
-<!-- ======================= PARTE C ======================= -->
-<div class="parthead"><span class="pl">PARTE C</span><h2>Il laboratorio</h2></div>
-
-<section class="ch" id="laboratorio" data-n="C.1" data-t="Il sito completo">
-  <h2><span class="lab-n">C.1</span>Il sito completo</h2>
-  <p class="goal">Ecco il sito di Seriana Logistica con tutto quello che abbiamo visto. Spegni e riaccendi i blocchi di regole per vedere che cosa fa ognuno.</p>
-  <div class="lab" id="final-lab" data-kind="final" data-height="560"></div>
-  <h3>Esercizio</h3>
-  <p>Crea il sito di un'altra azienda di logistica inventata, con lo stesso schema: header con logo e menu, fascia con lo slogan, immagine, almeno tre card dei servizi, tabella delle tariffe, contatti con link email e telefono, footer. Usa un file <code>stile.css</code> esterno, nessun attributo <code>style</code> e due colori aziendali a tua scelta, controllando il contrasto con lo strumento del capitolo <a href="#colori">B.5</a>.</p>
-</section>
-
-<section class="ch" id="prontuario" data-n="C.2" data-t="Prontuario delle proprietà">
-  <h2><span class="lab-n">C.2</span>Prontuario delle proprietà</h2>
-  <p class="goal">Tutte le proprietà della guida in un'unica tabella.</p>
-  <div class="tw"><table class="t">
-    <tr><th>Proprietà</th><th>Esempio</th><th>A cosa serve</th></tr>
-    <tr><td colspan="3"><b>Colore e sfondo</b></td></tr>
-    <tr><td><code>color</code></td><td><code>#0F3B57</code></td><td>Colore del testo</td></tr>
-    <tr><td><code>background-color</code></td><td><code>#EEF3F6</code></td><td>Colore di sfondo</td></tr>
-    <tr><td colspan="3"><b>Testo</b></td></tr>
-    <tr><td><code>font-family</code></td><td><code>Verdana, sans-serif</code></td><td>Carattere</td></tr>
-    <tr><td><code>font-size</code></td><td><code>18px</code></td><td>Grandezza</td></tr>
-    <tr><td><code>font-weight</code></td><td><code>bold</code></td><td>Grassetto</td></tr>
-    <tr><td><code>font-style</code></td><td><code>italic</code></td><td>Corsivo</td></tr>
-    <tr><td><code>text-align</code></td><td><code>center</code></td><td>Allineamento</td></tr>
-    <tr><td><code>text-decoration</code></td><td><code>none</code></td><td>Sottolineatura</td></tr>
-    <tr><td><code>text-transform</code></td><td><code>uppercase</code></td><td>Maiuscolo</td></tr>
-    <tr><td><code>line-height</code></td><td><code>1.5</code></td><td>Altezza della riga</td></tr>
-    <tr><td><code>letter-spacing</code></td><td><code>2px</code></td><td>Spazio tra le lettere</td></tr>
-    <tr><td colspan="3"><b>Scatola</b></td></tr>
-    <tr><td><code>padding</code></td><td><code>10px 20px</code></td><td>Spazio interno</td></tr>
-    <tr><td><code>margin</code></td><td><code>0 auto</code></td><td>Spazio esterno (con <code>auto</code> centra)</td></tr>
-    <tr><td><code>border</code></td><td><code>1px solid #CCC</code></td><td>Bordo su tutti i lati</td></tr>
-    <tr><td><code>border-top</code></td><td><code>5px solid #C85A12</code></td><td>Bordo su un solo lato</td></tr>
-    <tr><td><code>border-radius</code></td><td><code>6px</code></td><td>Angoli arrotondati</td></tr>
-    <tr><td><code>box-shadow</code></td><td><code>0 2px 6px rgba(0,0,0,.15)</code></td><td>Ombra</td></tr>
-    <tr><td><code>width</code> / <code>max-width</code></td><td><code>100%</code> / <code>1000px</code></td><td>Larghezza / larghezza massima</td></tr>
-    <tr><td><code>height</code></td><td><code>auto</code></td><td>Altezza</td></tr>
-    <tr><td><code>box-sizing</code></td><td><code>border-box</code></td><td>La larghezza include padding e bordo</td></tr>
-    <tr><td colspan="3"><b>Disposizione</b></td></tr>
-    <tr><td><code>display</code></td><td><code>block</code>, <code>inline-block</code>, <code>flex</code>, <code>none</code></td><td>Come si dispone l'elemento</td></tr>
-    <tr><td><code>flex-direction</code></td><td><code>column</code></td><td>Figli in riga o in colonna</td></tr>
-    <tr><td><code>justify-content</code></td><td><code>space-between</code></td><td>Distribuzione sulla linea principale</td></tr>
-    <tr><td><code>align-items</code></td><td><code>center</code></td><td>Allineamento nell'altra direzione</td></tr>
-    <tr><td><code>flex-wrap</code></td><td><code>wrap</code></td><td>Andare a capo</td></tr>
-    <tr><td><code>gap</code></td><td><code>20px</code></td><td>Spazio tra i figli</td></tr>
-    <tr><td><code>flex</code></td><td><code>1</code></td><td>(sul figlio) prende una parte dello spazio</td></tr>
-    <tr><td colspan="3"><b>Tabelle</b></td></tr>
-    <tr><td><code>border-collapse</code></td><td><code>collapse</code></td><td>Unisce i bordi delle celle</td></tr>
-    <tr><td colspan="3"><b>Selettori speciali</b></td></tr>
-    <tr><td><code>a:hover</code>, <code>a:focus</code></td><td></td><td>Mouse sopra / selezione da tastiera</td></tr>
-    <tr><td><code>a:link</code>, <code>a:visited</code>, <code>a:active</code></td><td></td><td>Non visitato / visitato / mentre si clicca</td></tr>
-    <tr><td><code>tr:nth-child(even)</code></td><td></td><td>Righe pari</td></tr>
-    <tr><td><code>@media (max-width: 600px)</code></td><td></td><td>Regole solo per schermi stretti</td></tr>
-  </table></div>
   <footer class="doc-foot">Guida al CSS · prof. Gianpaolo Dalini · ISIS Oscar Romero, Albino (BG) · a.s. 2026/27. Seriana Logistica è un'azienda inventata per gli esempi.</footer>
 </section>
 
@@ -1269,6 +1300,9 @@ let labCount = 0;
 function buildLab(lab){
   const kind = lab.dataset.kind || "std";
   const hs = lab.querySelector("script.h"), cs = lab.querySelector("script.c");
+  const shs = lab.querySelector("script.sh"), scs = lab.querySelector("script.sc");
+  const SH = shs ? shs.textContent.replace(/^\n/, "") : null, SC = scs ? scs.textContent.replace(/^\n/, "") : null;
+  if (shs) shs.remove(); if (scs) scs.remove();
   const H0 = hs ? hs.textContent.replace(/^\n/, "") : "";
   const C0 = cs ? cs.textContent.replace(/^\n/, "") : "";
   if (hs) hs.remove(); if (cs) cs.remove();
@@ -1279,6 +1313,7 @@ function buildLab(lab){
   const htmlName = full ? "index.html" : "HTML";
   const title = lab.dataset.title || "";
   lab.innerHTML = `<div class="lab-head"><span class="lt">${esc(title)}</span></div>
+    ${lab.dataset.task ? `<div class="task"><b>Consegna</b>${esc(lab.dataset.task)}</div>` : ""}
     <div class="ctrl-slot"></div>
     <div class="lab-body">
       <div class="ed">
@@ -1290,6 +1325,7 @@ function buildLab(lab){
         <div class="lab-tools">
           <button type="button" class="btn" data-a="reset">Ripristina</button>
           <button type="button" class="btn" data-a="copy">Copia questo file</button>
+          ${(SH || SC) ? '<button type="button" class="btn sol" data-a="sol">Mostra soluzione</button>' : ""}
         </div>
       </div>
     </div>`;
@@ -1308,8 +1344,51 @@ function buildLab(lab){
     files.css = C0; files.html = H0; ta.value = files[cur]; pv.status.textContent = "Codice ripristinato."; pv.status.classList.remove("act"); pv.render(files.html, files.css);
   });
   copyText(lab.querySelector('[data-a="copy"]'), () => files[cur]);
+  const solBtn = lab.querySelector('[data-a="sol"]');
+  if (solBtn) solBtn.addEventListener("click", () => {
+    if (SC !== null) files.css = SC; if (SH !== null) files.html = SH;
+    if (SC === null && SH !== null && cur === "css") { cur = "html"; lab.querySelectorAll(".tabs button").forEach(x => x.setAttribute("aria-selected", String(x.dataset.f === "html"))); }
+    ta.value = files[cur]; pv.status.textContent = "Questa è una soluzione possibile. Confrontala con la tua."; pv.status.classList.add("act"); pv.render(files.html, files.css);
+  });
   pv.render(files.html, files.css);
   return {lab, pv, files, ta, setCSS(c){ files.css = c; if (cur === "css") ta.value = c; pv.render(files.html, files.css); }};
+}
+
+
+/* ---------- esercizi di completamento ---------- */
+function fillEx(box){
+  const fs = box.querySelector("script.f"), hs = box.querySelector("script.h");
+  const T = fs.textContent.replace(/^\n/, ""), H = hs ? hs.textContent.replace(/^\n/, "") : null;
+  fs.remove(); if (hs) hs.remove();
+  const parts = T.split(/\[\[(.+?)\]\]/);
+  let pre = "", k = 0;
+  parts.forEach((p, i) => {
+    if (i % 2 === 0) pre += esc(p);
+    else { const ans = p.split("|"); const w = Math.max(...ans.map(a => a.length)) + 1;
+      pre += `<input type="text" data-a="${esc(p)}" size="${Math.max(2, w)}" spellcheck="false" autocapitalize="off" autocomplete="off" aria-label="Spazio ${++k}">`; }
+  });
+  box.innerHTML = `<div class="fill-head">${esc(box.dataset.title || "")}</div><pre>${pre}</pre>
+    <div class="lab-tools"><button type="button" class="btn primary" data-a="check">Controlla</button><button type="button" class="btn" data-a="sol">Mostra soluzione</button><button type="button" class="btn" data-a="clear">Ricomincia</button><span class="res" aria-live="polite"></span></div>`;
+  const ins = [...box.querySelectorAll("input")], res = box.querySelector(".res");
+  const norm = v => v.trim().toLowerCase().replace(/\s+/g, " ");
+  const okOf = inp => inp.dataset.a.split("|").some(a => norm(a) === norm(inp.value));
+  let pv = null;
+  if (H !== null){
+    pv = makePreview({height: +box.dataset.height || 200, url: "anteprima"});
+    pv.status.textContent = "La pagina usa il CSS che stai completando.";
+    box.insertBefore(pv.el, box.querySelector(".lab-tools"));
+  }
+  const build = () => { let out = ""; parts.forEach((p, i) => { out += i % 2 === 0 ? p : (ins[(i-1)/2].value || ""); }); return out; };
+  const upd = debounce(() => { if (pv) pv.render(H, build()); }, 200);
+  ins.forEach(inp => inp.addEventListener("input", () => { inp.classList.remove("ok", "no"); res.textContent = ""; upd(); }));
+  box.querySelector('[data-a="check"]').addEventListener("click", () => {
+    let n = 0; ins.forEach(inp => { const ok = okOf(inp); inp.classList.toggle("ok", ok); inp.classList.toggle("no", !ok); if (ok) n++; });
+    res.textContent = n === ins.length ? `Tutto giusto: ${n} su ${n}` : `${n} su ${ins.length} giuste. Correggi quelle in rosso.`;
+    res.className = "res " + (n === ins.length ? "good" : "bad");
+  });
+  box.querySelector('[data-a="sol"]').addEventListener("click", () => { ins.forEach(inp => { inp.value = inp.dataset.a.split("|")[0]; inp.classList.remove("no"); inp.classList.add("ok"); }); res.textContent = "Soluzione"; res.className = "res"; upd(); });
+  box.querySelector('[data-a="clear"]').addEventListener("click", () => { ins.forEach(inp => { inp.value = ""; inp.classList.remove("ok", "no"); }); res.textContent = ""; upd(); });
+  if (pv) pv.render(H, build());
 }
 
 /* ---------- laboratori ---------- */
@@ -1317,19 +1396,15 @@ function initLabs(){ document.querySelectorAll(".lab").forEach(lab => {
   const kind = lab.dataset.kind || "std";
   if (kind === "std") buildLab(lab);
   if (kind === "selector") selectorLab(lab);
-  if (kind === "contrast") contrastLab(lab);
   if (kind === "boxmodel") boxLab(lab);
-  if (kind === "flex") flexLab(lab);
-  if (kind === "responsive") respLab(lab);
-  if (kind === "final") finalLab(lab);
-}); }
+}); document.querySelectorAll(".fill").forEach(fillEx); }
 
 function selectorLab(lab){
   lab.dataset.title = "Scrivi un selettore: gli elementi colpiti si colorano di arancione";
   const L = buildLab(lab);
   const slot = lab.querySelector(".ctrl-slot");
   slot.className = "ctrl";
-  const presets = ["h2", "h3", ".card", "#tariffe", ".card h3", "nav a", "h2, h3", ".chiara", "p.nota", "section p", "*"];
+  const presets = ["h2", "h3", "p", "a", ".card", ".sezione", ".chiara", "#tariffe", "#servizi", "h2, h3"];
   slot.innerHTML = `<label for="sel-in">Selettore</label><input type="text" id="sel-in" value=".card" size="14" spellcheck="false"><span class="hits" aria-live="polite"></span><div class="presets">${presets.map(p => `<button type="button" data-p="${esc(p)}">${esc(p)}</button>`).join("")}</div>`;
   const inp = slot.querySelector("input"), out = slot.querySelector(".hits");
   function apply(){
@@ -1348,31 +1423,6 @@ function selectorLab(lab){
   inp.addEventListener("input", apply);
   slot.querySelectorAll(".presets button").forEach(b => b.addEventListener("click", () => { inp.value = b.dataset.p; apply(); }));
   L.pv.onLoad(apply);
-}
-
-function contrastLab(lab){
-  lab.innerHTML = `<div class="lab-head"><span class="lt">Il contrasto tra testo e sfondo</span></div>
-  <div class="ctrl"><label for="cx-fg">Testo <input type="color" id="cx-fg" value="#ffffff"></label><code id="cx-fgv"></code>
-    <label for="cx-bg">Sfondo <input type="color" id="cx-bg" value="#c85a12"></label><code id="cx-bgv"></code>
-    <span class="presets"><button type="button" data-f="#ffffff" data-b="#0f3b57">bianco su blu</button><button type="button" data-f="#ffffff" data-b="#c85a12">bianco su arancio</button><button type="button" data-f="#ffffff" data-b="#f5a623">bianco su giallo</button><button type="button" data-f="#2b2b2b" data-b="#eef3f6">scuro su grigio</button><button type="button" data-f="#999999" data-b="#ffffff">grigio su bianco</button></span></div>
-  <div class="cx"><div class="cx-sample" id="cx-s"><span class="big">Spedisci oggi</span><span class="small">Testo normale: consegniamo domani in tutta la Lombardia.</span></div>
-  <div class="cx-res"><div>Rapporto di contrasto</div><div class="ratio" id="cx-r"></div><div id="cx-p"></div><pre class="code" id="cx-code"></pre></div></div>`;
-  const fg = lab.querySelector("#cx-fg"), bg = lab.querySelector("#cx-bg");
-  const lum = h => { const c = [1,3,5].map(i => parseInt(h.substr(i,2),16)/255).map(v => v <= 0.03928 ? v/12.92 : Math.pow((v+0.055)/1.055, 2.4)); return 0.2126*c[0] + 0.7152*c[1] + 0.0722*c[2]; };
-  function upd(){
-    const a = lum(fg.value), b = lum(bg.value);
-    const r = (Math.max(a,b) + 0.05) / (Math.min(a,b) + 0.05);
-    lab.querySelector("#cx-s").style.cssText = `color:${fg.value};background:${bg.value}`;
-    lab.querySelector("#cx-fgv").textContent = fg.value.toUpperCase();
-    lab.querySelector("#cx-bgv").textContent = bg.value.toUpperCase();
-    lab.querySelector("#cx-r").textContent = r.toFixed(2).replace(".", ",") + " : 1";
-    const p = (ok, t) => `<span class="pill ${ok ? "ok" : "no"}">${ok ? "OK" : "NO"}</span>${t}`;
-    lab.querySelector("#cx-p").innerHTML = p(r >= 4.5, "testo normale (almeno 4,5)") + "<br>" + p(r >= 3, "titoli grandi (almeno 3)");
-    lab.querySelector("#cx-code").innerHTML = hlCSS(`.hero {\n    color: ${fg.value.toUpperCase()};\n    background-color: ${bg.value.toUpperCase()};\n}`);
-  }
-  fg.addEventListener("input", upd); bg.addEventListener("input", upd);
-  lab.querySelectorAll(".presets button").forEach(b => b.addEventListener("click", () => { fg.value = b.dataset.f; bg.value = b.dataset.b; upd(); }));
-  upd();
 }
 
 function boxLab(lab){
@@ -1405,362 +1455,12 @@ function boxLab(lab){
   upd();
 }
 
-function flexLab(lab){
-  lab.dataset.title = "Cambia le proprietà del contenitore .servizi";
-  const fixed = `body { font-family: Verdana, sans-serif; margin: 0; padding: 10px; }\n.card { background-color: #EEF3F6; border-top: 5px solid #C85A12; padding: 0 12px; }\n.card h3 { color: #0F3B57; }\n`;
-  const L = buildLab(lab);
-  const slot = lab.querySelector(".ctrl-slot"); slot.className = "ctrl";
-  const sel = (id, name, opts) => `<label for="${id}">${name} <select id="${id}">${opts.map(o => `<option>${o}</option>`).join("")}</select></label>`;
-  slot.innerHTML = `<label for="fx-on"><input type="checkbox" id="fx-on" checked> display: flex</label>`
-    + sel("fx-dir","flex-direction",["row","column"])
-    + sel("fx-jc","justify-content",["flex-start","center","space-between","space-around","flex-end"])
-    + sel("fx-ai","align-items",["stretch","flex-start","center","flex-end"])
-    + sel("fx-wr","flex-wrap",["nowrap","wrap"])
-    + `<label for="fx-gap">gap <input type="range" id="fx-gap" min="0" max="40" value="15"><output id="fx-go"></output></label>`
-    + `<label for="fx-f1"><input type="checkbox" id="fx-f1"> .card { flex: 1 }</label>`
-    + `<label for="fx-w"><input type="checkbox" id="fx-w"> .card { width: 180px }</label>`;
-  const g = id => slot.querySelector(id);
-  function gen(){
-    g("#fx-go").textContent = g("#fx-gap").value + "px";
-    let c = `.servizi {\n`;
-    if (g("#fx-on").checked){
-      c += `    display: flex;\n    flex-direction: ${g("#fx-dir").value};\n    justify-content: ${g("#fx-jc").value};\n    align-items: ${g("#fx-ai").value};\n    flex-wrap: ${g("#fx-wr").value};\n    gap: ${g("#fx-gap").value}px;\n`;
-    } else c += `    /* display: flex spento: le card sono blocchi uno sotto l'altro */\n`;
-    c += `}\n`;
-    const extra = [];
-    if (g("#fx-f1").checked) extra.push("    flex: 1;");
-    if (g("#fx-w").checked) extra.push("    width: 180px;");
-    if (extra.length) c += `\n.card {\n${extra.join("\n")}\n}\n`;
-    c += `\n/* aspetto delle card */\n` + fixed;
-    L.setCSS(c);
-  }
-  slot.querySelectorAll("select,input").forEach(i => i.addEventListener("input", gen));
-  gen();
-}
-
-function respLab(lab){
-  lab.dataset.title = "Lo schermo simulato";
-  const L = buildLab(lab);
-  const slot = lab.querySelector(".ctrl-slot"); slot.className = "ctrl";
-  slot.innerHTML = `<label for="rs-w">Larghezza dello schermo <input type="range" id="rs-w" min="320" max="900" value="800"><output id="rs-o"></output></label><span id="rs-tag"></span>`;
-  const r = slot.querySelector("#rs-w");
-  function upd(){
-    const w = +r.value;
-    slot.querySelector("#rs-o").textContent = w + "px";
-    slot.querySelector("#rs-tag").innerHTML = w <= 600 ? '<span class="pill ok">@media attiva</span>' : '<span class="pill no">@media non attiva</span>';
-    L.pv.frame.style.width = w + "px"; L.pv.frame.style.flex = "none";
-    L.pv.el.querySelector(".bar span").textContent = `index.html · ${w}px`;
-  }
-  r.addEventListener("input", upd); upd();
-}
-
-/* ---------- laboratorio finale ---------- */
-const FINAL_HTML = `<!DOCTYPE html>
-<html lang="it">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Seriana Logistica - Magazzino e consegne</title>
-    <link rel="stylesheet" href="stile.css">
-</head>
-<body>
-
-    <header>
-        <a href="index.html">
-            <img src="img/logo.png" width="60" alt="Logo Seriana Logistica, torna alla home">
-        </a>
-        <h1>Seriana Logistica</h1>
-        <nav>
-            <a href="#servizi">Servizi</a>
-            <a href="#tariffe">Tariffe</a>
-            <a href="#contatti">Contatti</a>
-            <a href="area-clienti.html">Area clienti</a>
-        </nav>
-    </header>
-
-    <main>
-        <section class="hero">
-            <h2>Il tuo magazzino in Val Seriana</h2>
-            <p>Stoccaggio, preparazione ordini e consegne in tutta la Lombardia</p>
-            <a class="pulsante" href="mailto:info@serianalogistica.example?subject=Richiesta preventivo">Chiedi un preventivo</a>
-        </section>
-
-        <section class="banner">
-            <img src="img/magazzino.png" width="900" alt="Scaffalature del magazzino con i pallet">
-        </section>
-
-        <section id="servizi" class="sezione chiara">
-            <h2>I nostri servizi</h2>
-            <div class="servizi">
-                <div class="card">
-                    <h3>Stoccaggio</h3>
-                    <p>Posti pallet coperti e sorvegliati 24 ore su 24.</p>
-                </div>
-                <div class="card">
-                    <h3>Picking</h3>
-                    <p>Prepariamo i tuoi ordini, collo per collo, in giornata.</p>
-                </div>
-                <div class="card">
-                    <h3>Consegne</h3>
-                    <p>Furgoni e camion per consegne in tutta la Lombardia.</p>
-                </div>
-            </div>
-        </section>
-
-        <section id="tariffe" class="sezione">
-            <h2>Le nostre tariffe</h2>
-            <table>
-                <tr><th>Servizio</th><th>Unità</th><th>Prezzo</th></tr>
-                <tr><td>Posto pallet</td><td>al mese</td><td>12,00 €</td></tr>
-                <tr><td>Picking</td><td>per riga d'ordine</td><td>0,45 €</td></tr>
-                <tr><td>Consegna in Lombardia</td><td>per collo</td><td>7,50 €</td></tr>
-                <tr><td>Consegna pallet</td><td>per pallet</td><td>45,00 €</td></tr>
-            </table>
-            <p class="nota">Prezzi IVA esclusa. Cos'è la
-                <a href="https://it.wikipedia.org/wiki/Logistica" target="_blank">logistica conto terzi</a>?</p>
-        </section>
-
-        <section id="contatti" class="sezione chiara">
-            <h2>Contattaci</h2>
-            <p>Scrivici per un preventivo o chiamaci dal lunedì al venerdì:</p>
-            <p><a href="mailto:info@serianalogistica.example?subject=Richiesta preventivo">info@serianalogistica.example</a></p>
-            <p><a href="tel:+390350001111">035 000 1111</a></p>
-        </section>
-    </main>
-
-    <footer>
-        <p>&copy; 2026 Seriana Logistica S.r.l. - Via dell'Interporto 4, Albino (BG)</p>
-        <p><a href="#">Torna su</a></p>
-    </footer>
-
-</body>
-</html>`;
-const FINAL_BLOCKS = [
-  ["Stili generali", `/* ---------- 1. STILI GENERALI ---------- */
-* {
-    box-sizing: border-box;
-}
-
-body {
-    font-family: Verdana, Arial, sans-serif;
-    color: #2B2B2B;
-    line-height: 1.5;
-    margin: 0;
-}
-
-h2 {
-    color: #0F3B57;
-    text-align: center;
-}`],
-  ["Header e menu", `/* ---------- 2. HEADER E MENU ---------- */
-header {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 15px;
-    background-color: #0F3B57;
-    color: white;
-    padding: 10px 30px;
-}
-
-header h1 {
-    flex: 1;
-    font-size: 24px;
-    margin: 0;
-}
-
-nav {
-    display: flex;
-    gap: 6px;
-}
-
-nav a {
-    color: white;
-    text-decoration: none;
-    padding: 8px 14px;
-    border-radius: 4px;
-}
-
-nav a:hover,
-nav a:focus {
-    background-color: #C85A12;
-}`],
-  ["Fascia e pulsante", `/* ---------- 3. FASCIA CON LO SLOGAN ---------- */
-.hero {
-    background-color: #C85A12;
-    color: white;
-    text-align: center;
-    padding: 40px 20px;
-}
-
-.hero h2 {
-    color: white;
-    font-size: 30px;
-    margin: 0 0 10px;
-}
-
-.pulsante {
-    display: inline-block;
-    background-color: white;
-    color: #0F3B57;
-    font-weight: bold;
-    text-decoration: none;
-    padding: 12px 24px;
-    border-radius: 6px;
-    margin-top: 10px;
-}
-
-.pulsante:hover {
-    background-color: #0F3B57;
-    color: white;
-}`],
-  ["Immagine", `/* ---------- 4. IMMAGINE ---------- */
-.banner {
-    padding: 20px;
-}
-
-.banner img {
-    display: block;
-    max-width: 100%;
-    height: auto;
-    margin: 0 auto;
-    border-radius: 8px;
-}`],
-  ["Sezioni", `/* ---------- 5. SEZIONI ---------- */
-.sezione {
-    padding: 30px 20px;
-}
-
-.chiara {
-    background-color: #EEF3F6;
-}`],
-  ["Card dei servizi", `/* ---------- 6. CARD DEI SERVIZI ---------- */
-.servizi {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    max-width: 1000px;
-    margin: 0 auto;
-}
-
-.card {
-    flex: 1;
-    min-width: 220px;
-    background-color: white;
-    border-top: 5px solid #C85A12;
-    border-radius: 6px;
-    padding: 20px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
-}
-
-.card h3 {
-    color: #0F3B57;
-    margin-top: 0;
-}`],
-  ["Tabella", `/* ---------- 7. TABELLA DELLE TARIFFE ---------- */
-table {
-    width: 100%;
-    max-width: 700px;
-    margin: 0 auto;
-    border-collapse: collapse;
-}
-
-th {
-    background-color: #0F3B57;
-    color: white;
-    text-align: left;
-    padding: 10px;
-}
-
-td {
-    padding: 10px;
-    border-bottom: 1px solid #CCCCCC;
-}
-
-tr:nth-child(even) {
-    background-color: #F4F7F9;
-}
-
-tr:hover {
-    background-color: #FBEADB;
-}
-
-.nota {
-    text-align: center;
-    font-size: 14px;
-}`],
-  ["Link nel contenuto", `/* ---------- 8. LINK NEL CONTENUTO ---------- */
-main a:link {
-    color: #B4500F;
-}
-
-main a:visited {
-    color: #7A3A0E;
-}
-
-main a:hover {
-    text-decoration: none;
-}
-
-#contatti {
-    text-align: center;
-}
-
-#contatti a {
-    font-size: 20px;
-    font-weight: bold;
-}`],
-  ["Footer", `/* ---------- 9. FOOTER ---------- */
-footer {
-    background-color: #0F3B57;
-    color: white;
-    text-align: center;
-    font-size: 14px;
-    padding: 10px;
-}
-
-footer a {
-    color: white;
-}`],
-  ["Telefono (@media)", `/* ---------- 10. SCHERMI PICCOLI ---------- */
-@media (max-width: 600px) {
-    header {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .hero h2 {
-        font-size: 24px;
-    }
-}`]
-];
-function finalLab(lab){
-  lab.innerHTML = `<div class="lab-head"><span class="lt">Seriana Logistica: index.html + stile.css</span></div>
-  <div class="toggles">${FINAL_BLOCKS.map((b,i) => `<label for="fb-${i}"><input type="checkbox" id="fb-${i}" checked> ${i+1}. ${esc(b[0])}</label>`).join("")}</div>
-  <div class="lab-tools" style="border-top:0;border-bottom:1px solid var(--line)"><button type="button" class="btn" id="fb-none">Spegni tutto</button><button type="button" class="btn" id="fb-all">Accendi tutto</button><button type="button" class="btn primary" id="fb-cc">Copia stile.css</button><button type="button" class="btn primary" id="fb-ch">Copia index.html</button></div>
-  <div class="lab-body" style="grid-template-columns:minmax(0,1fr)"></div>
-  <details style="padding:10px 12px;border-top:1px solid var(--line)"><summary style="cursor:pointer;font-weight:700">Mostra il codice: stile.css (solo i blocchi accesi)</summary><pre class="code" id="fb-css"></pre></details>
-  <details style="padding:10px 12px;border-top:1px solid var(--line)"><summary style="cursor:pointer;font-weight:700">Mostra il codice: index.html</summary><pre class="code" id="fb-html"></pre></details>`;
-  const pv = makePreview({height: +lab.dataset.height || 560, url: "index.html"});
-  lab.querySelector(".lab-body").append(pv.el);
-  lab.querySelector("#fb-html").innerHTML = hlHTML(FINAL_HTML);
-  const boxes = [...lab.querySelectorAll(".toggles input")];
-  const css = () => FINAL_BLOCKS.filter((b,i) => boxes[i].checked).map(b => b[1]).join("\n\n\n");
-  function upd(){ const c = css(); lab.querySelector("#fb-css").innerHTML = hlCSS(c || "/* nessun blocco acceso: la pagina usa gli stili predefiniti del browser */"); pv.render(FINAL_HTML, c); }
-  boxes.forEach(b => b.addEventListener("change", upd));
-  lab.querySelector("#fb-none").addEventListener("click", () => { boxes.forEach(b => b.checked = false); upd(); });
-  lab.querySelector("#fb-all").addEventListener("click", () => { boxes.forEach(b => b.checked = true); upd(); });
-  copyText(lab.querySelector("#fb-cc"), () => FINAL_BLOCKS.map(b => b[1]).join("\n\n\n"));
-  copyText(lab.querySelector("#fb-ch"), () => FINAL_HTML);
-  upd();
-}
-
 initLabs();
 
 /* ---------- indice e capitolo attivo ---------- */
 (function toc(){
   const nav = document.getElementById("tocnav");
-  const parts = { "0": null, "A": "Parte A · Ripasso HTML", "B": "Parte B · Il CSS", "C": "Parte C · Il laboratorio" };
+  const parts = { "0": null, "A": "Parte A · Ripasso HTML", "B": "Parte B · Il CSS", };
   let html = "", lastPart = null;
   document.querySelectorAll("section.ch").forEach(s => {
     const n = s.dataset.n, p = n === "0" ? "0" : n[0];
