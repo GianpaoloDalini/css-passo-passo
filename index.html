@@ -1,0 +1,414 @@
+<!DOCTYPE html><html lang="it"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CSS passo passo</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Lexend:wght@500;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: una scheda per passo; in alto spiegazione + codice, sotto la pagina PRIMA e DOPO affiancate */
+:root{
+  --bg:#F3F6FA; --surface:#FFFFFF; --fg:#18202E; --muted:#556079; --line:#D5DCE7;
+  --accent:#1E56C8; --accent-ink:#FFFFFF; --accent-soft:#E3EBFB;
+  --sel:#8B2FC0; --prop:#1A5FD0; --val:#13803C; --punct:#7A8399;
+  --codebg:#F7F9FC; --newbg:#FFF4C2; --newfg:#5A4500;
+  --ok:#13803C; --ok-soft:#E1F4E7; --bad:#C62D3A; --bad-soft:#FBE4E6;
+  --f-display:"Lexend", "Trebuchet MS", system-ui, sans-serif;
+  --f-body:"Atkinson Hyperlegible", Verdana, system-ui, sans-serif;
+  --f-code:"JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#10151F; --surface:#171E2B; --fg:#E8EDF6; --muted:#9AA6BD; --line:#2B3547;
+  --accent:#7DA6FF; --accent-ink:#0B1222; --accent-soft:#1E2B47;
+  --sel:#D08BFF; --prop:#7DB0FF; --val:#6FD596; --punct:#8C96AB;
+  --codebg:#111824; --newbg:#4A3D10; --newfg:#FFE58A;
+  --ok:#6FD596; --ok-soft:#173527; --bad:#FF8A94; --bad-soft:#3E1C22;
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#10151F; --surface:#171E2B; --fg:#E8EDF6; --muted:#9AA6BD; --line:#2B3547;
+  --accent:#7DA6FF; --accent-ink:#0B1222; --accent-soft:#1E2B47;
+  --sel:#D08BFF; --prop:#7DB0FF; --val:#6FD596; --punct:#8C96AB;
+  --codebg:#111824; --newbg:#4A3D10; --newfg:#FFE58A;
+  --ok:#6FD596; --ok-soft:#173527; --bad:#FF8A94; --bad-soft:#3E1C22;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:19px;line-height:1.5;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));padding-block:20px 48px}
+.wrap{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+header{display:flex;flex-direction:column;gap:6px}
+.eyebrow{margin:0;font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+h1{margin:0;font-family:var(--f-display);font-size:clamp(30px,5vw,44px);line-height:1.1;text-wrap:balance}
+header .sub{margin:0;color:var(--muted);max-width:60ch}
+nav#dots{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.dot{font-family:var(--f-display);font-weight:500;font-size:16px;min-width:44px;height:44px;padding:0 12px;border-radius:22px;border:2px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer}
+.dot.done{border-color:var(--ok);color:var(--ok)}
+.dot[aria-current="step"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:clamp(16px,3vw,28px);display:flex;flex-direction:column;gap:22px}
+.top{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px;align-items:start}
+@media (max-width:860px){.top{grid-template-columns:minmax(0,1fr)}}
+.explain{display:flex;flex-direction:column;gap:12px;min-width:0}
+.kicker{margin:0;font-family:var(--f-display);font-weight:700;color:var(--accent);font-size:16px;letter-spacing:.04em;text-transform:uppercase}
+.card h2{margin:0;font-family:var(--f-display);font-size:clamp(26px,3.6vw,34px);line-height:1.15;text-wrap:balance}
+.lead{margin:0;font-size:21px;max-width:40ch}
+.target{margin:0;padding:12px 14px;border-radius:10px;background:var(--accent-soft)}
+.lbl{margin:6px 0 0;font-weight:700}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chip{display:flex;align-items:center;gap:10px;padding:10px 14px;min-height:52px;border-radius:12px;border:2px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer;font:inherit;text-align:left}
+.chip:hover{border-color:var(--accent)}
+.chip[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);box-shadow:0 0 0 2px var(--accent) inset}
+.chip code{font-family:var(--f-code);font-weight:700;color:var(--val);font-size:17px}
+.chip .it{color:var(--muted);font-size:16px}
+.sw{width:26px;height:26px;border-radius:6px;border:1px solid rgba(0,0,0,.25);flex:none}
+
+.codecol{display:flex;flex-direction:column;gap:8px;min-width:0}
+.codehead{display:flex;justify-content:space-between;align-items:center;gap:10px;font-weight:700}
+.copy{font:inherit;font-size:16px;font-weight:700;padding:8px 16px;border-radius:10px;border:2px solid var(--accent);background:transparent;color:var(--accent);cursor:pointer}
+.copy.ok{background:var(--accent);color:var(--accent-ink)}
+pre.code{margin:0;background:var(--codebg);border:1px solid var(--line);border-radius:12px;padding:14px 0;font-family:var(--f-code);font-size:18px;line-height:1.7;overflow-x:auto}
+pre.code .ln{display:block;padding:0 16px;white-space:pre}
+pre.code .ln.new{background:var(--newbg);color:var(--newfg)}
+pre.code .ln.new::after{content:"  ★ nuovo";font-family:var(--f-body);font-weight:700;font-size:15px}
+pre.code .ln.dim{color:var(--punct)}
+.s{color:var(--sel);font-weight:700} .p{color:var(--prop);font-weight:700} .v{color:var(--val);font-weight:700} .pu{color:var(--punct)}
+.ln.new .s,.ln.new .p,.ln.new .v,.ln.new .pu{color:inherit}
+code.s,code.p,code.v{font-family:var(--f-code)}
+.hint{margin:0;font-size:16px;color:var(--muted)}
+
+.duo{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px}
+@media (max-width:640px){.duo{grid-template-columns:minmax(0,1fr)}}
+.duo.one{grid-template-columns:minmax(0,1fr);max-width:640px}
+.browser{margin:0;border:2px solid var(--line);border-radius:12px;overflow:hidden;background:#fff;display:flex;flex-direction:column;min-width:0}
+.bar{display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--codebg);border-bottom:1px solid var(--line);font-size:15px;color:var(--muted)}
+.bar .dots{display:flex;gap:5px}.bar .dots i{width:10px;height:10px;border-radius:50%;background:var(--line);display:block}
+.bar .file{font-family:var(--f-code);flex:1;min-width:0}
+.tag{font-family:var(--f-display);font-weight:700;font-size:14px;letter-spacing:.06em;padding:3px 10px;border-radius:999px}
+.tag.prima{background:var(--line);color:var(--fg)}
+.tag.dopo{background:var(--ok);color:var(--surface)}
+.tag.adesso{background:var(--accent);color:var(--accent-ink)}
+.screen{max-height:440px;overflow:auto;background:#fff}
+
+.done{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:12px;border:2px dashed var(--line);cursor:pointer;font-weight:700;align-self:flex-start}
+.done input{width:26px;height:26px;accent-color:var(--ok)}
+.done.on{border-style:solid;border-color:var(--ok);background:var(--ok-soft);color:var(--ok)}
+.tip{margin:0;color:var(--muted);font-size:17px}
+kbd{font-family:var(--f-code);font-size:.9em;border:1px solid var(--line);border-bottom-width:3px;border-radius:6px;padding:0 6px;background:var(--codebg)}
+
+.anat{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-start}
+.part{display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 12px;border-radius:12px;background:var(--codebg);border:1px solid var(--line)}
+.part code{font-family:var(--f-code);font-size:26px;font-weight:700}
+.part span{font-size:15px;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.part.s code,.part.s span{color:var(--sel)} .part.p code,.part.p span{color:var(--prop)} .part.v code,.part.v span{color:var(--val)} .part.pu code{color:var(--punct)}
+.part.pu{background:transparent;border-color:transparent;padding-inline:2px}
+
+.errs{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:14px}
+.err{border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:8px}
+.err h3{margin:0;font-family:var(--f-display);font-size:19px}
+.err .row{display:flex;align-items:center;gap:10px;font-family:var(--f-code);font-size:17px}
+.badge{font-family:var(--f-body);font-size:14px;font-weight:700;padding:2px 8px;border-radius:6px;flex:none;width:6.5em;text-align:center}
+.badge.no{background:var(--bad-soft);color:var(--bad)} .badge.si{background:var(--ok-soft);color:var(--ok)}
+.play{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px}
+@media (max-width:760px){.play{grid-template-columns:minmax(0,1fr)}}
+textarea#editor{width:100%;min-height:360px;font-family:var(--f-code);font-size:18px;line-height:1.6;padding:14px;border-radius:12px;border:2px solid var(--line);background:var(--codebg);color:var(--fg);resize:vertical}
+h3.sec{margin:0;font-family:var(--f-display);font-size:24px}
+.btnrow{display:flex;gap:10px;flex-wrap:wrap}
+
+.navbtns{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.navbtns button{font-family:var(--f-display);font-weight:700;font-size:20px;padding:14px 26px;border-radius:14px;border:2px solid var(--accent);cursor:pointer}
+#prev{background:transparent;color:var(--accent)}
+#next{background:var(--accent);color:var(--accent-ink)}
+.navbtns button:disabled{opacity:.35;cursor:default}
+#count{color:var(--muted);font-weight:700}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head><body>
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Informatica · CSS dentro la pagina</p>
+    <h1>CSS passo passo</h1>
+    <p class="sub">Cambiamo l'aspetto della nostra pagina. Una cosa alla volta. Guarda sempre la pagina <b>prima</b> e <b>dopo</b>.</p>
+    <nav id="dots" aria-label="Passi della guida"></nav>
+  </header>
+  <main id="step"></main>
+  <div class="navbtns">
+    <button id="prev" type="button">← Indietro</button>
+    <span id="count"></span>
+    <button id="next" type="button">Avanti →</button>
+  </div>
+</div>
+
+<script>
+const PAGE = `<h1>La mia pagina</h1>
+<p>Ciao! Questa è la mia prima pagina web.</p>
+<h2>Chi sono</h2>
+<p>Mi chiamo Luca. Vado a scuola al Romero di Albino.</p>
+<h2>Le cose che mi piacciono</h2>
+<ul><li>La musica</li><li>Il calcio</li><li>La pizza</li></ul>
+<h2>Il mio colore preferito</h2>
+<p>Il mio colore preferito è il blu.</p>`;
+
+const BASE = `:host{all:initial;display:block}
+.pg{display:block;font-family:"Times New Roman",Times,serif;font-size:16px;line-height:1.3;color:#000;background:#fff;padding:10px 18px 18px;min-height:100%}
+.flash{outline:4px dashed #e5484d !important;outline-offset:3px;transition:outline-color .3s}`;
+
+const STEPS = [
+  {intro:true, dot:"Inizio"},
+  {sel:"body", cosa:"tutta la pagina", prop:"background-color", color:true,
+   titolo:"Il colore dello sfondo", testo:"Cambiamo il colore dietro a tutta la pagina.",
+   opts:[{v:"lightyellow",n:"giallo chiaro"},{v:"lightblue",n:"azzurro"},{v:"lavender",n:"lilla"},{v:"honeydew",n:"verde chiaro"}]},
+  {sel:"h1", cosa:"il titolo grande", prop:"color", color:true,
+   titolo:"Il colore del titolo", testo:"Cambiamo il colore delle lettere del titolo grande.",
+   opts:[{v:"blue",n:"blu"},{v:"red",n:"rosso"},{v:"green",n:"verde"},{v:"purple",n:"viola"}]},
+  {sel:"h1", cosa:"il titolo grande", prop:"text-align",
+   titolo:"Il titolo in centro", testo:"Spostiamo il titolo: in centro, a sinistra o a destra.",
+   opts:[{v:"center",n:"al centro"},{v:"left",n:"a sinistra"},{v:"right",n:"a destra"}]},
+  {sel:"p", cosa:"i paragrafi di testo", prop:"font-size",
+   titolo:"La grandezza del testo", testo:"Facciamo il testo più piccolo o più grande. px vuol dire «puntini dello schermo».",
+   opts:[{v:"14px",n:"piccolo"},{v:"20px",n:"medio"},{v:"28px",n:"grande"}], def:1},
+  {sel:"body", cosa:"tutta la pagina", prop:"font-family", font:true,
+   titolo:"Il tipo di scrittura", testo:"Cambiamo la forma delle lettere in tutta la pagina.",
+   opts:[{v:"Arial",n:"Arial"},{v:"Verdana",n:"Verdana"},{v:"Georgia",n:"Georgia"},{v:"'Comic Sans MS'",n:"Comic Sans"}]},
+  {sel:"h2", cosa:"i titoli piccoli", prop:"background-color", color:true,
+   titolo:"Lo sfondo dei titoli piccoli", testo:"Mettiamo un colore dietro ai titoli piccoli.",
+   opts:[{v:"orange",n:"arancione"},{v:"lightgreen",n:"verde chiaro"},{v:"pink",n:"rosa"},{v:"gold",n:"oro"}]},
+  {sel:"h2", cosa:"i titoli piccoli", prop:"padding",
+   titolo:"Lo spazio dentro", testo:"Aggiungiamo spazio tra le lettere e il bordo del colore.",
+   opts:[{v:"0px",n:"niente spazio"},{v:"10px",n:"un po'"},{v:"20px",n:"tanto"}], def:1},
+  {sel:"h2", cosa:"i titoli piccoli", prop:"border",
+   titolo:"Il bordo", testo:"Disegniamo una riga intorno ai titoli piccoli. Tre cose: grandezza, tipo di riga, colore.",
+   opts:[{v:"3px solid black",n:"riga continua"},{v:"4px dashed red",n:"riga a trattini"},{v:"4px dotted blue",n:"riga a puntini"}]},
+  {sel:"h2", cosa:"i titoli piccoli", prop:"border-radius",
+   titolo:"Gli angoli arrotondati", testo:"Facciamo gli angoli tondi. Più grande il numero, più tondi.",
+   opts:[{v:"0px",n:"a punta"},{v:"10px",n:"un po' tondi"},{v:"25px",n:"molto tondi"}], def:1},
+  {sel:"ul", cosa:"l'elenco puntato", prop:"font-weight",
+   titolo:"Il grassetto", testo:"Facciamo le parole dell'elenco più spesse (grassetto).",
+   opts:[{v:"bold",n:"grassetto"},{v:"normal",n:"normale"}]},
+  {final:true, dot:"Fine"}
+];
+const LAST = STEPS.length - 1;
+const NSTEP = LAST - 1;
+
+let cur = 0, chosen = STEPS.map(s => s.def || 0), done = STEPS.map(() => false);
+try {
+  const st = JSON.parse(localStorage.getItem("css-passo-passo") || "null");
+  if (st && Array.isArray(st.chosen) && st.chosen.length === STEPS.length) { chosen = st.chosen; done = st.done; cur = Math.min(st.cur || 0, LAST); }
+} catch (e) {}
+function save(){ try { localStorage.setItem("css-passo-passo", JSON.stringify({chosen, done, cur})); } catch (e) {} }
+
+const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+
+function rulesUpTo(upto){
+  const order = [], map = {};
+  for (let i = 1; i <= upto && i < LAST; i++){
+    const s = STEPS[i];
+    if (!map[s.sel]) { map[s.sel] = []; order.push(s.sel); }
+    map[s.sel].push({p:s.prop, v:s.opts[chosen[i]].v, step:i});
+  }
+  return order.map(sel => ({sel, props:map[sel]}));
+}
+function cssText(rules){
+  return rules.map(r => `${r.sel} {\n${r.props.map(x => `  ${x.p}: ${x.v};`).join("\n")}\n}`).join("\n\n");
+}
+function applied(css){ return css.replace(/(^|[\s,}])(body|html)(?=[\s,{.:#\[]|$)/g, "$1.pg"); }
+
+function codeHTML(rules, newStep){
+  const L = [`<span class="ln dim">&lt;style&gt;</span>`];
+  if (!rules.length) L.push(`<span class="ln dim">    /* qui scrivo il CSS */</span>`);
+  rules.forEach((r, ri) => {
+    L.push(`<span class="ln">    <span class="s">${esc(r.sel)}</span> <span class="pu">{</span></span>`);
+    r.props.forEach(x => {
+      L.push(`<span class="ln${x.step === newStep ? " new" : ""}">        <span class="p">${esc(x.p)}</span><span class="pu">:</span> <span class="v">${esc(x.v)}</span><span class="pu">;</span></span>`);
+    });
+    L.push(`<span class="ln">    <span class="pu">}</span></span>`);
+    if (ri < rules.length - 1) L.push(`<span class="ln"> </span>`);
+  });
+  L.push(`<span class="ln dim">&lt;/style&gt;</span>`);
+  return L.join("");
+}
+function plainStyle(rules){
+  const inner = rules.length ? cssText(rules).split("\n").map(l => l ? "    " + l : "").join("\n") : "    /* qui scrivo il CSS */";
+  return `<style>\n${inner}\n</style>`;
+}
+
+function preview(label, css, flashSel){
+  const fig = document.createElement("figure"); fig.className = "browser";
+  fig.innerHTML = `<figcaption class="bar"><span class="dots"><i></i><i></i><i></i></span><span class="file">pagina.html</span><span class="tag ${label.toLowerCase()}">${label}</span></figcaption>`;
+  const host = document.createElement("div"); host.className = "screen";
+  const sh = host.attachShadow({mode:"open"});
+  const b = document.createElement("style"); b.textContent = BASE;
+  const u = document.createElement("style"); u.textContent = applied(css);
+  const pg = document.createElement("div"); pg.className = "pg"; pg.innerHTML = PAGE;
+  sh.append(b, u, pg); fig.append(host);
+  fig.setCss = c => { u.textContent = applied(c); };
+  if (flashSel){
+    const els = flashSel === "body" ? [pg] : [...pg.querySelectorAll(flashSel)];
+    els.forEach(e => e.classList.add("flash"));
+    setTimeout(() => els.forEach(e => e.classList.remove("flash")), 1600);
+  }
+  return fig;
+}
+
+function copyBtn(btn, text, pre){
+  btn.addEventListener("click", () => {
+    const ok = () => { btn.textContent = "Copiato!"; btn.classList.add("ok"); setTimeout(() => { btn.textContent = "Copia"; btn.classList.remove("ok"); }, 1500); };
+    const fallback = () => { const r = document.createRange(); r.selectNodeContents(pre); const s = getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = "Selezionato: premi Ctrl+C"; };
+    try { navigator.clipboard.writeText(text).then(ok, fallback); } catch (e) { fallback(); }
+  });
+}
+
+const main = document.getElementById("step");
+
+function renderIntro(){
+  main.innerHTML = `<section class="card">
+    <div class="top">
+      <div class="explain">
+        <p class="kicker">Prima di iniziare</p>
+        <h2>Dove si scrive il CSS</h2>
+        <p class="lead">Il CSS decide <b>come si vede</b> la pagina: colori, grandezze, bordi.</p>
+        <p class="lead">Noi lo scriviamo <b>dentro la pagina HTML</b>, tra <code class="p">&lt;style&gt;</code> e <code class="p">&lt;/style&gt;</code>. Il <code class="p">&lt;style&gt;</code> sta dentro <code class="p">&lt;head&gt;</code>.</p>
+      </div>
+      <div class="codecol">
+        <div class="codehead"><span>Il tuo file pagina.html</span></div>
+        <pre class="code"><span class="ln dim">&lt;!DOCTYPE html&gt;</span><span class="ln dim">&lt;html lang="it"&gt;</span><span class="ln dim">&lt;head&gt;</span><span class="ln dim">  &lt;title&gt;La mia pagina&lt;/title&gt;</span><span class="ln new">  &lt;style&gt;</span><span class="ln new">    /* qui scrivo il CSS */</span><span class="ln new">  &lt;/style&gt;</span><span class="ln dim">&lt;/head&gt;</span><span class="ln dim">&lt;body&gt;</span><span class="ln dim">  ... la mia pagina ...</span><span class="ln dim">&lt;/body&gt;</span><span class="ln dim">&lt;/html&gt;</span></pre>
+        <p class="hint">Le righe gialle sono il posto del CSS. Scrivi sempre lì.</p>
+      </div>
+    </div>
+    <div class="explain">
+      <h3 class="sec">Ogni regola ha 3 parti</h3>
+      <div class="anat" aria-label="h1 { color: blue; }">
+        <div class="part s"><code>h1</code><span>chi cambio</span></div>
+        <div class="part pu"><code>{</code></div>
+        <div class="part p"><code>color:</code><span>cosa cambio</span></div>
+        <div class="part v"><code>blue;</code><span>come diventa</span></div>
+        <div class="part pu"><code>}</code></div>
+      </div>
+      <p class="tip">Si legge: «il titolo h1 diventa di colore blu». I colori si scrivono <b>in inglese</b>. Ogni riga finisce con <code class="pu">;</code></p>
+    </div>
+    <div class="explain">
+      <h3 class="sec">La pagina adesso, senza CSS</h3>
+      <div class="duo one" id="pv"></div>
+    </div>
+  </section>`;
+  document.getElementById("pv").append(preview("ADESSO", ""));
+}
+
+function renderStep(i){
+  const s = STEPS[i];
+  const before = rulesUpTo(i - 1), after = rulesUpTo(i);
+  const chips = s.opts.map((o, k) => {
+    const sw = s.color ? `<span class="sw" style="background:${esc(o.v)}"></span>` : "";
+    const fontStyle = s.font ? ` style="font-family:${esc(o.v)}"` : "";
+    return `<button type="button" class="chip" data-k="${k}" aria-pressed="${chosen[i] === k}">${sw}<code>${esc(o.v)}</code><span class="it"${fontStyle}>${esc(o.n)}</span></button>`;
+  }).join("");
+  main.innerHTML = `<section class="card">
+    <div class="top">
+      <div class="explain">
+        <p class="kicker">Passo ${i} di ${NSTEP}</p>
+        <h2>${s.titolo}</h2>
+        <p class="lead">${s.testo}</p>
+        <p class="target">Cambiamo <code class="s">${s.sel}</code> = ${s.cosa}</p>
+        <p class="lbl">Scegli un valore e guarda la pagina DOPO:</p>
+        <div class="chips">${chips}</div>
+      </div>
+      <div class="codecol">
+        <div class="codehead"><span>Il tuo CSS deve essere così</span><button type="button" class="copy">Copia</button></div>
+        <pre class="code" id="code">${codeHTML(after, i)}</pre>
+        <p class="hint">La riga gialla con ★ è quella nuova. Se <code class="s">${s.sel}</code> c'è già, scrivila dentro le sue graffe <code class="pu">{ }</code>.</p>
+      </div>
+    </div>
+    <div class="duo" id="pv"></div>
+    <label class="done${done[i] ? " on" : ""}"><input type="checkbox" id="done-${i}"${done[i] ? " checked" : ""}> Fatto! L'ho scritto nel mio file</label>
+    <p class="tip">Dopo ogni modifica: salva il file con <kbd>Ctrl</kbd> + <kbd>S</kbd> e aggiorna il browser con <kbd>F5</kbd>.</p>
+  </section>`;
+  const pv = document.getElementById("pv");
+  pv.append(preview("PRIMA", cssText(before)), preview("DOPO", cssText(after), s.sel));
+  main.querySelectorAll(".chip").forEach(b => b.addEventListener("click", () => {
+    chosen[i] = +b.dataset.k; save(); render(false);
+  }));
+  copyBtn(main.querySelector(".copy"), plainStyle(after), document.getElementById("code"));
+  const cb = document.getElementById("done-" + i);
+  cb.addEventListener("change", () => { done[i] = cb.checked; save(); cb.parentElement.classList.toggle("on", cb.checked); dots(); });
+}
+
+function renderFinal(){
+  const all = rulesUpTo(LAST - 1);
+  const css = cssText(all);
+  main.innerHTML = `<section class="card">
+    <div class="top">
+      <div class="explain">
+        <p class="kicker">Fine</p>
+        <h2>Bravo! Hai finito</h2>
+        <p class="lead">Questo è tutto il tuo CSS. Controlla che nel tuo file sia uguale.</p>
+        <div class="duo one" id="pvfin"></div>
+      </div>
+      <div class="codecol">
+        <div class="codehead"><span>Tutto il CSS</span><button type="button" class="copy">Copia</button></div>
+        <pre class="code" id="code">${codeHTML(all, -1)}</pre>
+      </div>
+    </div>
+    <div class="explain">
+      <h3 class="sec">Non funziona? Controlla questi errori</h3>
+      <div class="errs">
+        <div class="err"><h3>Manca il punto e virgola</h3>
+          <div class="row"><span class="badge no">sbagliato</span><span>color: blue</span></div>
+          <div class="row"><span class="badge si">giusto</span><span>color: blue;</span></div></div>
+        <div class="err"><h3>Manca la graffa che chiude</h3>
+          <div class="row"><span class="badge no">sbagliato</span><span>h1 { color: blue;</span></div>
+          <div class="row"><span class="badge si">giusto</span><span>h1 { color: blue; }</span></div></div>
+        <div class="err"><h3>Colore in italiano</h3>
+          <div class="row"><span class="badge no">sbagliato</span><span>color: blu;</span></div>
+          <div class="row"><span class="badge si">giusto</span><span>color: blue;</span></div></div>
+        <div class="err"><h3>Spazio tra numero e px</h3>
+          <div class="row"><span class="badge no">sbagliato</span><span>font-size: 20 px;</span></div>
+          <div class="row"><span class="badge si">giusto</span><span>font-size: 20px;</span></div></div>
+        <div class="err"><h3>CSS fuori da &lt;style&gt;</h3>
+          <div class="row"><span class="badge no">sbagliato</span><span>&lt;/style&gt; h1 {…}</span></div>
+          <div class="row"><span class="badge si">giusto</span><span>&lt;style&gt; h1 {…} &lt;/style&gt;</span></div></div>
+        <div class="err"><h3>Due punti dimenticati</h3>
+          <div class="row"><span class="badge no">sbagliato</span><span>color blue;</span></div>
+          <div class="row"><span class="badge si">giusto</span><span>color: blue;</span></div></div>
+      </div>
+    </div>
+    <div class="explain">
+      <h3 class="sec">Prova tu</h3>
+      <p class="tip">Cambia il CSS qui sotto: la pagina a destra cambia subito. Prova un altro colore!</p>
+      <div class="play">
+        <textarea id="editor" spellcheck="false" aria-label="Scrivi il CSS">${esc(css)}</textarea>
+        <div id="pvplay"></div>
+      </div>
+      <div class="btnrow"><button type="button" class="copy" id="reset">Rimetti il mio CSS</button></div>
+    </div>
+  </section>`;
+  document.getElementById("pvfin").append(preview("DOPO", css));
+  copyBtn(main.querySelector(".codehead .copy"), plainStyle(all), document.getElementById("code"));
+  const play = preview("DOPO", css);
+  document.getElementById("pvplay").append(play);
+  const ed = document.getElementById("editor");
+  ed.addEventListener("input", () => play.setCss(ed.value));
+  document.getElementById("reset").addEventListener("click", () => { ed.value = css; play.setCss(css); });
+}
+
+function dots(){
+  const nav = document.getElementById("dots");
+  nav.innerHTML = STEPS.map((s, i) => `<button type="button" class="dot${done[i] ? " done" : ""}" data-i="${i}"${i === cur ? ' aria-current="step"' : ""} aria-label="${s.dot || "Passo " + i}">${s.dot || i}</button>`).join("");
+  nav.querySelectorAll(".dot").forEach(b => b.addEventListener("click", () => go(+b.dataset.i)));
+}
+function render(scroll){
+  if (cur === 0) renderIntro(); else if (cur === LAST) renderFinal(); else renderStep(cur);
+  dots();
+  document.getElementById("prev").disabled = cur === 0;
+  document.getElementById("next").disabled = cur === LAST;
+  document.getElementById("count").textContent = cur === 0 ? "Inizio" : cur === LAST ? "Fine" : `Passo ${cur} di ${NSTEP}`;
+  if (scroll) document.querySelector("header").scrollIntoView({behavior:"smooth", block:"start"});
+}
+function go(i){ cur = Math.max(0, Math.min(LAST, i)); save(); render(true); }
+document.getElementById("prev").addEventListener("click", () => go(cur - 1));
+document.getElementById("next").addEventListener("click", () => go(cur + 1));
+document.addEventListener("keydown", e => {
+  if (e.target.tagName === "TEXTAREA") return;
+  if (e.key === "ArrowRight") go(cur + 1);
+  if (e.key === "ArrowLeft") go(cur - 1);
+});
+render(false);
+</script>
+</body></html>
