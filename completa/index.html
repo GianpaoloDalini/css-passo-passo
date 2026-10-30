@@ -199,6 +199,12 @@ footer.doc-foot{margin-top:40px;color:var(--muted);font-size:15px}
 .fill .pv{border-top:1px solid var(--line)}
 .res{font-weight:700;align-self:center;font-size:15px}
 .res.good{color:var(--ok)}.res.bad{color:var(--bad)}
+
+.diff{font:700 13px var(--f-body);letter-spacing:.04em;text-transform:uppercase;padding:2px 10px;border-radius:999px;vertical-align:middle;white-space:nowrap}
+.diff.d1{background:var(--ok-soft);color:var(--ok)}
+.diff.d2{background:var(--brand-soft);color:var(--brand)}
+.diff.d3{background:var(--signal-soft);color:var(--signal)}
+.diff.d4{background:var(--bad-soft);color:var(--bad)}
 </style>
 </head>
 <body>
@@ -228,6 +234,7 @@ footer.doc-foot{margin-top:40px;color:var(--muted);font-size:15px}
   <ol>
     <li><b>Parte A, ripasso HTML</b>: la struttura della pagina, i tag che usiamo, le immagini, le tabelle e i link.</li>
     <li><b>Parte B, il CSS</b>: regole, selettori, cascata, colori, testo, box model, immagini e tabelle. In fondo c'è la lista dei controlli da fare quando qualcosa non funziona.</li>
+    <li><b>Parte C, esercizi in autonomia</b>: otto esercizi di difficoltà crescente, fino a un sito completo da costruire partendo da una descrizione.</li>
   </ol>
   <div class="note"><b>Come lavoriamo in laboratorio</b>Nella cartella del progetto tieni <code>index.html</code>, il file <code>stile.css</code> e la cartella <code>img</code> con le immagini. Apri <code>index.html</code> nel browser e il file nell'editor. Dopo ogni modifica salva con <code>Ctrl</code> + <code>S</code> e aggiorna il browser con <code>F5</code>.</div>
   <div class="note"><b>Nei riquadri di esercizio</b>Se sbagli, premi <b>Ripristina</b> per tornare al codice iniziale. Prova sempre da solo prima di premere <b>Mostra soluzione</b>.</div>
@@ -784,7 +791,7 @@ h1, h2 {
   <h2><span class="lab-n">B.4</span>Ereditarietà e cascata</h2>
   <p class="goal">Due domande: quali stili passano dai genitori ai figli? E se due regole si contraddicono, chi vince?</p>
   <h3>Ereditarietà</h3>
-  <p>Le proprietà del <b>testo</b> (<code>color</code>, <code>font-family</code>, <code>font-size</code>) passano dal genitore ai figli. Per questo basta scrivere il font una volta in <code>body</code>: lo prendono tutti gli elementi della pagina.</p>
+  <p>Le proprietà del <b>testo</b> (<code>color</code>, <code>font-family</code>, <code>font-size</code>, <code>text-align</code>) passano dal genitore ai figli. Per questo basta scrivere il font una volta in <code>body</code>: lo prendono tutti gli elementi della pagina.</p>
   <p>Le proprietà della <b>scatola</b> (<code>padding</code>, <code>margin</code>, <code>border</code>, <code>background-color</code>, <code>width</code>) non si ereditano.</p>
   <div class="note warn"><b>I link non ereditano il colore</b>Il browser dà ai link un suo colore (blu, viola se già visitati). Se una fascia ha <code>color: white</code>, i link dentro restano blu: il colore va dato ai link con una loro classe.</div>
   <h3>La cascata: chi vince</h3>
@@ -892,14 +899,15 @@ h2 {
 
 <section class="ch" id="testo-css" data-n="B.6" data-t="Il testo">
   <h2><span class="lab-n">B.6</span>Il testo</h2>
-  <p class="goal">Due proprietà per il testo: il tipo di carattere e la grandezza.</p>
+  <p class="goal">Tre proprietà per il testo: il tipo di carattere, la grandezza e l'allineamento.</p>
   <div class="tw"><table class="t">
     <tr><th>Proprietà</th><th>Esempio</th><th>Effetto</th></tr>
     <tr><td><code>font-family</code></td><td><code>Verdana, Arial, sans-serif</code></td><td>Il tipo di carattere. Si scrive un elenco separato da virgole: se sul computer manca il primo, il browser usa il successivo. L'ultimo è sempre una famiglia generica: <code>serif</code> (con le grazie), <code>sans-serif</code> (senza grazie) o <code>monospace</code> (lettere tutte larghe uguali).</td></tr>
     <tr><td><code>font-size</code></td><td><code>18px</code></td><td>La grandezza del carattere in pixel. Il testo normale del browser è <code>16px</code>.</td></tr>
+    <tr><td><code>text-align</code></td><td><code>left</code>, <code>center</code>, <code>right</code>, <code>justify</code></td><td>L'allineamento del testo dentro il suo blocco: a sinistra, al centro, a destra, giustificato. Si eredita: messo su un div, vale per tutto il testo che contiene.</td></tr>
   </table></div>
   <div class="note"><b>I nomi con lo spazio</b>Se il nome del carattere ha uno spazio, va tra virgolette: <code>font-family: "Times New Roman", serif;</code></div>
-  <div class="lab ex" data-title="Carattere e grandezza" data-height="260" data-task="Metti a tutta la pagina il carattere Verdana, con sans-serif come riserva. Poi fai il titolo h1 di 32px e i paragrafi di 18px. Prova anche Georgia, serif e Courier New, monospace.">
+  <div class="lab ex" data-title="Carattere e grandezza" data-height="260" data-task="Metti a tutta la pagina il carattere Verdana, con sans-serif come riserva. Poi fai il titolo h1 di 32px e centrato, e i paragrafi di 18px. Prova anche Georgia, serif e Courier New, monospace, e prova a giustificare i paragrafi.">
     <script type="text/plain" class="h"><h1>Seriana Logistica</h1>
 <p>Riceviamo la tua merce, la controlliamo e la sistemiamo negli scaffali.</p>
 <p>Quando arriva un ordine, prepariamo i colli e li consegniamo al corriere entro la giornata.</p></script>
@@ -912,6 +920,7 @@ h2 {
 
 h1 {
     font-size: 32px;
+    text-align: center;
 }
 
 p {
@@ -927,6 +936,8 @@ p {
 
 h1 {
     font-[[size]]: 30[[px]];
+    /* titolo al centro */
+    [[text-align]]: [[center]];
 }</script>
   </div>
 </section>
@@ -1131,9 +1142,853 @@ tr:nth-child([[odd]]) {
     <li>Un'altra regola più specifica vince la tua (capitolo <a href="#cascata">B.4</a>)?</li>
     <li>Nell'HTML è rimasto un attributo <code>style="…"</code>? Batte qualsiasi regola del file CSS.</li>
   </ul>
-  <footer class="doc-foot">Guida al CSS · prof. Gianpaolo Dalini · ISIS Oscar Romero, Albino (BG) · a.s. 2026/27. Seriana Logistica è un'azienda inventata per gli esempi.</footer>
 </section>
 
+<!-- ======================= PARTE C ======================= -->
+<div class="parthead"><span class="pl">PARTE C</span><h2>Esercizi in autonomia</h2></div>
+
+<section class="ch" id="esercizi" data-n="C.0" data-t="Come lavorare">
+  <h2>Come lavorare</h2>
+  <p class="goal">Otto esercizi, dal più facile al più difficile. Ognuno usa quello che hai visto nelle parti A e B.</p>
+  <div class="tw"><table class="t">
+    <tr><th>Esercizio</th><th>Livello</th><th>Cosa usi</th></tr>
+    <tr><td><a href="#es1">C.1 Il biglietto da visita</a></td><td><span class="diff d1">base</span></td><td>colori, testo, box model</td></tr>
+    <tr><td><a href="#es2">C.2 La fascia di benvenuto</a></td><td><span class="diff d1">base</span></td><td>classi, colori, testo</td></tr>
+    <tr><td><a href="#es3">C.3 Il listino prezzi</a></td><td><span class="diff d2">medio</span></td><td>tabelle HTML e CSS</td></tr>
+    <tr><td><a href="#es4">C.4 Le card dei servizi</a></td><td><span class="diff d2">medio</span></td><td>classi multiple, cascata</td></tr>
+    <tr><td><a href="#es5">C.5 Il menu con le ancore</a></td><td><span class="diff d2">medio</span></td><td>link, id, classi</td></tr>
+    <tr><td><a href="#es6">C.6 Trova gli errori</a></td><td><span class="diff d3">avanzato</span></td><td>tutto: HTML, percorsi, CSS</td></tr>
+    <tr><td><a href="#es7">C.7 Da style a stile.css</a></td><td><span class="diff d3">avanzato</span></td><td>classi, gruppi, file esterno</td></tr>
+    <tr><td><a href="#es8">C.8 Il sito da una descrizione</a></td><td><span class="diff d4">esperto</span></td><td>tutto il CSS della guida</td></tr>
+  </table></div>
+  <div class="note"><b>Prima di guardare la soluzione</b>Rileggi la consegna punto per punto e controlla la pagina. Se qualcosa non va, usa la lista del capitolo <a href="#errori">B.10</a>. La soluzione è una delle soluzioni possibili: se la tua pagina è uguale ma il codice è diverso, va bene lo stesso.</div>
+  <div class="note"><b>Per lavorare sul tuo computer</b>Con <b>Copia questo file</b> copi il codice di partenza: incollalo nei tuoi file <code>index.html</code> e <code>stile.css</code> e continua nell'editor.</div>
+</section>
+
+<section class="ch" id="es1" data-n="C.1" data-t="Il biglietto da visita">
+  <h2><span class="lab-n">C.1</span>Il biglietto da visita <span class="diff d1">base</span></h2>
+  <p class="goal">L'HTML è pronto. Scrivi tutto il CSS.</p>
+  <div class="lab ex" data-title="Il biglietto da visita" data-height="320" data-task="1) Tutta la pagina: carattere Verdana (riserva sans-serif) e sfondo #EEF3F6. 2) Il div .biglietto: sfondo white, bordo continuo #0F3B57 di 2px, angoli arrotondati di 10px, 20px di spazio interno, larghezza massima 350px, centrato. 3) Il nome h1: colore #0F3B57, grandezza 26px. 4) Il ruolo (classe ruolo): colore #C85A12.">
+    <script type="text/plain" class="h"><div class="biglietto">
+    <h1>Laura Bonetti</h1>
+    <p class="ruolo">Responsabile di magazzino</p>
+    <p>Seriana Logistica S.r.l.<br>
+       Via dell'Interporto 4, Albino (BG)</p>
+    <p><a href="mailto:l.bonetti@serianalogistica.example">l.bonetti@serianalogistica.example</a></p>
+</div></script>
+    <script type="text/plain" class="c">/* scrivi qui il tuo CSS */
+</script>
+    <script type="text/plain" class="sc">body {
+    font-family: Verdana, sans-serif;
+    background-color: #EEF3F6;
+}
+
+.biglietto {
+    background-color: white;
+    border: 2px solid #0F3B57;
+    border-radius: 10px;
+    padding: 20px;
+    max-width: 350px;
+    margin: 30px auto;
+}
+
+h1 {
+    color: #0F3B57;
+    font-size: 26px;
+}
+
+.ruolo {
+    color: #C85A12;
+}</script>
+  </div>
+</section>
+
+<section class="ch" id="es2" data-n="C.2" data-t="La fascia di benvenuto">
+  <h2><span class="lab-n">C.2</span>La fascia di benvenuto <span class="diff d1">base</span></h2>
+  <p class="goal">Prima completi l'HTML con le classi, poi scrivi il CSS.</p>
+  <div class="lab ex" data-title="La fascia di benvenuto" data-height="320" data-task="1) Nell'HTML dai la classe hero al primo div e la classe sezione al secondo. 2) Togli il margine del body (margin: 0) e metti il carattere Arial (riserva sans-serif). 3) .hero: sfondo #C85A12, testo white, 40px di spazio sopra e sotto e 20px ai lati, testo centrato. 4) Il titolo h1: 34px. 5) .sezione: 20px di spazio interno, larghezza massima 700px, centrata.">
+    <script type="text/plain" class="h"><div>
+    <h1>Spedisci oggi, consegniamo domani</h1>
+    <p>Corriere espresso dalla Val Seriana verso tutta Italia</p>
+</div>
+<div>
+    <h2>Chi siamo</h2>
+    <p>Dal 1998 portiamo pacchi e pallet di aziende e privati
+       in tutta Italia, con furgoni moderni e autisti esperti.</p>
+</div></script>
+    <script type="text/plain" class="c">/* scrivi qui il tuo CSS */
+</script>
+    <script type="text/plain" class="sh"><div class="hero">
+    <h1>Spedisci oggi, consegniamo domani</h1>
+    <p>Corriere espresso dalla Val Seriana verso tutta Italia</p>
+</div>
+<div class="sezione">
+    <h2>Chi siamo</h2>
+    <p>Dal 1998 portiamo pacchi e pallet di aziende e privati
+       in tutta Italia, con furgoni moderni e autisti esperti.</p>
+</div></script>
+    <script type="text/plain" class="sc">body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.hero {
+    background-color: #C85A12;
+    color: white;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+h1 {
+    font-size: 34px;
+}
+
+.sezione {
+    padding: 20px;
+    max-width: 700px;
+    margin: 0 auto;
+}</script>
+  </div>
+</section>
+
+<section class="ch" id="es3" data-n="C.3" data-t="Il listino prezzi">
+  <h2><span class="lab-n">C.3</span>Il listino prezzi <span class="diff d2">medio</span></h2>
+  <p class="goal">Scrivi tu la tabella in HTML e poi dalle lo stile.</p>
+  <div class="lab ex" data-title="Il listino prezzi" data-height="340" data-task="1) Nell'HTML, sotto il titolo, crea una tabella con le colonne Spedizione, Peso massimo, Prezzo e queste righe: Busta, 1 kg, 6,90 € · Pacco piccolo, 5 kg, 9,90 € · Pacco grande, 20 kg, 14,90 € · Pallet, 300 kg, 59,00 €. 2) Nel CSS: tabella larga il 100% e al massimo 600px, centrata, bordi uniti. 3) Intestazione: sfondo #0F3B57, testo white. 4) Tutte le celle: 10px di spazio interno e una linea grigia #CCCCCC di 1px solo in basso. 5) Righe pari con sfondo #EEF3F6. 6) Il titolo h2 centrato.">
+    <script type="text/plain" class="h"><h2>Le nostre tariffe</h2>
+<!-- scrivi qui la tabella --></script>
+    <script type="text/plain" class="c">body {
+    font-family: Verdana, sans-serif;
+}
+
+/* scrivi qui il resto del CSS */
+</script>
+    <script type="text/plain" class="sh"><h2>Le nostre tariffe</h2>
+<table>
+    <tr>
+        <th>Spedizione</th>
+        <th>Peso massimo</th>
+        <th>Prezzo</th>
+    </tr>
+    <tr>
+        <td>Busta</td>
+        <td>1 kg</td>
+        <td>6,90 €</td>
+    </tr>
+    <tr>
+        <td>Pacco piccolo</td>
+        <td>5 kg</td>
+        <td>9,90 €</td>
+    </tr>
+    <tr>
+        <td>Pacco grande</td>
+        <td>20 kg</td>
+        <td>14,90 €</td>
+    </tr>
+    <tr>
+        <td>Pallet</td>
+        <td>300 kg</td>
+        <td>59,00 €</td>
+    </tr>
+</table></script>
+    <script type="text/plain" class="sc">body {
+    font-family: Verdana, sans-serif;
+}
+
+h2 {
+    text-align: center;
+}
+
+table {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    border-collapse: collapse;
+}
+
+th {
+    background-color: #0F3B57;
+    color: white;
+}
+
+th, td {
+    padding: 10px;
+    border-bottom: 1px solid #CCCCCC;
+}
+
+tr:nth-child(even) {
+    background-color: #EEF3F6;
+}</script>
+  </div>
+</section>
+
+<section class="ch" id="es4" data-n="C.4" data-t="Le card dei servizi">
+  <h2><span class="lab-n">C.4</span>Le card dei servizi <span class="diff d2">medio</span></h2>
+  <p class="goal">Una classe per lo stile comune e una seconda classe per la card da mettere in evidenza.</p>
+  <div class="lab ex" data-title="Le card dei servizi" data-height="400" data-task="1) Nell'HTML dai la classe card ai tre div dei servizi. Al secondo div aggiungi anche la classe evidenza (class=&quot;card evidenza&quot;). Dai la classe titolo-card ai tre h3. 2) .card: sfondo white, bordo arancione #C85A12 di 5px solo in alto, 15px di spazio interno, 15px di margine, angoli arrotondati di 6px. 3) .titolo-card: colore #0F3B57. 4) .evidenza: bordo in alto blu #0F3B57 di 5px e sfondo #FFF4C2. Scrivi la regola .evidenza DOPO la regola .card. 5) Prova a spostare .evidenza prima di .card: che cosa cambia e perché? 6) Il contenitore #servizi ha sfondo #EEF3F6 e 10px di spazio interno.">
+    <script type="text/plain" class="h"><div id="servizi">
+    <div>
+        <h3>Espresso 24 ore</h3>
+        <p>Il pacco ritirato oggi è consegnato domani in tutta Italia.</p>
+    </div>
+    <div>
+        <h3>Pallet</h3>
+        <p>Merce su pallet per negozi, aziende e magazzini. Il più richiesto!</p>
+    </div>
+    <div>
+        <h3>Ritiro a domicilio</h3>
+        <p>Passiamo noi, a casa o in ufficio, all'orario che scegli tu.</p>
+    </div>
+</div></script>
+    <script type="text/plain" class="c">body {
+    font-family: Verdana, sans-serif;
+    margin: 0;
+}
+
+/* scrivi qui il resto del CSS */
+</script>
+    <script type="text/plain" class="sh"><div id="servizi">
+    <div class="card">
+        <h3 class="titolo-card">Espresso 24 ore</h3>
+        <p>Il pacco ritirato oggi è consegnato domani in tutta Italia.</p>
+    </div>
+    <div class="card evidenza">
+        <h3 class="titolo-card">Pallet</h3>
+        <p>Merce su pallet per negozi, aziende e magazzini. Il più richiesto!</p>
+    </div>
+    <div class="card">
+        <h3 class="titolo-card">Ritiro a domicilio</h3>
+        <p>Passiamo noi, a casa o in ufficio, all'orario che scegli tu.</p>
+    </div>
+</div></script>
+    <script type="text/plain" class="sc">body {
+    font-family: Verdana, sans-serif;
+    margin: 0;
+}
+
+#servizi {
+    background-color: #EEF3F6;
+    padding: 10px;
+}
+
+.card {
+    background-color: white;
+    border-top: 5px solid #C85A12;
+    padding: 15px;
+    margin: 15px;
+    border-radius: 6px;
+}
+
+.titolo-card {
+    color: #0F3B57;
+}
+
+/* .card e .evidenza sono tutte e due classi: hanno la
+   stessa specificità, quindi vince quella scritta dopo.
+   Se la sposti prima di .card, perde e non si vede. */
+.evidenza {
+    border-top: 5px solid #0F3B57;
+    background-color: #FFF4C2;
+}</script>
+  </div>
+</section>
+
+<section class="ch" id="es5" data-n="C.5" data-t="Il menu con le ancore">
+  <h2><span class="lab-n">C.5</span>Il menu con le ancore <span class="diff d2">medio</span></h2>
+  <p class="goal">Un header con il logo cliccabile e un menu che porta alle sezioni della pagina.</p>
+  <div class="lab ex" data-title="Il menu con le ancore" data-height="400" data-task="1) Nell'header metti il logo img/logo.png largo 60px dentro un link che porta a index.html (con un testo alternativo adatto). 2) Sotto il titolo crea il menu con tre link separati da | : Servizi, Tariffe, Contatti. Ognuno deve saltare alla sua sezione: aggiungi tu gli id alle tre sezioni. 3) Dai ai link del menu la classe menu. 4) Nel CSS: .header con sfondo #0F3B57, testo white, 15px di spazio interno, testo centrato. 5) .menu con colore white e grandezza 18px (ricorda: i link non ereditano il colore). 6) Nei contatti aggiungi un link email a info@orobiaspedizioni.example e un link telefono al numero 035 000 2222. 7) Clicca tutti i link e controlla nella barra sotto la pagina.">
+    <script type="text/plain" class="h"><div class="header">
+    <!-- logo con link -->
+    <h1>Orobia Spedizioni</h1>
+    <!-- menu -->
+</div>
+
+<div class="sezione">
+    <h2>Servizi</h2>
+    <p>Pacchi, pallet e ritiri a domicilio.</p>
+</div>
+
+<div class="sezione">
+    <h2>Tariffe</h2>
+    <p>Busta da 6,90 €, pacco piccolo da 9,90 €.</p>
+</div>
+
+<div class="sezione">
+    <h2>Contatti</h2>
+    <!-- link email e telefono -->
+</div></script>
+    <script type="text/plain" class="c">body {
+    font-family: Verdana, sans-serif;
+    margin: 0;
+}
+
+.sezione {
+    padding: 20px;
+    min-height: 250px;
+    border-bottom: 1px solid #CCCCCC;
+}
+
+/* scrivi qui il resto del CSS */
+</script>
+    <script type="text/plain" class="sh"><div class="header">
+    <a href="index.html"><img src="img/logo.png" width="60" alt="Logo Orobia Spedizioni, torna alla home"></a>
+    <h1>Orobia Spedizioni</h1>
+    <a class="menu" href="#servizi">Servizi</a> |
+    <a class="menu" href="#tariffe">Tariffe</a> |
+    <a class="menu" href="#contatti">Contatti</a>
+</div>
+
+<div class="sezione" id="servizi">
+    <h2>Servizi</h2>
+    <p>Pacchi, pallet e ritiri a domicilio.</p>
+</div>
+
+<div class="sezione" id="tariffe">
+    <h2>Tariffe</h2>
+    <p>Busta da 6,90 €, pacco piccolo da 9,90 €.</p>
+</div>
+
+<div class="sezione" id="contatti">
+    <h2>Contatti</h2>
+    <p><a href="mailto:info@orobiaspedizioni.example">info@orobiaspedizioni.example</a></p>
+    <p><a href="tel:+390350002222">035 000 2222</a></p>
+</div></script>
+    <script type="text/plain" class="sc">body {
+    font-family: Verdana, sans-serif;
+    margin: 0;
+}
+
+.sezione {
+    padding: 20px;
+    min-height: 250px;
+    border-bottom: 1px solid #CCCCCC;
+}
+
+.header {
+    background-color: #0F3B57;
+    color: white;
+    padding: 15px;
+    text-align: center;
+}
+
+.menu {
+    color: white;
+    font-size: 18px;
+}</script>
+  </div>
+</section>
+
+<section class="ch" id="es6" data-n="C.6" data-t="Trova gli errori">
+  <h2><span class="lab-n">C.6</span>Trova gli errori <span class="diff d3">avanzato</span></h2>
+  <p class="goal">La pagina dovrebbe avere l'header blu con il logo, il menu che funziona, le card con il bordo arancione e i titoli blu. Invece è tutta sbagliata.</p>
+  <div class="lab ex" data-title="Trova gli errori" data-height="420" data-task="Ci sono 8 errori: 3 nell'HTML (scheda index.html) e 5 nel CSS (scheda stile.css). Trovali e correggili tutti. Suggerimento: parti dal collegamento del CSS, poi l'immagine, poi i link del menu, poi il CSS riga per riga. Quando hai finito, il link Servizi deve saltare alla sezione giusta.">
+    <script type="text/plain" class="h"><!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Orobia Spedizioni</title>
+    <link rel="stylesheet" href="stile.css">
+</head>
+<body>
+    <div class="header">
+        <img src="img/Logo.PNG" width="60" alt="Logo Orobia Spedizioni">
+        <h1>Orobia Spedizioni</h1>
+        <a class="menu" href="servizi">Servizi</a>
+    </div>
+
+    <div id="servizi" class="sezione">
+        <h2>I nostri servizi</h2>
+        <div class="Card">
+            <h3>Espresso 24 ore</h3>
+            <p>Consegna domani in tutta Italia.</p>
+        </div>
+        <div class="card">
+            <h3>Pallet</h3>
+            <p>Merce su pallet per aziende.</p>
+        </div>
+    </div>
+</body>
+</html></script>
+    <script type="text/plain" class="c">body {
+    font-family: Verdana, sans-serif;
+    margin: 0;
+}
+
+header {
+    background-color: #0F3B57;
+    color: white;
+    padding: 15px;
+}
+
+.menu {
+    color: white
+    font-size: 18px;
+}
+
+h2, h3 {
+    color: 0F3B57;
+}
+
+card {
+    border-top: 5px solid #C85A12;
+    padding: 10 px;
+    margin: 10px;
+}</script>
+    <script type="text/plain" class="sh"><!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Orobia Spedizioni</title>
+    <link rel="stylesheet" href="stile.css">
+</head>
+<body>
+    <div class="header">
+        <img src="img/logo.png" width="60" alt="Logo Orobia Spedizioni">
+        <h1>Orobia Spedizioni</h1>
+        <a class="menu" href="#servizi">Servizi</a>
+    </div>
+
+    <div id="servizi" class="sezione">
+        <h2>I nostri servizi</h2>
+        <div class="card">
+            <h3>Espresso 24 ore</h3>
+            <p>Consegna domani in tutta Italia.</p>
+        </div>
+        <div class="card">
+            <h3>Pallet</h3>
+            <p>Merce su pallet per aziende.</p>
+        </div>
+    </div>
+</body>
+</html></script>
+    <script type="text/plain" class="sc">body {
+    font-family: Verdana, sans-serif;
+    margin: 0;
+}
+
+/* errore 1: è una classe, serve il punto */
+.header {
+    background-color: #0F3B57;
+    color: white;
+    padding: 15px;
+}
+
+/* errore 2: mancava il ; dopo white */
+.menu {
+    color: white;
+    font-size: 18px;
+}
+
+/* errore 3: l'esadecimale vuole il # */
+h2, h3 {
+    color: #0F3B57;
+}
+
+/* errore 4: è una classe, serve il punto
+   errore 5: 10px senza spazio */
+.card {
+    border-top: 5px solid #C85A12;
+    padding: 10px;
+    margin: 10px;
+}
+
+/* Errori nell'HTML:
+   6. img/Logo.PNG: il file si chiama logo.png
+   7. href="servizi": per un'ancora serve #servizi
+   8. class="Card": le classi distinguono maiuscole e minuscole */</script>
+  </div>
+</section>
+
+<section class="ch" id="es7" data-n="C.7" data-t="Da style a stile.css">
+  <h2><span class="lab-n">C.7</span>Da style a stile.css <span class="diff d3">avanzato</span></h2>
+  <p class="goal">La pagina funziona, ma tutto lo stile è scritto negli attributi <code>style</code>. Riordinala: stessa pagina, zero <code>style</code>.</p>
+  <div class="lab ex" data-title="Da style a stile.css" data-height="460" data-task="1) Togli tutti gli attributi style dall'HTML (sono 11). 2) Al loro posto usa classi e id: .header, .hero, .sezione, .chiara, .card, .footer e l'id #contatti già presente. 3) Scrivi le regole in stile.css: lo stile ripetuto (le due card, i titoli h2 uguali) va scritto UNA volta sola, usando anche una regola di gruppo. 4) Organizza stile.css in sezioni con i commenti. 5) Alla fine la pagina deve essere identica a quella di partenza: confronta prima di cancellare!">
+    <script type="text/plain" class="h"><!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Valle Brembana Traslochi</title>
+    <link rel="stylesheet" href="stile.css">
+</head>
+<body>
+    <div style="background-color: #2E4A2A; color: white; padding: 20px; text-align: center;">
+        <h1>Valle Brembana Traslochi</h1>
+    </div>
+
+    <div style="background-color: #D9A21B; color: #2E4A2A; padding: 30px; text-align: center;">
+        <h2 style="color: #2E4A2A;">Il tuo trasloco, senza pensieri</h2>
+        <p>Imballaggio, trasporto e montaggio dei mobili</p>
+    </div>
+
+    <div style="padding: 20px; background-color: #F2F0E6;">
+        <h2 style="color: #2E4A2A; text-align: center;">Cosa facciamo</h2>
+        <div style="background-color: white; border-left: 6px solid #D9A21B; padding: 15px; margin: 10px;">
+            <h3>Traslochi per famiglie</h3>
+            <p>Casa nuova? Pensiamo a tutto noi, dagli scatoloni ai mobili.</p>
+        </div>
+        <div style="background-color: white; border-left: 6px solid #D9A21B; padding: 15px; margin: 10px;">
+            <h3>Traslochi per uffici</h3>
+            <p>Spostiamo il tuo ufficio nel fine settimana, senza fermare il lavoro.</p>
+        </div>
+    </div>
+
+    <div id="contatti" style="padding: 20px; text-align: center;">
+        <h2 style="color: #2E4A2A;">Contatti</h2>
+        <p><a href="tel:+390345000333">0345 000 333</a></p>
+    </div>
+
+    <div style="background-color: #2E4A2A; color: white; padding: 10px; text-align: center;">
+        <p>&copy; 2026 Valle Brembana Traslochi</p>
+    </div>
+</body>
+</html></script>
+    <script type="text/plain" class="c">body {
+    font-family: Verdana, sans-serif;
+    margin: 0;
+}
+
+/* scrivi qui il resto del CSS */
+</script>
+    <script type="text/plain" class="sh"><!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Valle Brembana Traslochi</title>
+    <link rel="stylesheet" href="stile.css">
+</head>
+<body>
+    <div class="header">
+        <h1>Valle Brembana Traslochi</h1>
+    </div>
+
+    <div class="hero">
+        <h2>Il tuo trasloco, senza pensieri</h2>
+        <p>Imballaggio, trasporto e montaggio dei mobili</p>
+    </div>
+
+    <div class="sezione chiara">
+        <h2>Cosa facciamo</h2>
+        <div class="card">
+            <h3>Traslochi per famiglie</h3>
+            <p>Casa nuova? Pensiamo a tutto noi, dagli scatoloni ai mobili.</p>
+        </div>
+        <div class="card">
+            <h3>Traslochi per uffici</h3>
+            <p>Spostiamo il tuo ufficio nel fine settimana, senza fermare il lavoro.</p>
+        </div>
+    </div>
+
+    <div id="contatti" class="sezione">
+        <h2>Contatti</h2>
+        <p><a href="tel:+390345000333">0345 000 333</a></p>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2026 Valle Brembana Traslochi</p>
+    </div>
+</body>
+</html></script>
+    <script type="text/plain" class="sc">/* ---------- 1. STILI GENERALI ---------- */
+body {
+    font-family: Verdana, sans-serif;
+    margin: 0;
+}
+
+/* tutti gli h2 hanno lo stesso colore e sono centrati */
+h2 {
+    color: #2E4A2A;
+    text-align: center;
+}
+
+/* ---------- 2. HEADER E FOOTER (uguali: regola di gruppo) ---------- */
+.header, .footer {
+    background-color: #2E4A2A;
+    color: white;
+    text-align: center;
+}
+
+.header {
+    padding: 20px;
+}
+
+.footer {
+    padding: 10px;
+}
+
+/* ---------- 3. FASCIA GIALLA ---------- */
+.hero {
+    background-color: #D9A21B;
+    color: #2E4A2A;
+    padding: 30px;
+    text-align: center;
+}
+
+/* ---------- 4. SEZIONI ---------- */
+.sezione {
+    padding: 20px;
+}
+
+.chiara {
+    background-color: #F2F0E6;
+}
+
+/* ---------- 5. CARD ---------- */
+.card {
+    background-color: white;
+    border-left: 6px solid #D9A21B;
+    padding: 15px;
+    margin: 10px;
+}
+
+/* ---------- 6. CONTATTI ---------- */
+#contatti {
+    text-align: center;
+}</script>
+  </div>
+</section>
+
+<section class="ch" id="es8" data-n="C.8" data-t="Il sito da una descrizione">
+  <h2><span class="lab-n">C.8</span>Il sito da una descrizione <span class="diff d4">esperto</span></h2>
+  <p class="goal">Il cliente ti manda il contenuto e una descrizione di come vuole il sito. L'HTML ha solo i contenuti: tocca a te aggiungere classi e id e scrivere tutto <code>stile.css</code>.</p>
+  <div class="tw"><table class="t">
+    <tr><th>Parte</th><th>Come la vuole il cliente</th></tr>
+    <tr><td>Colori aziendali</td><td>verde scuro <code>#14532D</code>, verde chiaro <code>#DCFCE7</code>, arancione <code>#EA580C</code></td></tr>
+    <tr><td>Tutta la pagina</td><td>carattere Verdana con riserva sans-serif, senza margine attorno</td></tr>
+    <tr><td>Header</td><td>sfondo verde scuro, testo bianco, centrato, 20px di spazio interno. Il logo (<code>img/logo.png</code>, largo 70px) riporta alla home. Sotto il nome, il menu con i link a Servizi, Tariffe e Contatti, bianchi e di 18px</td></tr>
+    <tr><td>Fascia slogan</td><td>sfondo arancione, testo bianco, centrato, slogan di 30px, 40px di spazio sopra e sotto</td></tr>
+    <tr><td>Immagine</td><td><code>img/magazzino.png</code>, larga al massimo il 100%, centrata, angoli arrotondati di 10px, con 20px di spazio attorno</td></tr>
+    <tr><td>Servizi</td><td>sezione con sfondo verde chiaro. Tre card bianche con bordo arancione di 5px a sinistra, angoli di 6px, 15px di spazio interno, 15px di margine. I titoli delle card verde scuro</td></tr>
+    <tr><td>Tariffe</td><td>tabella larga al massimo 600px, centrata, bordi uniti, intestazione verde scuro con testo bianco, celle con 10px di spazio, righe pari verde chiaro</td></tr>
+    <tr><td>Contatti</td><td>testo centrato, link email e telefono funzionanti</td></tr>
+    <tr><td>Titoli h2</td><td>verde scuro e centrati, tranne lo slogan</td></tr>
+    <tr><td>Footer</td><td>come l'header, con il testo di 14px</td></tr>
+  </table></div>
+  <div class="lab ex" data-title="Il sito da una descrizione" data-height="560" data-task="Usa la tabella qui sopra come consegna. 1) Nell'HTML aggiungi le classi, gli id del menu, il logo con il link, i link del menu, la tabella delle tariffe (Posto pallet al mese 11,50 € · Picking per riga 0,40 € · Consegna per collo 6,90 €) e i link dei contatti (info@addalogistica.example, 02 0000 4444). 2) Scrivi tutto stile.css, diviso in sezioni con i commenti. 3) Nessun attributo style nell'HTML. 4) Controlla ogni riga della tabella della consegna sulla pagina.">
+    <script type="text/plain" class="h"><!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Adda Logistica</title>
+    <link rel="stylesheet" href="stile.css">
+</head>
+<body>
+    <div>
+        <!-- logo con link alla home -->
+        <h1>Adda Logistica</h1>
+        <!-- menu -->
+    </div>
+
+    <div>
+        <h2>La tua merce, al posto giusto</h2>
+        <p>Magazzino e distribuzione lungo l'Adda</p>
+    </div>
+
+    <div>
+        <img src="img/magazzino.png" alt="Scaffalature del magazzino con i pallet">
+    </div>
+
+    <div>
+        <h2>Servizi</h2>
+        <div>
+            <h3>Magazzino</h3>
+            <p>Posti pallet al coperto, controllati giorno e notte.</p>
+        </div>
+        <div>
+            <h3>Picking</h3>
+            <p>Prepariamo gli ordini dei tuoi clienti in giornata.</p>
+        </div>
+        <div>
+            <h3>Distribuzione</h3>
+            <p>Consegne in Lombardia con i nostri furgoni.</p>
+        </div>
+    </div>
+
+    <div>
+        <h2>Tariffe</h2>
+        <!-- tabella -->
+    </div>
+
+    <div>
+        <h2>Contatti</h2>
+        <!-- link email e telefono -->
+    </div>
+
+    <div>
+        <p>&copy; 2026 Adda Logistica S.r.l.</p>
+    </div>
+</body>
+</html></script>
+    <script type="text/plain" class="c">/* ---------- 1. STILI GENERALI ---------- */
+
+/* scrivi qui tutto il CSS */
+</script>
+    <script type="text/plain" class="sh"><!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Adda Logistica</title>
+    <link rel="stylesheet" href="stile.css">
+</head>
+<body>
+    <div class="header">
+        <a href="index.html"><img src="img/logo.png" width="70" alt="Logo Adda Logistica, torna alla home"></a>
+        <h1>Adda Logistica</h1>
+        <a class="menu" href="#servizi">Servizi</a> |
+        <a class="menu" href="#tariffe">Tariffe</a> |
+        <a class="menu" href="#contatti">Contatti</a>
+    </div>
+
+    <div class="hero">
+        <h2 class="slogan">La tua merce, al posto giusto</h2>
+        <p>Magazzino e distribuzione lungo l'Adda</p>
+    </div>
+
+    <div class="banner">
+        <img class="foto" src="img/magazzino.png" alt="Scaffalature del magazzino con i pallet">
+    </div>
+
+    <div id="servizi" class="chiara">
+        <h2>Servizi</h2>
+        <div class="card">
+            <h3 class="titolo-card">Magazzino</h3>
+            <p>Posti pallet al coperto, controllati giorno e notte.</p>
+        </div>
+        <div class="card">
+            <h3 class="titolo-card">Picking</h3>
+            <p>Prepariamo gli ordini dei tuoi clienti in giornata.</p>
+        </div>
+        <div class="card">
+            <h3 class="titolo-card">Distribuzione</h3>
+            <p>Consegne in Lombardia con i nostri furgoni.</p>
+        </div>
+    </div>
+
+    <div id="tariffe" class="sezione">
+        <h2>Tariffe</h2>
+        <table>
+            <tr><th>Servizio</th><th>Unità</th><th>Prezzo</th></tr>
+            <tr><td>Posto pallet</td><td>al mese</td><td>11,50 €</td></tr>
+            <tr><td>Picking</td><td>per riga</td><td>0,40 €</td></tr>
+            <tr><td>Consegna</td><td>per collo</td><td>6,90 €</td></tr>
+        </table>
+    </div>
+
+    <div id="contatti" class="sezione">
+        <h2>Contatti</h2>
+        <p><a href="mailto:info@addalogistica.example">info@addalogistica.example</a></p>
+        <p><a href="tel:+390200004444">02 0000 4444</a></p>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2026 Adda Logistica S.r.l.</p>
+    </div>
+</body>
+</html></script>
+    <script type="text/plain" class="sc">/* ---------- 1. STILI GENERALI ---------- */
+body {
+    font-family: Verdana, sans-serif;
+    margin: 0;
+}
+
+h2 {
+    color: #14532D;
+    text-align: center;
+}
+
+/* ---------- 2. HEADER E FOOTER ---------- */
+.header, .footer {
+    background-color: #14532D;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+.menu {
+    color: white;
+    font-size: 18px;
+}
+
+.footer {
+    font-size: 14px;
+}
+
+/* ---------- 3. FASCIA SLOGAN ---------- */
+.hero {
+    background-color: #EA580C;
+    color: white;
+    text-align: center;
+    padding: 40px 20px;
+}
+
+/* .slogan (classe) vince su h2 (tag): resta bianco */
+.slogan {
+    color: white;
+    font-size: 30px;
+}
+
+/* ---------- 4. IMMAGINE ---------- */
+.banner {
+    padding: 20px;
+}
+
+.foto {
+    display: block;
+    max-width: 100%;
+    margin: 0 auto;
+    border-radius: 10px;
+}
+
+/* ---------- 5. SERVIZI ---------- */
+.chiara {
+    background-color: #DCFCE7;
+    padding: 20px;
+}
+
+.card {
+    background-color: white;
+    border-left: 5px solid #EA580C;
+    border-radius: 6px;
+    padding: 15px;
+    margin: 15px;
+}
+
+.titolo-card {
+    color: #14532D;
+}
+
+/* ---------- 6. TARIFFE ---------- */
+.sezione {
+    padding: 20px;
+}
+
+table {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    border-collapse: collapse;
+}
+
+th {
+    background-color: #14532D;
+    color: white;
+}
+
+th, td {
+    padding: 10px;
+}
+
+tr:nth-child(even) {
+    background-color: #DCFCE7;
+}
+
+/* ---------- 7. CONTATTI ---------- */
+#contatti {
+    text-align: center;
+}</script>
+  </div>
+</section>
+
+<footer class="doc-foot">Guida al CSS · prof. Gianpaolo Dalini · ISIS Oscar Romero, Albino (BG) · a.s. 2026/27. Le aziende degli esempi e degli esercizi sono inventate.</footer>
 </div>
 </main>
 </div>
@@ -1460,7 +2315,7 @@ initLabs();
 /* ---------- indice e capitolo attivo ---------- */
 (function toc(){
   const nav = document.getElementById("tocnav");
-  const parts = { "0": null, "A": "Parte A · Ripasso HTML", "B": "Parte B · Il CSS", };
+  const parts = { "0": null, "A": "Parte A · Ripasso HTML", "B": "Parte B · Il CSS", "C": "Parte C · Esercizi" };
   let html = "", lastPart = null;
   document.querySelectorAll("section.ch").forEach(s => {
     const n = s.dataset.n, p = n === "0" ? "0" : n[0];
